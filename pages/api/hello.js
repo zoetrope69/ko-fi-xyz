@@ -1,21 +1,25 @@
-import faunadb from 'faunadb';
+const faunadb = require('faunadb');
 
 const { FAUNA_ADMIN_KEY } = process.env;
  
 const q = faunadb.query;
-const client = new faunadb.Client({ secret: FAUNA_ADMIN_KEY });
+const faunaClient = new faunadb.Client({ secret: FAUNA_ADMIN_KEY });
 
+async function getUser(username) {
+  let user = {};
+
+  try {
+    user = await faunaClient.query(
+      q.Get(q.Match(q.Index("by_username"), username))
+    );
+  } catch (e) {
+    // ...    
+  }
+
+  return user;
+}
 
 export default function handler(req, res) {
- 
-client.query(
-  q.Paginate(q.Collections()),
-  { queryTimeout: 100 }
-).then(function(response) {
-   console.log(response.ref); // Logs the ref to the console.
- }).catch(function(e) {
-  console.error(e);
- })
-  
-  res.status(200).json({ name: 'John Doe' })
+  const user = await getUser('zactopus');
+  res.status(200).json(user);
 }
