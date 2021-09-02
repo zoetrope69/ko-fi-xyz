@@ -1,16 +1,156 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
+    Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
+    sans-serif;
+}
+
+.Alert {
+  display: inline-block;
+  background: #f479ffcc;
+  color: white;
+  max-width: 80%;
+  margin: 1em;
+  padding: 0.5em 1em;
+  border-radius: 50px;
+  font-size: 2rem;
+  font-weight: bold;
+  animation: slideIn 1s forwards;
+}
+
+.Alert--isRemoving {
+  animation: slideOut 1s forwards;
+}
+
+.AlertMessage {
+  display: block;
+  font-weight: lighter;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 
-* {
-  box-sizing: border-box;
+label,
+.Hint,
+input {
+  display: block;
+}
+
+main {
+  padding: 1em;
+  max-width: 30em;
+}
+
+p {
+  margin-bottom: 0.5em;
+  max-width: 25em;
+}
+
+label {
+  font-weight: bolder;
+}
+
+input,
+button {
+  border: 0;
+  padding: 0.25em 0.5em;
+  font: inherit;
+  font-size: 1em;
+  background: none;
+}
+
+label {
+  margin-bottom: 0.25em;
+}
+
+.Hint {
+  font-size: 0.85em;
+}
+
+input {
+  border-radius: 5px;
+  border: 2px solid grey;
+  margin-bottom: 1em;
+  font-size: 0.75em;
+  width: 100%;
+}
+
+.Button,
+button {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  margin-top: 0.5em;
+  border-radius: 5px;
+  background: rgb(51, 51, 240);
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  background: rgb(45, 45, 45);
+  cursor: default;
+}
+
+fieldset {
+  padding: 1em;
+}
+
+code {
+  margin: 0.25em 0;
+  display: block;
+  font-size: 0.85em;
+  white-space: nowrap;
+  overflow: scroll;
+  border: 2px solid grey;
+  padding: 1em;
+  max-width: 100%;
+  background: #f4f4ff;
+}
+
+ol {
+  margin-bottom: 1em;
+  list-style-position: inside;
+}
+
+li {
+  font-size: 0.85em;
+  margin-bottom: 0.85em;
+}
+
+h1,
+h2 {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
 }
