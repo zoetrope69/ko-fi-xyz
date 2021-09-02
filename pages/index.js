@@ -30,7 +30,7 @@ export default function Home() {
         <div className="Button">Login</div>
       </Link>
       <br />
-      <Link href="/signup" className="Button" passHref>
+      <Link href="/login" className="Button" passHref>
         <div className="Button">Signup</div>
       </Link>
     </main>
