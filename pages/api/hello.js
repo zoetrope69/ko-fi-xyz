@@ -19,7 +19,7 @@ async function getUser(username) {
   return user;
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   const user = await getUser('zactopus');
   res.status(200).json(user);
 }
