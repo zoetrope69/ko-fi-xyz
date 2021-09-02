@@ -132,7 +132,7 @@ code {
   display: block;
   font-size: 0.85em;
   white-space: nowrap;
-  overflow: scroll;
+  overflow-x: scroll;
   border: 2px solid grey;
   padding: 1em;
   max-width: 100%;
