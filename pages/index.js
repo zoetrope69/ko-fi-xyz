@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Link from "next/Link";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -16,27 +16,21 @@ export default function Home() {
         />
         <title>Ko-fi Custom Alerts</title>
       </Head>
-
       <h1>Ko-fi Custom Alerts</h1>
-
       <p>
         A work-in-progress way to get custom Ko-fi alerts in your OBS
         set-up
       </p>
-
       <p>
         Made by <a href="https://twitch.tv/zactopus">zactopus</a>.
       </p>
-
       <br />
 
-      <Link href="/login" className="Button">
+      <Link href="/login" className="Button" passHref>
         <div className="Button">Login</div>
       </Link>
-
       <br />
-
-      <Link href="/signup" className="Button">
+      <Link href="/signup" className="Button" passHref>
         <div className="Button">Signup</div>
       </Link>
     </main>

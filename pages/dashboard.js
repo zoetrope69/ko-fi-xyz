@@ -93,7 +93,11 @@ export default function Dashboard() {
               </ol>
             </>
           )}
-          {!user && <Link href="/login">Login</Link>}
+          {!user && (
+            <Link href="/" passHref>
+              <div className="Button">Home</div>
+            </Link>
+          )}
         </>
       )}
     </main>
