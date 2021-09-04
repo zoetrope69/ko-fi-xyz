@@ -69,6 +69,7 @@ export default function Dashboard() {
                       https://ko-fi-alerts.vercel.app/overlay/
                       {user.overlayId}
                     </code>
+                    Set the size to 1920x1080.
                   </li>
                   <li>
                     Go back to the{" "}
