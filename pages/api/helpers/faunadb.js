@@ -61,27 +61,35 @@ export async function getByIndex(index, value) {
   return data;
 }
 
+async function getPaginatedData(index, value) {
+  return new Promise((resolve, reject) => {
+    faunaClient
+      .paginate(q.Match(q.Index(index), value), { size: 2000 })
+      .map(function (ref) {
+        return q.Let(
+          {
+            doc: q.Get(ref),
+          },
+          {
+            document: q.Var("doc"),
+            id: q.Select(["ref", "id"], q.Var("doc")),
+          }
+        );
+      })
+      .each(function (page) {
+        resolve(page);
+      })
+      .catch(reject);
+  });
+}
+
 export async function getAllByIndex(index, value) {
   let data = null;
 
   try {
-    const query = await faunaClient.query(
-      q.Map(
-        q.Paginate(q.Match(q.Index(index), value)),
-        q.Lambda((x) => {
-          return q.Let(
-            {
-              doc: q.Get(x),
-            },
-            {
-              document: q.Var("doc"),
-              id: q.Select(["ref", "id"], q.Var("doc")),
-            }
-          );
-        })
-      )
-    );
-    data = query.data.map((item) => {
+    const query = await getPaginatedData(index, value);
+
+    data = query.map((item) => {
       return {
         ...item?.document?.data,
         id: item.id,
