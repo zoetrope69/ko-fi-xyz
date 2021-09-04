@@ -25,7 +25,6 @@ export default function Login() {
     if (authRequest.ok) {
       router.push("/dashboard");
     } else {
-      console.error(authRequest.statusText);
       setIsLoading(false);
     }
   };
@@ -45,7 +44,9 @@ export default function Login() {
         <title>Ko-fi Custom Alerts - Login/Signup</title>
       </Head>
 
-      <h1>Ko-fi Custom Alerts - Login/Signup</h1>
+      <h1>Ko-fi Custom Alerts</h1>
+
+      <h2>Login/Signup</h2>
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>

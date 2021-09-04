@@ -1,23 +1,25 @@
 import faker from "faker";
 import { getUserByWebhookId, createAlert } from "../helpers/database";
 
+import logger from "../../../helpers/logger";
+
 export default async function handler(request, response) {
   const { id: webhookId } = request.query;
 
   if (!webhookId) {
-    console.error("Missing ID");
+    logger.error("Missing ID");
     return response.status(400).end();
   }
 
   const user = await getUserByWebhookId(webhookId);
 
   if (!user) {
-    console.error("No user with webhook ID of", webhookId);
+    logger.error("No user with webhook ID of", webhookId);
     return response.status(400).end();
   }
 
   if (!request?.body?.data) {
-    console.error("No data from Ko-fi");
+    logger.error("No data from Ko-fi");
     return response.status(400).end();
   }
 
@@ -25,7 +27,7 @@ export default async function handler(request, response) {
   try {
     json = JSON.parse(request.body.data);
   } catch (e) {
-    console.error("Invalid data from Ko-fi", e.message);
+    logger.error("Invalid data from Ko-fi", e.message);
     return response.status(400).end();
   }
 
@@ -54,7 +56,7 @@ export default async function handler(request, response) {
       shown: false,
     });
   } catch (e) {
-    console.error(e.message);
+    logger.error(e.message);
   }
 
   response.end();

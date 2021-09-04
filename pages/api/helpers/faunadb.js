@@ -1,5 +1,7 @@
 import faunadb from "faunadb";
 
+import logger from "../../../helpers/logger";
+
 const { FAUNA_ADMIN_KEY } = process.env;
 
 const q = faunadb.query;
@@ -22,11 +24,11 @@ export async function getByCollectionId(collection, id) {
     );
 
     data = {
-      ...query.document,
+      ...query?.document?.data,
       id: query.id,
     };
   } catch (e) {
-    console.error("DB Error:", e.message);
+    logger.error("DB Error:", e.message);
   }
 
   return data;
@@ -53,7 +55,7 @@ export async function getByIndex(index, value) {
       id: query.id,
     };
   } catch (e) {
-    console.error("DB Error:", e.message);
+    logger.error("DB Error:", e.message);
   }
 
   return data;
@@ -86,7 +88,7 @@ export async function getAllByIndex(index, value) {
       };
     });
   } catch (e) {
-    console.error("DB error:", e.message);
+    logger.error("DB Error:", e.message);
   }
 
   return data;

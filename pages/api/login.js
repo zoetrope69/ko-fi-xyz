@@ -3,11 +3,13 @@ import Iron from "@hapi/iron";
 import { setTokenCookie } from "./helpers/cookie";
 import { getUserByEmail, createUser } from "./helpers/database";
 
+import logger from "../../helpers/logger";
+
 const { ENCRYPTION_SECRET, MAGIC_SECRET_API_KEY } = process.env;
 
 export default async function handler(request, response) {
   if (request.method !== "POST") {
-    return res.status(405).end();
+    return response.status(405).end();
   }
 
   if (!request.headers.authorization) {
@@ -42,7 +44,7 @@ export default async function handler(request, response) {
   try {
     await createUser(authorisedUser.email);
   } catch (e) {
-    console.log("Creating user error: ", e.message);
+    logger.log("Creating user error: ", e.message);
   }
 
   response.end();

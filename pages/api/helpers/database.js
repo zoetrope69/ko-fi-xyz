@@ -32,7 +32,14 @@ export async function updateAlert(id, data) {
 }
 
 export async function createOverlay() {
-  return createDocument("overlays", { sounds: false });
+  return createDocument("overlays", {
+    canPlaySounds: false,
+    messageText: "{amount} from {from_name} - {message}",
+    messageDuration: "5",
+    messageBackgroundColor: "#f8befc",
+    messageTextColor: "#840042",
+    messagePosition: "top-left",
+  });
 }
 
 export async function createUser(email) {
@@ -43,4 +50,8 @@ export async function createUser(email) {
     webhookId: uuid(),
     overlayId,
   });
+}
+
+export async function updateOverlay(id, data) {
+  return updateDocument("overlays", id, data);
 }

@@ -1,7 +1,9 @@
 import { useEffect, useReducer } from "react";
 
+import logger from "../helpers/logger";
+
 const POLL_FREQUENCY_MS = 5000;
-const ALERT_LENGTH_MS = 5000;
+const ALERT_DURATION_MS = 5000;
 const ALERT_DELAY_LENGTH_MS = 1000;
 
 async function getAlerts(overlayId) {
@@ -66,7 +68,10 @@ function reducer(state, action) {
   }
 }
 
-export default function useAlertQueue({ overlayId }) {
+export default function useAlertQueue({
+  overlayId,
+  messageDuration,
+}) {
   const initialState = {
     isProcessing: false,
     isRemoving: false,
@@ -84,6 +89,14 @@ export default function useAlertQueue({ overlayId }) {
   }
 
   useEffect(() => {
+    function getAlertDuration() {
+      if (messageDuration) {
+        return parseInt(messageDuration, 10) * 1000;
+      }
+
+      return ALERT_DURATION_MS;
+    }
+
     if (queue.length > 0 && !isProcessing) {
       dispatch({
         type: "PROCESSING",
@@ -101,12 +114,12 @@ export default function useAlertQueue({ overlayId }) {
             type: "REMOVE",
           });
         }, ALERT_DELAY_LENGTH_MS);
-      }, ALERT_LENGTH_MS);
+      }, getAlertDuration());
     }
-  }, [queue, isProcessing]);
+  }, [messageDuration, queue, isProcessing]);
 
   useEffect(() => {
-    if (!overlayId) {
+    if (!overlayId || !messageDuration) {
       return;
     }
 
@@ -116,6 +129,10 @@ export default function useAlertQueue({ overlayId }) {
       }
 
       const alerts = await getAlerts(overlayId);
+
+      if (!alerts || alerts.length === 0 || !Array.isArray(alerts)) {
+        return;
+      }
 
       // TODO filter nonShown on database side
       const nonShownAlerts = alerts.filter(
@@ -127,13 +144,13 @@ export default function useAlertQueue({ overlayId }) {
       });
     }
 
-    console.info("Polling for new alerts...");
+    logger.info("Polling for new alerts...");
     pollNewAlerts(overlayId);
     setInterval(() => {
-      console.info("Polling for new alerts...");
+      logger.info("Polling for new alerts...");
       pollNewAlerts(overlayId);
     }, POLL_FREQUENCY_MS);
-  }, [overlayId]);
+  }, [overlayId, messageDuration]);
 
   return { queue, isRemoving };
 }

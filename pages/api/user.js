@@ -1,18 +1,11 @@
-import Iron from "@hapi/iron";
-import { getAuthToken } from "./helpers/cookie";
 import { getUserByEmail } from "./helpers/database";
-
-const { ENCRYPTION_SECRET } = process.env;
+import { getAuthorisedUser } from "./helpers/auth";
 
 export default async function handler(request, response) {
   let authorisedUser;
 
   try {
-    authorisedUser = await Iron.unseal(
-      getAuthToken(request.cookies),
-      ENCRYPTION_SECRET,
-      Iron.defaults
-    );
+    authorisedUser = await getAuthorisedUser(request.cookies);
   } catch (error) {
     return response.status(401).json({ error: error.message });
   }

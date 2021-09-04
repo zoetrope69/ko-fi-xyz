@@ -6,56 +6,14 @@
 
 html,
 body {
+  height: 100%;
   padding: 0;
   margin: 0;
   font-size: 24px;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
     sans-serif;
-}
-
-.Alert {
-  display: inline-block;
-  background: #f479ffcc;
-  color: white;
-  max-width: 80%;
-  margin: 1em;
-  padding: 0.5em 1em;
-  border-radius: 50px;
-  font-size: 2rem;
-  font-weight: bold;
-  animation: slideIn 1s forwards;
-}
-
-.Alert--isRemoving {
-  animation: slideOut 1s forwards;
-}
-
-.AlertMessage {
-  display: block;
-  font-weight: lighter;
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-}
-
-@keyframes slideOut {
-  from {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-  to {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
+  color: #332524;
 }
 
 a {
@@ -66,6 +24,25 @@ label,
 .Hint,
 input {
   display: block;
+}
+
+nav {
+  position: sticky;
+  top: 0;
+  left: 0;
+  padding: 1em;
+  border-right: 6px solid #ffddf3;
+  height: 100vh;
+  background: #fffafd;
+}
+
+nav ul {
+  padding-top: 1em;
+  list-style-position: inside;
+}
+
+.wrapper {
+  display: flex;
 }
 
 main {
@@ -91,36 +68,104 @@ button {
   background: none;
 }
 
+fieldset {
+  border: 2px solid #f7daf1;
+  border-radius: 5px;
+  margin-bottom: 1em;
+}
+
+legend {
+  background: white;
+  box-shadow: -10px 0 0 white, 10px 0 0 white;
+}
+
 label {
+  display: flex;
   margin-bottom: 0.25em;
 }
 
 .Hint {
   font-size: 0.85em;
+  color: #714c4c;
+  line-height: 1em;
 }
 
-input {
+select,
+textarea,
+input[type="text"],
+input[type="color"] {
   border-radius: 5px;
+  background: white;
   border: 2px solid grey;
+}
+
+select,
+textarea,
+input[type="text"] {
+  margin-top: 0.5em;
   margin-bottom: 1em;
+  min-height: 2rem;
+  padding: 0.5em;
+  font: inherit;
   font-size: 0.75em;
   width: 100%;
+  max-width: 25em;
+  border: 2px solid grey;
+}
+
+select:disabled,
+textarea:disabled,
+input[type="text"]:disabled,
+input[type="color"]:disabled {
+  background: #ddd;
+  cursor: default;
+}
+
+input[type="color"] {
+  margin-top: 0.5em;
+  margin-bottom: 1em;
+  height: 4em;
+  width: 4em;
+  padding: 0;
+  margin: 1em 0;
+  cursor: pointer;
+}
+
+input[type="checkbox"] {
+  transform: translate(0.15em, 0.1em) scale(1.5);
+  margin-right: 0.65em;
+}
+
+textarea {
+  resize: vertical;
 }
 
 .Button,
 button {
   display: inline-block;
   padding: 0.25em 0.5em;
-  margin-top: 0.5em;
+  margin: 0.5em 0;
   border-radius: 5px;
   background: rgb(51, 51, 240);
+  border: 3px solid rgb(51, 51, 240);
   color: white;
+  font-weight: bolder;
   cursor: pointer;
 }
 
 button:disabled {
   background: rgb(45, 45, 45);
   cursor: default;
+}
+
+.Button--secondary {
+  background: white;
+  color: rgb(51, 51, 240);
+}
+
+a,
+a:visited {
+  color: rgb(51, 51, 240);
 }
 
 fieldset {
@@ -150,7 +195,143 @@ li {
 }
 
 h1,
-h2 {
-  margin-top: 0.5em;
+h2,
+h3,
+h4 {
   margin-bottom: 1em;
+}
+
+.Alert {
+  position: absolute;
+  display: inline-block;
+  background: black;
+  color: white;
+  max-width: 80%;
+  margin: 1em;
+  padding: 0.5em 1em;
+  border-radius: 50px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  animation: slideInLeft 1s forwards;
+}
+
+.Alert--position-top-right,
+.Alert--position-bottom-right {
+  animation: slideInRight 1s forwards;
+}
+
+.Alert--position-top-left {
+  top: 0;
+  left: 0;
+}
+
+.Alert--position-top-right {
+  top: 0;
+  right: 0;
+}
+
+.Alert--position-bottom-left {
+  bottom: 0;
+  left: 0;
+}
+
+.Alert--position-bottom-right {
+  bottom: 0;
+  right: 0;
+}
+
+.Alert--isRemoving {
+  animation: slideOutLeft 1s forwards;
+}
+
+.Alert--isRemoving,
+.Alert--position-top-right .Alert--isRemoving,
+.Alert--position-bottom-right .Alert--isRemoving {
+  animation: slideOutRight 1s forwards;
+}
+
+.AlertText {
+  display: block;
+  font-weight: lighter;
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+aside {
+  position: sticky;
+  top: 0;
+  right: 0;
+  height: 50vh;
+  padding-top: 5em;
+}
+
+.PreviewContainer {
+  position: relative;
+  width: 30vw;
+  margin: 1em 0;
+  height: 50vh;
+  background: linear-gradient(to top right, #717d95, #d59494);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.Preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100vh;
+  transform-origin: top left;
+  transform: scale(0.5);
+}
+
+/* .ColourContrastInfo {} */
+
+.ColourContrastInfoRatio {
+  display: block;
+  margin-bottom: 1em;
+  border-left: 3px solid grey;
+  padding-left: 0.5em;
 }

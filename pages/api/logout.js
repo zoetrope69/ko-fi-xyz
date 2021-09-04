@@ -1,4 +1,4 @@
-import { removeAuthCookies } from './helpers/cookie';
+import { removeAuthCookies } from "./helpers/cookie";
 
 export default async function handler(_request, response) {
   removeAuthCookies(response);

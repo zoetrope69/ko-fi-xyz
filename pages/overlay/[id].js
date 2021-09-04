@@ -1,41 +1,34 @@
-import { useEffect } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
+import Alert from "../../components/alert";
 import useAlertQueue from "../../hooks/useAlertQueue";
 import useAPI from "../../hooks/useAPI";
 
-// const TYPES = [
-//   "Donation",
-//   "Subscription",
-//   "Commission",
-//   "Shop Order",
-// ];
+import logger from "../../helpers/logger";
 
 export default function Overlay() {
   const router = useRouter();
   const { id: overlayId } = router.query;
-  const { queue, isRemoving } = useAlertQueue({ overlayId });
-  const [currentAlert] = queue;
-
   const {
     isLoading,
     data: overlay,
     error,
-  } = useAPI("/overlay/" + overlayId);
+  } = useAPI("/overlays/" + overlayId);
 
-  useEffect(() => {
-    if (overlay?.sound && currentAlert) {
-      new Audio("/jingle.wav").play();
-    }
-  }, [currentAlert, overlay]);
+  const { queue, isRemoving } = useAlertQueue({
+    overlayId: overlay?.id,
+    messageDuration: overlay?.messageDuration,
+  });
+  const [currentAlert] = queue;
 
   if (isLoading) {
     return null;
   }
 
   if (error) {
-    return <p>Error: {error}</p>;
+    logger.error(error);
+    return <p>Error: Something went wrong</p>;
   }
 
   if (!overlay.id) {
@@ -46,36 +39,17 @@ export default function Overlay() {
     return null;
   }
 
-  function getMoney() {
-    if (
-      !currentAlert?.data?.amount ||
-      !currentAlert?.data?.currency
-    ) {
-      return "";
-    }
-
-    const { amount, currency } = currentAlert.data;
-    const moneyFormatter = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency,
-    });
-    return moneyFormatter.format(amount);
-  }
-
   return (
     <>
       <Head>
         <title>Ko-fi Custom Alerts - Overlay</title>
       </Head>
 
-      <div
-        className={`Alert ${isRemoving ? "Alert--isRemoving" : ""}`}
-      >
-        {getMoney()} from {currentAlert.data.from_name}
-        <small className="AlertMessage">
-          {currentAlert.data.message}
-        </small>
-      </div>
+      <Alert
+        currentAlert={currentAlert}
+        overlay={overlay}
+        isRemoving={isRemoving}
+      />
     </>
   );
 }
