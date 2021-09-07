@@ -20,6 +20,8 @@ async function updateOverlay(id, data) {
 }
 
 export default function Dashboard() {
+  const [savedFormData, setSavedFormData] = useState({});
+  const [isFormUnsaved, setIsFormUnsaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const { data: user, isLoading: isLoadingUser } = useAPI("/user");
   const { data: overlay, isLoading: isLoadingOverlay } = useAPI(
@@ -35,13 +37,40 @@ export default function Dashboard() {
     messagePosition,
   } = formData;
 
+  const isLoading = isLoadingUser || isLoadingOverlay;
+
+  function haveChangesBeenMade(savedFormData, formData) {
+    let haveChangesBeenMade = false;
+
+    Object.keys(formData).forEach((key) => {
+      if (haveChangesBeenMade) {
+        return;
+      }
+
+      // new data added that isn't in database overlay
+      if (!Object.prototype.hasOwnProperty.call(savedFormData, key)) {
+        haveChangesBeenMade = true;
+        return;
+      }
+
+      haveChangesBeenMade = savedFormData[key] !== formData[key];
+    });
+
+    setIsFormUnsaved(haveChangesBeenMade);
+  }
+
   useEffect(() => {
     if (!isLoadingOverlay && overlay) {
       setFormData(overlay);
+      setSavedFormData(overlay);
     }
   }, [isLoadingOverlay, overlay]);
 
-  const isLoading = isLoadingUser || isLoadingOverlay;
+  useEffect(() => {
+    if (!isLoadingOverlay && overlay) {
+      haveChangesBeenMade(savedFormData, formData);
+    }
+  }, [isLoadingOverlay, overlay, savedFormData, formData]);
 
   const handleSave = async (event) => {
     event.preventDefault();
@@ -49,13 +78,14 @@ export default function Dashboard() {
     if (user?.overlayId) {
       setIsSaving(true);
       await updateOverlay(user?.overlayId, formData);
+      setSavedFormData(formData);
       setIsSaving(false);
+      setIsFormUnsaved(false);
     }
   };
 
   const handleMessageTextChange = (event) => {
     event.preventDefault();
-
     const newMessageText = event.target.value;
     setFormData((previousFormData) => {
       return {
@@ -141,7 +171,9 @@ export default function Dashboard() {
   return (
     <div className="wrapper">
       <Head>
-        <title>Ko-fi Custom Alerts - Settings</title>
+        <title>
+          {isFormUnsaved ? "* " : ""}Ko-fi Custom Alerts - Settings
+        </title>
       </Head>
 
       <Navigation user={user} isLoading={isLoading} />
@@ -155,7 +187,7 @@ export default function Dashboard() {
           <>
             {user && (
               <>
-                <form onSubmit={handleSave}>
+                <form>
                   <div>
                     <label htmlFor="can-play-sounds">
                       Play Sound
@@ -297,6 +329,7 @@ export default function Dashboard() {
                     className="Button"
                     type="submit"
                     disabled={isSaving}
+                    onClick={handleSave}
                   >
                     {isSaving ? "Saving..." : "Save"}
                   </button>
@@ -310,7 +343,6 @@ export default function Dashboard() {
       {!isLoading && (
         <aside>
           <h3>Preview</h3>
-
           <div className="PreviewContainer PreviewContainer--big">
             <div className="Preview">
               <Alert
@@ -332,6 +364,19 @@ export default function Dashboard() {
               />
             </div>
           </div>
+
+          <button
+            className="Button Button--small Button--secondary"
+            type="button"
+            disabled={isSaving}
+            onClick={handleSave}
+          >
+            {isSaving ? "Saving..." : "Save"}
+          </button>
+
+          {isFormUnsaved && (
+            <small> * New changes not saved...</small>
+          )}
         </aside>
       )}
     </div>
