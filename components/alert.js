@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import Image from "next/image";
 import classNames from "classnames";
 
 const ANIMATION_IN_DURATION_MS = 1000;
@@ -105,6 +106,37 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
     styles.color = overlay?.messageTextColor;
   }
 
+  if (overlay?.messageSpacingHorizontal) {
+    styles.marginLeft = `${overlay?.messageSpacingHorizontal}px`;
+    styles.marginRight = `${overlay?.messageSpacingHorizontal}px`;
+  }
+
+  if (overlay?.messageSpacingVertical) {
+    styles.marginTop = `${overlay?.messageSpacingVertical}px`;
+    styles.marginBottom = `${overlay?.messageSpacingVertical}px`;
+  }
+
+  if (
+    overlay?.messageAnimationType &&
+    overlay?.messageAnimationDirection
+  ) {
+    if (overlay.messageAnimationType === "fade") {
+      styles.animationName = "fade";
+    } else if (isRemoving) {
+      styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-out`;
+    } else {
+      styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-in`;
+    }
+  }
+
+  if (overlay?.messageShowIcon) {
+    styles.paddingLeft = "0.85em";
+  }
+
+  if (!overlay?.messageHasCurvedCorners) {
+    styles.borderRadius = "0";
+  }
+
   const className = classNames("Alert", {
     "Alert--isRemoving": isRemoving,
     "Alert--position-top-left":
@@ -119,6 +151,16 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
 
   return (
     <div className={className} style={styles}>
+      {overlay?.messageShowIcon && (
+        <div className="AlertIcon">
+          <Image
+            src="/ko-fi-logo-cup.png"
+            alt=""
+            height="50"
+            width="50"
+          />
+        </div>
+      )}
       {message}
     </div>
   );

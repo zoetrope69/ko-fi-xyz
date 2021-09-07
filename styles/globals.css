@@ -138,6 +138,7 @@ select,
 textarea,
 input[type="text"],
 input[type="email"],
+input[type="number"],
 input[type="color"] {
   border-radius: 5px;
   background: white;
@@ -147,6 +148,7 @@ input[type="color"] {
 select,
 textarea,
 input[type="text"],
+input[type="number"],
 input[type="email"] {
   margin-top: 0.5em;
   margin-bottom: 1em;
@@ -163,6 +165,7 @@ select:disabled,
 textarea:disabled,
 input[type="text"]:disabled,
 input[type="email"]:disabled,
+input[type="number"]:disabled,
 input[type="color"]:disabled {
   background: #ddd;
   cursor: default;
@@ -251,6 +254,7 @@ ol {
 }
 
 li {
+  line-height: 1.15em;
   font-size: 0.85em;
   margin-bottom: 0.85em;
 }
@@ -264,21 +268,18 @@ h4 {
 
 .Alert {
   position: absolute;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   background: black;
   color: white;
   max-width: 80%;
-  margin: 1em;
+  margin: 50px 50px;
   padding: 0.5em 1em;
   border-radius: 50px;
   font-size: 1.5rem;
   font-weight: bold;
-  animation: slideInLeft 1s forwards;
-}
-
-.Alert--position-top-right,
-.Alert--position-bottom-right {
-  animation: slideInRight 1s forwards;
+  animation: 1s forwards;
+  animation-name: fade;
 }
 
 .Alert--position-top-left {
@@ -302,12 +303,12 @@ h4 {
 }
 
 .Alert--isRemoving {
-  animation: slideOutLeft 1s forwards;
+  animation-name: fade;
 }
 
 .Alert--position-top-right .Alert--isRemoving,
 .Alert--position-bottom-right .Alert--isRemoving {
-  animation: slideOutRight 1s forwards;
+  animation-name: fade;
 }
 
 .AlertText {
@@ -315,7 +316,23 @@ h4 {
   font-weight: lighter;
 }
 
-@keyframes slideInLeft {
+.AlertIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.25em;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-left-in {
   from {
     opacity: 0;
     transform: translateX(-100%);
@@ -326,18 +343,7 @@ h4 {
   }
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-}
-
-@keyframes slideOutLeft {
+@keyframes slide-left-out {
   from {
     opacity: 1;
     transform: translateX(0%);
@@ -348,7 +354,40 @@ h4 {
   }
 }
 
-@keyframes slideOutRight {
+@keyframes slide-top-in {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@keyframes slide-top-out {
+  from {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes slide-right-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-right-out {
   from {
     opacity: 1;
     transform: translateX(0%);
@@ -356,6 +395,28 @@ h4 {
   to {
     opacity: 0;
     transform: translateX(100%);
+  }
+}
+
+@keyframes slide-bottom-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-bottom-out {
+  from {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
   }
 }
 

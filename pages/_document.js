@@ -24,6 +24,7 @@ class MyDocument extends Document {
             rel="stylesheet"
           />
 
+          <link rel="preload" as="image" href="/ko-fi-logo-cup.png" />
           <link
             href="/ko-fi-logo.png"
             rel="shortcut icon"

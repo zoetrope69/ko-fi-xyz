@@ -39,6 +39,12 @@ export async function createOverlay() {
     messageBackgroundColor: "#f8befc",
     messageTextColor: "#840042",
     messagePosition: "top-left",
+    messageSpacingHorizontal: "50",
+    messageSpacingVertical: "50",
+    messageAnimationType: "slide",
+    messageAnimationDirection: "left",
+    messageShowIcon: false,
+    messageHasCurvedCorners: true,
   });
 }
 

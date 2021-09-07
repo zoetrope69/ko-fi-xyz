@@ -35,6 +35,12 @@ export default function Dashboard() {
     messageBackgroundColor,
     messageTextColor,
     messagePosition,
+    messageSpacingHorizontal,
+    messageSpacingVertical,
+    messageAnimationType,
+    messageAnimationDirection,
+    messageShowIcon,
+    messageHasCurvedCorners,
   } = formData;
 
   const isLoading = isLoadingUser || isLoadingOverlay;
@@ -84,70 +90,80 @@ export default function Dashboard() {
     }
   };
 
-  const handleMessageTextChange = (event) => {
-    event.preventDefault();
-    const newMessageText = event.target.value;
+  function updateFormDataProperty(property, event, check) {
+    let newValue;
+    if (check) {
+      newValue = event.target.value === check;
+    } else {
+      newValue = event.target.value;
+    }
+
     setFormData((previousFormData) => {
       return {
         ...previousFormData,
-        messageText: newMessageText,
+        [property]: newValue,
       };
     });
+  }
+
+  const handleMessageTextChange = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("messageText", event);
   };
 
   const handleMessageDurationChange = (event) => {
     event.preventDefault();
-    const newMessageDuration = event.target.value;
-    setFormData((previousFormData) => {
-      return {
-        ...previousFormData,
-        messageDuration: newMessageDuration,
-      };
-    });
+    updateFormDataProperty("messageDuration", event);
   };
 
   const handleCanPlaySoundsChange = (event) => {
     event.preventDefault();
-    const newCanPlaySounds = event.target.value === "play";
-    setFormData((previousFormData) => {
-      return {
-        ...previousFormData,
-        canPlaySounds: newCanPlaySounds,
-      };
-    });
+    updateFormDataProperty("canPlaySounds", event, "play");
   };
 
   const handleMessageBackgroundColorChange = (event) => {
     event.preventDefault();
-    const newMessageBackgroundColor = event.target.value;
-    setFormData((previousFormData) => {
-      return {
-        ...previousFormData,
-        messageBackgroundColor: newMessageBackgroundColor,
-      };
-    });
+    updateFormDataProperty("messageBackgroundColor", event);
   };
 
   const handleMessageTextColorChange = (event) => {
     event.preventDefault();
-    const newMessageTextColor = event.target.value;
-    setFormData((previousFormData) => {
-      return {
-        ...previousFormData,
-        messageTextColor: newMessageTextColor,
-      };
-    });
+    updateFormDataProperty("messageTextColor", event);
   };
 
   const handleMessagePositionChange = (event) => {
     event.preventDefault();
-    const newMessagePosition = event.target.value;
-    setFormData((previousFormData) => {
-      return {
-        ...previousFormData,
-        messagePosition: newMessagePosition,
-      };
-    });
+    updateFormDataProperty("messagePosition", event);
+  };
+
+  const handleMessageSpacingHorizontal = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("messageSpacingHorizontal", event);
+  };
+
+  const handleMessageSpacingVertical = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("messageSpacingVertical", event);
+  };
+
+  const handleMessageAnimationType = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("messageAnimationType", event);
+  };
+
+  const handleMessageAnimationDirection = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("messageAnimationDirection", event);
+  };
+
+  const handleMessageShowIcon = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("messageShowIcon", event, "show");
+  };
+
+  const handleMessageHasCurvedCorners = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("messageHasCurvedCorners", event, "round");
   };
 
   if (!isLoading && !user?.email) {
@@ -202,10 +218,8 @@ export default function Dashboard() {
                       value={canPlaySounds ? "play" : "no-play"}
                       disabled={isSaving}
                     >
-                      <option value="no-play">🔇 No sounds</option>
-                      <option value="play">
-                        🔊 Will play sounds
-                      </option>
+                      <option value="no-play">No sounds</option>
+                      <option value="play">Will play sounds</option>
                       );
                     </select>
                   </div>
@@ -304,26 +318,160 @@ export default function Dashboard() {
                     />
                   </fieldset>
 
-                  <div>
-                    <label htmlFor="message-duration">Position</label>
-                    <span className="Hint">
-                      Where should it be placed?
-                    </span>
-                    <select
-                      id="message-position"
-                      name="message-position"
-                      onChange={handleMessagePositionChange}
-                      value={messagePosition || "top-left"}
-                      disabled={isSaving}
-                    >
-                      <option value="top-left">Top left</option>
-                      <option value="top-right">Top right</option>
-                      <option value="bottom-left">Bottom left</option>
-                      <option value="bottom-right">
-                        Bottom right
-                      </option>
-                    </select>
-                  </div>
+                  <fieldset>
+                    <legend>Position/spacing</legend>
+
+                    <div>
+                      <label htmlFor="message-position">
+                        Position
+                      </label>
+                      <span className="Hint">
+                        Where should it be placed?
+                      </span>
+                      <select
+                        id="message-position"
+                        name="message-position"
+                        onChange={handleMessagePositionChange}
+                        value={messagePosition || "top-left"}
+                        disabled={isSaving}
+                      >
+                        <option value="top-left">Top left</option>
+                        <option value="top-right">Top right</option>
+                        <option value="bottom-left">
+                          Bottom left
+                        </option>
+                        <option value="bottom-right">
+                          Bottom right
+                        </option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="message-spacing-horizontal">
+                        {messagePosition
+                          ? messagePosition.includes("left")
+                            ? "Left"
+                            : "Right"
+                          : "Side"}{" "}
+                        Spacing
+                      </label>
+                      <input
+                        id="message-spacing-horizontal"
+                        name="message-spacing-horizontal"
+                        type="number"
+                        value={messageSpacingHorizontal || "50"}
+                        onChange={handleMessageSpacingHorizontal}
+                        disabled={isSaving}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="message-spacing-vertical">
+                        {messagePosition
+                          ? messagePosition.includes("top")
+                            ? "Top"
+                            : "Bottom"
+                          : "Top/Bottom"}{" "}
+                        Spacing
+                      </label>
+                      <input
+                        id="message-spacing-vertical"
+                        name="message-spacing-vertical"
+                        type="number"
+                        value={messageSpacingVertical || "50"}
+                        onChange={handleMessageSpacingVertical}
+                        disabled={isSaving}
+                      />
+                    </div>
+                  </fieldset>
+
+                  <fieldset>
+                    <legend>Animation</legend>
+
+                    <div>
+                      <label htmlFor="message-animation-type">
+                        Type
+                      </label>
+                      <span className="Hint">
+                        Where should it be placed?
+                      </span>
+                      <select
+                        id="message-animation-type"
+                        name="message-animation-type"
+                        onChange={handleMessageAnimationType}
+                        value={messageAnimationType || "slide"}
+                        disabled={isSaving}
+                      >
+                        <option value="slide">Slide in/out</option>
+                        <option value="fade">Fade in/out</option>
+                      </select>
+                    </div>
+
+                    {messageAnimationType !== "fade" && (
+                      <div>
+                        <label htmlFor="message-animation-direction">
+                          Direction
+                        </label>
+                        <span className="Hint">
+                          Where it animates in from
+                        </span>
+                        <select
+                          id="message-animation-direction"
+                          name="message-animation-direction"
+                          onChange={
+                            handleMessageAnimationDirection || "top"
+                          }
+                          value={messageAnimationDirection}
+                          disabled={isSaving}
+                        >
+                          <option value="top">From the top</option>
+                          <option value="right">
+                            From the right
+                          </option>
+                          <option value="bottom">
+                            From the bottom
+                          </option>
+                          <option value="left">From the left</option>
+                        </select>
+                      </div>
+                    )}
+                  </fieldset>
+
+                  <fieldset>
+                    <legend>Visuals</legend>
+
+                    <div>
+                      <label htmlFor="message-show-icon">
+                        Show Ko-fi Icon
+                      </label>
+                      <select
+                        id="message-show-icon"
+                        name="message-show-icon"
+                        onChange={handleMessageShowIcon}
+                        value={messageShowIcon ? "show" : "hide"}
+                        disabled={isSaving}
+                      >
+                        <option value="hide">Hide</option>
+                        <option value="show">Show</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="message-corners">Corners</label>
+                      <select
+                        id="message-corners"
+                        name="message-corners"
+                        onChange={handleMessageHasCurvedCorners}
+                        value={
+                          messageHasCurvedCorners ? "round" : "square"
+                        }
+                        disabled={isSaving}
+                      >
+                        <option value="round">Round</option>
+                        <option value="square">Square</option>
+                      </select>
+                    </div>
+                  </fieldset>
 
                   <button
                     className="Button"
