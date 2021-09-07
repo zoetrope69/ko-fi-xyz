@@ -23,6 +23,12 @@ class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap"
             rel="stylesheet"
           />
+
+          <link
+            href="/ko-fi-logo.png"
+            rel="shortcut icon"
+            type="image/x-icon"
+          />
         </Head>
         <body>
           <Main />

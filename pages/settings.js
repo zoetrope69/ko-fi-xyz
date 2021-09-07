@@ -293,7 +293,11 @@ export default function Dashboard() {
                     </select>
                   </div>
 
-                  <button type="submit" disabled={isSaving}>
+                  <button
+                    className="Button"
+                    type="submit"
+                    disabled={isSaving}
+                  >
                     {isSaving ? "Saving..." : "Save"}
                   </button>
                 </form>
@@ -307,7 +311,7 @@ export default function Dashboard() {
         <aside>
           <h3>Preview</h3>
 
-          <div className="PreviewContainer">
+          <div className="PreviewContainer PreviewContainer--big">
             <div className="Preview">
               <Alert
                 currentAlert={{
