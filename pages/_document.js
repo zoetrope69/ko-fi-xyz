@@ -8,7 +8,7 @@ import Document, {
 class MyDocument extends Document {
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head>
           <link
             rel="preconnect"
@@ -29,6 +29,12 @@ class MyDocument extends Document {
             href="/ko-fi-logo.png"
             rel="shortcut icon"
             type="image/x-icon"
+          />
+
+          <meta
+            name="description"
+            content="An unofficial work-in-progress way to get custom Ko-fi alerts
+        in your OBS set-up"
           />
         </Head>
         <body>

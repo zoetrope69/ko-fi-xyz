@@ -22,7 +22,7 @@ export default function Home() {
       <h1>Ko-fi Custom Alerts</h1>
 
       <p>
-        A unofficial work-in-progress way to get custom Ko-fi alerts
+        An unofficial work-in-progress way to get custom Ko-fi alerts
         in your OBS set-up
       </p>
       <p>
