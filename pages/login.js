@@ -50,7 +50,12 @@ export default function Login() {
 
       <form onSubmit={handleSubmit}>
         <label htmlFor="email">Email</label>
-        <input name="email" type="email" disabled={isLoading} />
+        <input
+          id="email"
+          name="email"
+          type="email"
+          disabled={isLoading}
+        />
         <button className="Button" disabled={isLoading}>
           {isLoading ? "Submitting..." : "Submit"}
         </button>
