@@ -172,7 +172,7 @@ export default function Dashboard() {
                     >
                       <option value="no-play">🔇 No sounds</option>
                       <option value="play">
-                        🔊 Will play seconds
+                        🔊 Will play sounds
                       </option>
                       );
                     </select>
