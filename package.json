@@ -14,7 +14,7 @@
     "classnames": "2.3.1",
     "cookie": "0.4.1",
     "faker": "5.5.3",
-    "faunadb": "4.4.0",
+    "faunadb": "4.4.1",
     "get-contrast-ratio": "0.2.1",
     "magic-sdk": "5.1.0",
     "next": "11.1.2",
