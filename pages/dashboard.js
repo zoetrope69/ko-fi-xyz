@@ -4,8 +4,19 @@ import Head from "next/head";
 import Navigation from "../components/navigation";
 import useAPI from "../hooks/useAPI";
 
+const DEFAILT_DOMAIN = "https://ko-fi.xyz";
+
+function getDomain() {
+  if (!process.browser) {
+    return DEFAILT_DOMAIN;
+  }
+
+  return window?.location?.origin || DEFAILT_DOMAIN;
+}
+
 export default function Dashboard() {
   const { data: user, isLoading } = useAPI("/user");
+  const domain = getDomain();
 
   if (!isLoading && !user?.email) {
     return (
@@ -58,16 +69,14 @@ export default function Dashboard() {
                   <li>
                     Copy and paste in your webhook URL:
                     <code>
-                      https://ko-fi-alerts.vercel.app/api/webhook/
-                      {user.webhookId}
+                      {domain}/api/webhook/{user.webhookId}
                     </code>
                   </li>
                   <li>
                     Go to OBS. Create a new browser source with this
                     URL:
                     <code>
-                      https://ko-fi-alerts.vercel.app/overlay/
-                      {user.overlayId}
+                      {domain}/overlay/{user.overlayId}
                     </code>
                     Set the size to 1920x1080.
                   </li>
