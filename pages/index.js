@@ -22,8 +22,8 @@ export default function Home() {
       <h1>Ko-fi Custom Alerts</h1>
 
       <p>
-        A work-in-progress way to get custom Ko-fi alerts in your OBS
-        set-up
+        A unofficial work-in-progress way to get custom Ko-fi alerts
+        in your OBS set-up
       </p>
       <p>
         Made by <a href="https://twitch.tv/zactopus">zactopus</a>.
