@@ -38,6 +38,7 @@ export default function Home() {
                 currency: "GBP",
                 from_name: "Mr Blobby",
                 message: "Hello there",
+                type: "Donation",
               },
             }}
             overlay={{

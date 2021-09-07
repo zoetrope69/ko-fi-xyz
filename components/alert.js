@@ -17,7 +17,7 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
       !currentAlert?.data?.amount ||
       !currentAlert?.data?.currency
     ) {
-      return "";
+      return "money";
     }
 
     const { amount, currency } = currentAlert.data;
@@ -33,13 +33,14 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
       return overlay.messageText;
     }
 
-    return "{amount} from {from_name} - {message}";
+    return "{type} of {amount} from {from_name} - {message}";
   }
 
   const MESSAGE_FUNCTION_MAP = {
     "{amount}": () => getMoney(),
-    "{from_name}": () => currentAlert.data.from_name,
-    "{message}": () => currentAlert.data.message,
+    "{from_name}": () => currentAlert?.data?.from_name || "Someone",
+    "{message}": () => currentAlert?.data?.message || "",
+    "{type}": () => currentAlert?.data?.type || "Donation",
   };
 
   function getMessage() {
@@ -76,6 +77,8 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
       const messageFunction = MESSAGE_FUNCTION_MAP[code];
       if (messageFunction) {
         stringParts.push(messageFunction());
+      } else {
+        stringParts.push(code);
       }
 
       const isLastMatch = i === matches.length - 1;

@@ -189,15 +189,15 @@ export default function Dashboard() {
                       </span>
                       <span className="Hint">
                         You can use placeholders {"{from_name}"},{" "}
-                        {"{message}"}, {"{amount}"}.
+                        {"{message}"}, {"{amount}"}, {"{type}"}.
                       </span>
                       <textarea
                         id="message-text"
                         name="message-text"
-                        placeholder="{amount} from {from_name} - {message}"
+                        placeholder="{type} of {amount} from {from_name} - {message}"
                         value={
                           messageText ||
-                          "{amount} from {from_name} - {message}"
+                          "{type} of {amount} from {from_name} - {message}"
                         }
                         onChange={handleMessageTextChange}
                         disabled={isSaving}
@@ -320,6 +320,7 @@ export default function Dashboard() {
                     currency: "GBP",
                     from_name: "Mr Blobby",
                     message: "Hello there",
+                    type: "Donation",
                   },
                 }}
                 overlay={{

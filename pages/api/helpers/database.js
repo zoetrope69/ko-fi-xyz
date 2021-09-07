@@ -34,7 +34,7 @@ export async function updateAlert(id, data) {
 export async function createOverlay() {
   return createDocument("overlays", {
     canPlaySounds: false,
-    messageText: "{amount} from {from_name} - {message}",
+    messageText: "{type} of {amount} from {from_name} - {message}",
     messageDuration: "5",
     messageBackgroundColor: "#f8befc",
     messageTextColor: "#840042",
