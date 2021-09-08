@@ -158,6 +158,8 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
             alt=""
             height="50"
             width="50"
+            loading="eager"
+            priority
           />
         </div>
       )}
