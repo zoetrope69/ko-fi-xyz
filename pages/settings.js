@@ -168,6 +168,38 @@ export default function Dashboard() {
     updateFormDataProperty("messageHasCurvedCorners", event, "round");
   };
 
+  const handleTestDonationButtonClick = async (event) => {
+    event.preventDefault();
+
+    if (!user?.webhookId) {
+      return;
+    }
+
+    // https://ko-fi.com/manage/webhooks
+    await fetch("/api/webhook/" + user.webhookId, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: JSON.stringify({
+          message_id: "05be1c80-96cd-4fb9-afa7-1f3883a6493e",
+          timestamp: "2021-09-08T16:20:47.8293325Z",
+          type: "Donation",
+          is_public: true,
+          from_name: "zactopus",
+          message: "is it working?",
+          amount: "3.00",
+          url: "https://ko-fi.com/path-to-details",
+          currency: "GBP",
+          is_subscription_payment: false,
+          is_first_subscription_payment: false,
+          kofi_transaction_id: "1234-1234-1234-1234",
+        }),
+      }),
+    });
+  };
+
   if (!isLoading && !user?.email) {
     return (
       <div className="wrapper">
@@ -516,7 +548,7 @@ export default function Dashboard() {
           </div>
 
           <button
-            className="Button Button--small Button--secondary"
+            className="Button Button--small"
             type="button"
             disabled={isSaving}
             onClick={handleSave}
@@ -527,6 +559,16 @@ export default function Dashboard() {
           {isFormUnsaved && (
             <small> * New changes not saved...</small>
           )}
+
+          <div>
+            <button
+              type="button"
+              className="Button Button--secondary Button--small"
+              onClick={handleTestDonationButtonClick}
+            >
+              Send test donation notification
+            </button>
+          </div>
         </aside>
       )}
     </div>
