@@ -9,7 +9,7 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
     if (overlay?.canPlaySounds && currentAlert) {
       setTimeout(() => {
         new Audio("/jingle.wav").play();
-      }, ANIMATION_IN_DURATION_MS * 0.8); // a little before it arrives in
+      }, ANIMATION_IN_DURATION_MS * 0.5); // a little before it arrives in
     }
   }, [currentAlert, overlay]);
 
