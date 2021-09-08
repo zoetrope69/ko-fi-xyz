@@ -42,6 +42,7 @@ export default function Home() {
               },
             }}
             overlay={{
+              messageHasCurvedCorners: true,
               // disable sounds in preview
               canPlaySounds: false,
             }}
