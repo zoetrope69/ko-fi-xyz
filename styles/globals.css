@@ -300,12 +300,7 @@ h4 {
 }
 
 .Alert--isRemoving {
-  animation-name: fade;
-}
-
-.Alert--position-top-right .Alert--isRemoving,
-.Alert--position-bottom-right .Alert--isRemoving {
-  animation-name: fade;
+  animation-name: fade-out;
 }
 
 .AlertText {
@@ -326,6 +321,15 @@ h4 {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }
 

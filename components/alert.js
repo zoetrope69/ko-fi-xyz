@@ -121,11 +121,17 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
     overlay?.messageAnimationDirection
   ) {
     if (overlay.messageAnimationType === "fade") {
-      styles.animationName = "fade";
-    } else if (isRemoving) {
-      styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-out`;
+      if (isRemoving) {
+        styles.animationName = "fade-out";
+      } else {
+        styles.animationName = "fade";
+      }
     } else {
-      styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-in`;
+      if (isRemoving) {
+        styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-out`;
+      } else {
+        styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-in`;
+      }
     }
   }
 
