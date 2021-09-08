@@ -21,13 +21,18 @@ async function fetcher(route) {
   return json || null;
 }
 
-export default function useAPI(endpoint) {
-  const { data, error } = useSWR("/api" + endpoint, fetcher);
-  const isLoading = data === undefined && !error;
+export default function useAPI(endpoint, options = {}) {
+  const { data, error, mutate, isValidating } = useSWR(
+    endpoint,
+    fetcher,
+    options
+  );
 
   return {
     data,
     error,
-    isLoading,
+    isLoading: !data && !error,
+    isValidating,
+    mutate,
   };
 }

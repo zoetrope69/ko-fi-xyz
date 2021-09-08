@@ -20,13 +20,16 @@ async function updateOverlay(id, data) {
 }
 
 export default function Dashboard() {
-  const [savedFormData, setSavedFormData] = useState({});
   const [isFormUnsaved, setIsFormUnsaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const { data: user, isLoading: isLoadingUser } = useAPI("/user");
-  const { data: overlay, isLoading: isLoadingOverlay } = useAPI(
-    "/overlays/" + user?.overlayId
-  );
+  const { data: user, isLoading: isLoadingUser } =
+    useAPI("/api/user");
+  const {
+    data: overlay,
+    isLoading: isLoadingOverlay,
+    mutate: mutateOverlay,
+  } = useAPI(() => "/api/overlays/" + user?.overlayId);
+
   const [formData, setFormData] = useState({});
   const {
     canPlaySounds,
@@ -45,7 +48,7 @@ export default function Dashboard() {
 
   const isLoading = isLoadingUser || isLoadingOverlay;
 
-  function haveChangesBeenMade(savedFormData, formData) {
+  function haveChangesBeenMade(overlay, formData) {
     let haveChangesBeenMade = false;
 
     Object.keys(formData).forEach((key) => {
@@ -54,12 +57,12 @@ export default function Dashboard() {
       }
 
       // new data added that isn't in database overlay
-      if (!Object.prototype.hasOwnProperty.call(savedFormData, key)) {
+      if (!Object.prototype.hasOwnProperty.call(overlay, key)) {
         haveChangesBeenMade = true;
         return;
       }
 
-      haveChangesBeenMade = savedFormData[key] !== formData[key];
+      haveChangesBeenMade = overlay[key] !== formData[key];
     });
 
     setIsFormUnsaved(haveChangesBeenMade);
@@ -68,15 +71,14 @@ export default function Dashboard() {
   useEffect(() => {
     if (!isLoadingOverlay && overlay) {
       setFormData(overlay);
-      setSavedFormData(overlay);
     }
   }, [isLoadingOverlay, overlay]);
 
   useEffect(() => {
     if (!isLoadingOverlay && overlay) {
-      haveChangesBeenMade(savedFormData, formData);
+      haveChangesBeenMade(overlay, formData);
     }
-  }, [isLoadingOverlay, overlay, savedFormData, formData]);
+  }, [isLoadingOverlay, overlay, formData]);
 
   const handleSave = async (event) => {
     event.preventDefault();
@@ -84,9 +86,9 @@ export default function Dashboard() {
     if (user?.overlayId) {
       setIsSaving(true);
       await updateOverlay(user?.overlayId, formData);
-      setSavedFormData(formData);
       setIsSaving(false);
       setIsFormUnsaved(false);
+      mutateOverlay({ ...overlay, ...formData });
     }
   };
 
