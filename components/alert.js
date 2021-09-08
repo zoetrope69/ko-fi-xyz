@@ -9,7 +9,7 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
     if (overlay?.canPlaySounds && currentAlert) {
       setTimeout(() => {
         new Audio("/jingle.wav").play();
-      }, ANIMATION_IN_DURATION_MS * 0.8); // a little before it arrives in
+      }, ANIMATION_IN_DURATION_MS * 0.5); // a little before it arrives in
     }
   }, [currentAlert, overlay]);
 
@@ -121,11 +121,17 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
     overlay?.messageAnimationDirection
   ) {
     if (overlay.messageAnimationType === "fade") {
-      styles.animationName = "fade";
-    } else if (isRemoving) {
-      styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-out`;
+      if (isRemoving) {
+        styles.animationName = "fade-out";
+      } else {
+        styles.animationName = "fade";
+      }
     } else {
-      styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-in`;
+      if (isRemoving) {
+        styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-out`;
+      } else {
+        styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-in`;
+      }
     }
   }
 
@@ -158,6 +164,8 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
             alt=""
             height="50"
             width="50"
+            loading="eager"
+            priority
           />
         </div>
       )}

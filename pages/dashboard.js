@@ -15,7 +15,7 @@ function getDomain() {
 }
 
 export default function Dashboard() {
-  const { data: user, isLoading } = useAPI("/user");
+  const { data: user, isLoading } = useAPI("/api/user");
   const domain = getDomain();
 
   if (!isLoading && !user?.email) {

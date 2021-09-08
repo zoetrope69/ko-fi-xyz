@@ -1,0 +1,14 @@
+{
+  "message_id": "ef2543b6-fe8c-4443-81fd-1281a94efe73",
+  "timestamp": "2021-09-08T16:27:34Z",
+  "type": "Donation",
+  "is_public": false,
+  "from_name": "Zac",
+  "amount": "1",
+  "url": "http://example.com",
+  "email": "xxx@xxx.com",
+  "currency": "gbp",
+  "is_subscription_payment": false,
+  "is_first_subscription_payment": false,
+  "kofi_transaction_id": "f110f866-52da-448f-90ae-ec62a2534838"
+}

@@ -9,12 +9,14 @@ import logger from "../../helpers/logger";
 
 export default function Overlay() {
   const router = useRouter();
-  const { id: overlayId } = router.query;
+  const { id: overlayId = null } = router.query;
   const {
     isLoading,
     data: overlay,
     error,
-  } = useAPI("/overlays/" + overlayId);
+  } = useAPI(overlayId ? "/api/overlays/" + overlayId : null, {
+    refreshInterval: 1000,
+  });
 
   const { queue, isRemoving } = useAlertQueue({
     overlayId: overlay?.id,
@@ -35,7 +37,7 @@ export default function Overlay() {
     return <p>Error: No overlay</p>;
   }
 
-  if (!currentAlert?.data?.message) {
+  if (!currentAlert) {
     return null;
   }
 

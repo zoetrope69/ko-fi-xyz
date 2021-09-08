@@ -20,13 +20,16 @@ async function updateOverlay(id, data) {
 }
 
 export default function Dashboard() {
-  const [savedFormData, setSavedFormData] = useState({});
   const [isFormUnsaved, setIsFormUnsaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const { data: user, isLoading: isLoadingUser } = useAPI("/user");
-  const { data: overlay, isLoading: isLoadingOverlay } = useAPI(
-    "/overlays/" + user?.overlayId
-  );
+  const { data: user, isLoading: isLoadingUser } =
+    useAPI("/api/user");
+  const {
+    data: overlay,
+    isLoading: isLoadingOverlay,
+    mutate: mutateOverlay,
+  } = useAPI(() => "/api/overlays/" + user?.overlayId);
+
   const [formData, setFormData] = useState({});
   const {
     canPlaySounds,
@@ -45,7 +48,7 @@ export default function Dashboard() {
 
   const isLoading = isLoadingUser || isLoadingOverlay;
 
-  function haveChangesBeenMade(savedFormData, formData) {
+  function haveChangesBeenMade(overlay, formData) {
     let haveChangesBeenMade = false;
 
     Object.keys(formData).forEach((key) => {
@@ -54,12 +57,12 @@ export default function Dashboard() {
       }
 
       // new data added that isn't in database overlay
-      if (!Object.prototype.hasOwnProperty.call(savedFormData, key)) {
+      if (!Object.prototype.hasOwnProperty.call(overlay, key)) {
         haveChangesBeenMade = true;
         return;
       }
 
-      haveChangesBeenMade = savedFormData[key] !== formData[key];
+      haveChangesBeenMade = overlay[key] !== formData[key];
     });
 
     setIsFormUnsaved(haveChangesBeenMade);
@@ -68,15 +71,14 @@ export default function Dashboard() {
   useEffect(() => {
     if (!isLoadingOverlay && overlay) {
       setFormData(overlay);
-      setSavedFormData(overlay);
     }
   }, [isLoadingOverlay, overlay]);
 
   useEffect(() => {
     if (!isLoadingOverlay && overlay) {
-      haveChangesBeenMade(savedFormData, formData);
+      haveChangesBeenMade(overlay, formData);
     }
-  }, [isLoadingOverlay, overlay, savedFormData, formData]);
+  }, [isLoadingOverlay, overlay, formData]);
 
   const handleSave = async (event) => {
     event.preventDefault();
@@ -84,9 +86,9 @@ export default function Dashboard() {
     if (user?.overlayId) {
       setIsSaving(true);
       await updateOverlay(user?.overlayId, formData);
-      setSavedFormData(formData);
       setIsSaving(false);
       setIsFormUnsaved(false);
+      mutateOverlay({ ...overlay, ...formData });
     }
   };
 
@@ -164,6 +166,38 @@ export default function Dashboard() {
   const handleMessageHasCurvedCorners = (event) => {
     event.preventDefault();
     updateFormDataProperty("messageHasCurvedCorners", event, "round");
+  };
+
+  const handleTestDonationButtonClick = async (event) => {
+    event.preventDefault();
+
+    if (!user?.webhookId) {
+      return;
+    }
+
+    // https://ko-fi.com/manage/webhooks
+    await fetch("/api/webhook/" + user.webhookId, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: JSON.stringify({
+          message_id: "05be1c80-96cd-4fb9-afa7-1f3883a6493e",
+          timestamp: "2021-09-08T16:20:47.8293325Z",
+          type: "Donation",
+          is_public: true,
+          from_name: "zactopus",
+          message: "is it working?",
+          amount: "3.00",
+          url: "https://ko-fi.com/path-to-details",
+          currency: "GBP",
+          is_subscription_payment: false,
+          is_first_subscription_payment: false,
+          kofi_transaction_id: "1234-1234-1234-1234",
+        }),
+      }),
+    });
   };
 
   if (!isLoading && !user?.email) {
@@ -514,7 +548,7 @@ export default function Dashboard() {
           </div>
 
           <button
-            className="Button Button--small Button--secondary"
+            className="Button Button--small"
             type="button"
             disabled={isSaving}
             onClick={handleSave}
@@ -525,6 +559,16 @@ export default function Dashboard() {
           {isFormUnsaved && (
             <small> * New changes not saved...</small>
           )}
+
+          <div>
+            <button
+              type="button"
+              className="Button Button--secondary Button--small"
+              onClick={handleTestDonationButtonClick}
+            >
+              Send test donation notification
+            </button>
+          </div>
         </aside>
       )}
     </div>
