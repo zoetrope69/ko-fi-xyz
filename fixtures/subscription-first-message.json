@@ -1,0 +1,15 @@
+{
+  "message_id": "db455d00-7f13-4c38-af72-2b57c92d0eea",
+  "timestamp": "2021-09-08T16:28:23Z",
+  "type": "Subscription",
+  "is_public": true,
+  "from_name": "Zac",
+  "message": "test monthly sub!",
+  "amount": "1.00",
+  "url": "https://example.com",
+  "email": "xxx@xxx.com",
+  "currency": "gbp",
+  "is_subscription_payment": true,
+  "is_first_subscription_payment": true,
+  "kofi_transaction_id": "00b8a001-fabe-4383-bf44-0840174a9a18"
+}
