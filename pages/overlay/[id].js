@@ -37,7 +37,7 @@ export default function Overlay() {
     return <p>Error: No overlay</p>;
   }
 
-  if (!currentAlert?.data?.message) {
+  if (!currentAlert) {
     return null;
   }
 
