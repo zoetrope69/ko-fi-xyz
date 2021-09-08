@@ -45,19 +45,36 @@ export default function Navigation({ user, isLoading }) {
         </li>
       </ul>
 
-      <a
-        className="NavSupportZactopus"
-        href="https://ko-fi.com/zactopus"
-      >
-        <Image
-          className="NavSupportZactopusIcon"
-          src="/ko-fi-logo-cup.png"
-          alt=""
-          width="30"
-          height="30"
-        />
-        Support zactopus on Ko-fi
-      </a>
+      <div className="NavSupportContainer">
+        <a
+          className="NavSupport NavSupport--discord"
+          href="https://discord.gg/D4T25jyCRU"
+        >
+          <Image
+            className="NavSupportIcon"
+            src="/discord-logo.png"
+            alt=""
+            width="30"
+            height="30"
+          />
+          Need help? Feedback?
+          <br /> Let Zac know on Discord
+        </a>
+
+        <a
+          className="NavSupport NavSupport--ko-fi"
+          href="https://ko-fi.com/zactopus"
+        >
+          <Image
+            className="NavSupportIcon"
+            src="/ko-fi-logo-cup.png"
+            alt=""
+            width="30"
+            height="30"
+          />
+          Support zactopus on Ko-fi
+        </a>
+      </div>
     </nav>
   );
 }

@@ -17,7 +17,7 @@ body {
 }
 
 a {
-  text-decoration: none;
+  color: rgb(51, 51, 240);
 }
 
 label,
@@ -46,6 +46,7 @@ nav ul li a {
   display: block;
   padding: 0.5em 1em;
   transition: all 0.15s ease-in;
+  text-decoration: none;
 }
 
 nav ul li a:hover {
@@ -80,7 +81,7 @@ nav ul li a:hover {
   margin-left: 1em;
 }
 
-.NavSupportZactopus {
+.NavSupport {
   display: none;
 }
 
@@ -198,6 +199,7 @@ textarea {
   background: rgb(51, 51, 240);
   border: 3px solid rgb(51, 51, 240);
   color: white;
+  text-decoration: none;
   font-weight: bolder;
   cursor: pointer;
   transition: opacity 0.15s ease-in;
@@ -225,11 +227,6 @@ textarea {
 
 .Button--small {
   font-size: 0.75em;
-}
-
-a,
-a:visited {
-  color: rgb(51, 51, 240);
 }
 
 fieldset {
@@ -471,29 +468,42 @@ aside {
     border-right: 6px solid #ffddf3;
   }
 
-  .NavSupportZactopus {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  .NavSupportContainer {
     position: absolute;
     bottom: 0;
     left: 0;
-    padding: 0.25em 1em;
-    padding-left: 0.25em;
+  }
+
+  .NavSupport {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5em 1em;
+    padding-left: 0.5em;
     margin: 1em;
     font-size: 0.75em;
-    color: rgb(45, 45, 45) !important;
+    color: rgb(45, 45, 45);
+    text-decoration: none;
     background: #ffddf3;
     border-radius: 10px;
     transition: opacity 0.15s ease-in;
   }
 
-  .NavSupportZactopus:hover {
+  .NavSupport--discord {
+    background: #404eed;
+    color: white;
+  }
+
+  .NavSupport:hover {
     opacity: 0.85;
   }
 
-  .NavSupportZactopus > div {
+  .NavSupport > div {
     margin-right: 0.25em !important;
+  }
+
+  .NavSupport--discord > div {
+    margin-left: 0.25em !important;
   }
 
   aside {
