@@ -1,47 +1,13 @@
 import Head from "next/head";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { signIn, supabase } from "../helpers/supabase-clientside";
+import { signIn } from "../helpers/supabase-clientside";
 
 import logger from "../helpers/logger";
 
 export default function Login() {
-  const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [hasEmailBeenSent, setHasEmailBeenSent] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(false);
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event !== "SIGNED_IN") {
-          return;
-        }
-
-        setIsLoading(true);
-
-        const response = await fetch("/api/login", {
-          method: "POST",
-          headers: new Headers({
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.access_token}`,
-          }),
-          credentials: "same-origin",
-          body: JSON.stringify({ event, session }),
-        });
-
-        if (response.ok) {
-          router.push("/dashboard");
-        }
-      }
-    );
-
-    return () => {
-      authListener.unsubscribe();
-    };
-  }, [router]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
