@@ -51,19 +51,23 @@ export default function Alert({
     const messageText = getMessageText();
 
     const regexp = new RegExp("{[A-z]+}", "g");
-    const regexMatches = messageText.matchAll(regexp);
+    const regexMatches = [...messageText.matchAll(regexp)];
 
-    const matches = [];
-    for (const match of regexMatches) {
+    // no tags in message
+    if (regexMatches.length === 0) {
+      return messageText;
+    }
+
+    const matches = regexMatches.map((match) => {
       const [code] = match;
       const beforePosition = match.index;
       const afterPosition = beforePosition + code.length;
-      matches.push({
+      return {
         code,
         beforePosition,
         afterPosition,
-      });
-    }
+      };
+    });
 
     const stringParts = [];
     let lastAfterPosition = 0;

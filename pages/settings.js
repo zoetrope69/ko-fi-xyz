@@ -284,10 +284,7 @@ export default function Settings() {
                         id="message-text"
                         name="message-text"
                         placeholder="{type} of {amount} from {from_name} - {message}"
-                        value={
-                          messageText ||
-                          "{type} of {amount} from {from_name} - {message}"
-                        }
+                        value={messageText}
                         onChange={handleMessageTextChange}
                         disabled={isSaving}
                       />
