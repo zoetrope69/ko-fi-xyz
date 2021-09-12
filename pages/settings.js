@@ -249,7 +249,7 @@ export default function Settings() {
                       Play Sound
                     </label>
                     <span className="Hint">
-                      Play a sound when there is a notificaiton
+                      Play a sound when there is a notification
                     </span>
                     <select
                       id="can-play-sounds"
