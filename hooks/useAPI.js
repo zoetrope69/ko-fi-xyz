@@ -1,8 +1,16 @@
 import useSWR from "swr";
 
-async function fetcher(route) {
-  /* our token cookie gets sent with this request */
-  const response = await fetch(route);
+import useGetSession from "./useGetSession";
+
+async function fetcher(route, token) {
+  const response = await fetch(route, {
+    method: "GET",
+    headers: new Headers({
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    }),
+    credentials: "same-origin",
+  });
 
   if (!response.ok) {
     throw new Error(response.statusText);
@@ -21,9 +29,24 @@ async function fetcher(route) {
   return json || null;
 }
 
+function getSWRFirstParam(endpoint, session) {
+  if (!endpoint || !session?.access_token) {
+    return null;
+  }
+
+  if (typeof endpoint === "function") {
+    return () => [endpoint(), session.access_token];
+  }
+
+  return [endpoint, session.access_token];
+}
+
 export default function useAPI(endpoint, options = {}) {
+  const session = useGetSession();
+
+  const firstParam = getSWRFirstParam(endpoint, session);
   const { data, error, mutate, isValidating } = useSWR(
-    endpoint,
+    firstParam,
     fetcher,
     options
   );

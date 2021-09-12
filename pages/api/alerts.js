@@ -1,7 +1,7 @@
 import {
-  getAlertsByOverlayId,
+  getNonShownAlertsByOverlayId,
   updateAlert,
-} from "./helpers/database";
+} from "./helpers/supabase";
 
 async function putHandler(request, response) {
   const { id, data } = request.body;
@@ -22,7 +22,7 @@ async function getHandler(request, response) {
     return response.status(400).json({ error: "No overlayId" });
   }
 
-  const alerts = await getAlertsByOverlayId(overlayId);
+  const alerts = await getNonShownAlertsByOverlayId(overlayId);
   if (!alerts) {
     return response.status(400).json({ error: "No alerts" });
   }

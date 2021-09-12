@@ -1,4 +1,4 @@
-import { getOverlayById } from "../helpers/database";
+import { getOverlayById } from "../helpers/supabase";
 
 export default async function handler(request, response) {
   const { id: overlayId } = request.query;
@@ -8,6 +8,7 @@ export default async function handler(request, response) {
   }
 
   const overlay = await getOverlayById(overlayId);
+
   if (!overlay) {
     return response.status(400).json({ error: "No overlay" });
   }

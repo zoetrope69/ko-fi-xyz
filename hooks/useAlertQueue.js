@@ -1,8 +1,8 @@
 import { useEffect, useReducer } from "react";
 
+import { supabase } from "../helpers/supabase-clientside";
 import logger from "../helpers/logger";
 
-const POLL_FREQUENCY_MS = 5000;
 const ALERT_DURATION_MS = 5000;
 const ALERT_DELAY_LENGTH_MS = 1000;
 
@@ -20,7 +20,7 @@ async function removeAlert(id) {
     body: JSON.stringify({
       id,
       data: {
-        shown: true,
+        is_shown: true,
       },
     }),
   });
@@ -89,6 +89,50 @@ export default function useAlertQueue({
   }
 
   useEffect(() => {
+    if (!overlayId) {
+      return;
+    }
+
+    async function getExistingAlerts() {
+      const { data: alerts, error } = await getAlerts(overlayId);
+
+      if (error) {
+        return logger.error(error);
+      }
+
+      if (!alerts || alerts.length === 0) {
+        return;
+      }
+
+      alerts.forEach((alert) => {
+        addToQueue(alert);
+      });
+    }
+    getExistingAlerts();
+  }, [overlayId]);
+
+  useEffect(() => {
+    if (!overlayId) {
+      return;
+    }
+
+    const alertsSubscription = supabase
+      .from(`alerts:overlay_id=eq.${overlayId}`)
+      .on("INSERT", (payload) => {
+        const newAlert = payload?.new;
+
+        if (newAlert && !newAlert.is_shown) {
+          addToQueue(newAlert);
+        }
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeSubscription(alertsSubscription);
+    };
+  }, [overlayId]);
+
+  useEffect(() => {
     function getAlertDuration() {
       if (messageDuration) {
         return parseInt(messageDuration, 10) * 1000;
@@ -117,40 +161,6 @@ export default function useAlertQueue({
       }, getAlertDuration());
     }
   }, [messageDuration, queue, isProcessing]);
-
-  useEffect(() => {
-    if (!overlayId || !messageDuration) {
-      return;
-    }
-
-    async function pollNewAlerts(overlayId) {
-      if (!process.browser) {
-        return;
-      }
-
-      const alerts = await getAlerts(overlayId);
-
-      if (!alerts || alerts.length === 0 || !Array.isArray(alerts)) {
-        return;
-      }
-
-      // TODO filter nonShown on database side
-      const nonShownAlerts = alerts.filter(
-        (alert) => alert.shown !== true
-      );
-
-      nonShownAlerts.forEach((newAlert) => {
-        addToQueue(newAlert);
-      });
-    }
-
-    logger.info("Polling for new alerts...");
-    pollNewAlerts(overlayId);
-    setInterval(() => {
-      logger.info("Polling for new alerts...");
-      pollNewAlerts(overlayId);
-    }, POLL_FREQUENCY_MS);
-  }, [overlayId, messageDuration]);
 
   return { queue, isRemoving };
 }

@@ -1,7 +1,18 @@
-import { getUserByEmail, updateOverlay } from "../helpers/database";
-import { getAuthorisedUser } from "../helpers/auth";
+import {
+  getUserById,
+  updateOverlaySettings,
+  getAuthorizedUserByToken,
+} from "../helpers/supabase";
 
 import logger from "../../../helpers/logger";
+
+function getToken(request) {
+  if (!request.headers?.authorization) {
+    return null;
+  }
+
+  return request.headers.authorization.replace("Bearer", "").trim();
+}
 
 export default async function handler(request, response) {
   if (request.method !== "PUT") {
@@ -10,30 +21,30 @@ export default async function handler(request, response) {
       .json({ error: "Something went wrong" });
   }
 
-  let authorisedUser;
+  const token = getToken(request);
 
-  try {
-    authorisedUser = await getAuthorisedUser(request.cookies);
-  } catch (error) {
-    logger.error(error);
+  const { data: authorisedUser, error } =
+    await getAuthorizedUserByToken(token);
+
+  if (error) {
     return response.status(401).json({ error: error.message });
   }
 
-  if (!authorisedUser || !authorisedUser.email) {
+  if (!authorisedUser || !authorisedUser.id) {
     return response.json({});
   }
 
   let user = {};
   try {
-    user = await getUserByEmail(authorisedUser.email);
+    user = await getUserById(authorisedUser.id);
   } catch (error) {
     logger.error(error);
     return response.status(400).json({ error: error.message });
   }
 
-  const { id: overlayId, data } = request.body;
+  const { id: overlayId, settings } = request.body;
 
-  if (overlayId !== user.overlayId) {
+  if (overlayId !== user.overlay_id) {
     logger.error("Wrong user for overlay id");
     // just to make sure we're sending the right data to the right user
     return response
@@ -41,7 +52,14 @@ export default async function handler(request, response) {
       .json({ error: "Something went wrong" });
   }
 
-  await updateOverlay(overlayId, data);
+  const { error: updateError } = await updateOverlaySettings(
+    overlayId,
+    settings
+  );
 
-  return response.json({});
+  if (updateError) {
+    return response.status(300).json({ error: updateError });
+  }
+
+  return response.status(200).end();
 }

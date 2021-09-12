@@ -4,24 +4,27 @@ import classNames from "classnames";
 
 const ANIMATION_IN_DURATION_MS = 1000;
 
-export default function Alert({ overlay, currentAlert, isRemoving }) {
+export default function Alert({
+  settings,
+  currentAlert,
+  isRemoving,
+}) {
+  const { type, from_name, amount, currency, message } =
+    currentAlert.kofi_data;
+
   useEffect(() => {
-    if (overlay?.canPlaySounds && currentAlert) {
+    if (settings?.canPlaySounds && currentAlert) {
       setTimeout(() => {
         new Audio("/jingle.wav").play();
       }, ANIMATION_IN_DURATION_MS * 0.5); // a little before it arrives in
     }
-  }, [currentAlert, overlay]);
+  }, [currentAlert, settings]);
 
   function getMoney() {
-    if (
-      !currentAlert?.data?.amount ||
-      !currentAlert?.data?.currency
-    ) {
+    if (!amount || !currency) {
       return "money";
     }
 
-    const { amount, currency } = currentAlert.data;
     const moneyFormatter = new Intl.NumberFormat("en-US", {
       style: "currency",
       currency,
@@ -30,8 +33,8 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
   }
 
   function getMessageText() {
-    if (overlay.messageText) {
-      return overlay.messageText;
+    if (settings?.messageText) {
+      return settings.messageText;
     }
 
     return "{type} of {amount} from {from_name} - {message}";
@@ -39,9 +42,9 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
 
   const MESSAGE_FUNCTION_MAP = {
     "{amount}": () => getMoney(),
-    "{from_name}": () => currentAlert?.data?.from_name || "Someone",
-    "{message}": () => currentAlert?.data?.message || "",
-    "{type}": () => currentAlert?.data?.type || "Donation",
+    "{from_name}": () => from_name || "Someone",
+    "{message}": () => message || "",
+    "{type}": () => type || "Donation",
   };
 
   function getMessage() {
@@ -92,35 +95,33 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
     return stringParts.join("").trim();
   }
 
-  const message = getMessage();
-
   const styles = {
     animationDuration: `${ANIMATION_IN_DURATION_MS}ms`,
   };
 
-  if (overlay?.messageBackgroundColor) {
-    styles.backgroundColor = overlay?.messageBackgroundColor;
+  if (settings?.messageBackgroundColor) {
+    styles.backgroundColor = settings?.messageBackgroundColor;
   }
 
-  if (overlay?.messageTextColor) {
-    styles.color = overlay?.messageTextColor;
+  if (settings?.messageTextColor) {
+    styles.color = settings?.messageTextColor;
   }
 
-  if (overlay?.messageSpacingHorizontal) {
-    styles.marginLeft = `${overlay?.messageSpacingHorizontal}px`;
-    styles.marginRight = `${overlay?.messageSpacingHorizontal}px`;
+  if (settings?.messageSpacingHorizontal) {
+    styles.marginLeft = `${settings?.messageSpacingHorizontal}px`;
+    styles.marginRight = `${settings?.messageSpacingHorizontal}px`;
   }
 
-  if (overlay?.messageSpacingVertical) {
-    styles.marginTop = `${overlay?.messageSpacingVertical}px`;
-    styles.marginBottom = `${overlay?.messageSpacingVertical}px`;
+  if (settings?.messageSpacingVertical) {
+    styles.marginTop = `${settings?.messageSpacingVertical}px`;
+    styles.marginBottom = `${settings?.messageSpacingVertical}px`;
   }
 
   if (
-    overlay?.messageAnimationType &&
-    overlay?.messageAnimationDirection
+    settings?.messageAnimationType &&
+    settings?.messageAnimationDirection
   ) {
-    if (overlay.messageAnimationType === "fade") {
+    if (settings.messageAnimationType === "fade") {
       if (isRemoving) {
         styles.animationName = "fade-out";
       } else {
@@ -128,36 +129,36 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
       }
     } else {
       if (isRemoving) {
-        styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-out`;
+        styles.animationName = `${settings.messageAnimationType}-${settings.messageAnimationDirection}-out`;
       } else {
-        styles.animationName = `${overlay.messageAnimationType}-${overlay.messageAnimationDirection}-in`;
+        styles.animationName = `${settings.messageAnimationType}-${settings.messageAnimationDirection}-in`;
       }
     }
   }
 
-  if (overlay?.messageShowIcon) {
+  if (settings?.messageShowIcon) {
     styles.paddingLeft = "0.85em";
   }
 
-  if (!overlay?.messageHasCurvedCorners) {
+  if (!settings?.messageHasCurvedCorners) {
     styles.borderRadius = "0";
   }
 
   const className = classNames("Alert", {
     "Alert--isRemoving": isRemoving,
     "Alert--position-top-left":
-      overlay?.messagePosition === "top-left",
+      settings?.messagePosition === "top-left",
     "Alert--position-top-right":
-      overlay?.messagePosition === "top-right",
+      settings?.messagePosition === "top-right",
     "Alert--position-bottom-left":
-      overlay?.messagePosition === "bottom-left",
+      settings?.messagePosition === "bottom-left",
     "Alert--position-bottom-right":
-      overlay?.messagePosition === "bottom-right",
+      settings?.messagePosition === "bottom-right",
   });
 
   return (
     <div className={className} style={styles}>
-      {overlay?.messageShowIcon && (
+      {settings?.messageShowIcon && (
         <div className="AlertIcon">
           <Image
             src="/ko-fi-logo-cup.png"
@@ -169,7 +170,7 @@ export default function Alert({ overlay, currentAlert, isRemoving }) {
           />
         </div>
       )}
-      {message}
+      {getMessage()}
     </div>
   );
 }
