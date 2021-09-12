@@ -30,8 +30,9 @@ export default function Overlay() {
     data: overlay,
     error,
   } = useAPI(overlayId ? "/api/overlays/" + overlayId : null);
+
   const { queue, isRemoving } = useAlertQueue({
-    overlayId: overlay?.id,
+    overlayId,
     messageDuration: overlay?.messageDuration,
   });
   const [currentAlert] = queue;

@@ -43,10 +43,11 @@ export default function Settings() {
   async function updateOverlaySettings(id, settings) {
     await fetch("/api/overlays", {
       method: "PUT",
-      headers: {
+      headers: new Headers({
         "Content-Type": "application/json",
         Authorization: `Bearer ${session?.access_token}`,
-      },
+      }),
+      credentials: "same-origin",
       body: JSON.stringify({
         id,
         settings,
@@ -184,9 +185,11 @@ export default function Settings() {
     // https://ko-fi.com/manage/webhooks
     await fetch("/api/webhook/" + user.webhook_id, {
       method: "POST",
-      headers: {
+      headers: new Headers({
         "Content-Type": "application/json",
-      },
+        Authorization: `Bearer ${session?.access_token}`,
+      }),
+      credentials: "same-origin",
       body: JSON.stringify({
         data: JSON.stringify({
           message_id: "05be1c80-96cd-4fb9-afa7-1f3883a6493e",

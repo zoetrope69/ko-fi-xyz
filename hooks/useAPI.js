@@ -30,8 +30,12 @@ async function fetcher(route, token) {
 }
 
 function getSWRFirstParam(endpoint, session) {
-  if (!endpoint || !session?.access_token) {
+  if (!endpoint) {
     return null;
+  }
+
+  if (!session?.access_token) {
+    return endpoint;
   }
 
   if (typeof endpoint === "function") {

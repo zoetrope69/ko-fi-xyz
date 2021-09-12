@@ -15,6 +15,7 @@ export const supabase = createClient(
 async function createRow(column, data) {
   const rowId = data?.id || uuid();
   const newRow = { id: rowId, ...data };
+
   const { error } = await supabase.from(column).insert([newRow]);
 
   if (error) {
@@ -40,7 +41,7 @@ async function getRows(column, options) {
     return [];
   }
 
-  if (!rows || rows.length !== 1) {
+  if (!rows || rows.length === 0) {
     return [];
   }
 
@@ -116,7 +117,7 @@ export async function getNonShownAlertsByOverlayId(overlay_id) {
 }
 
 export async function createAlert(data) {
-  return await createRow("alerts", data);
+  return createRow("alerts", data);
 }
 
 export async function updateAlert(id, data) {

@@ -14,9 +14,10 @@ async function getAlerts(overlayId) {
 async function removeAlert(id) {
   return fetch("/api/alerts", {
     method: "PUT",
-    headers: {
+    headers: new Headers({
       "Content-Type": "application/json",
-    },
+    }),
+    credentials: "same-origin",
     body: JSON.stringify({
       id,
       data: {
@@ -89,15 +90,18 @@ export default function useAlertQueue({
   }
 
   useEffect(() => {
-    if (!overlayId) {
-      return;
-    }
+    let alertsSubscription;
 
     async function getExistingAlerts() {
-      const { data: alerts, error } = await getAlerts(overlayId);
+      let alerts;
+      try {
+        alerts = await getAlerts(overlayId);
+      } catch (error) {
+        return logger.error(error.message || error);
+      }
 
-      if (error) {
-        return logger.error(error);
+      if (alerts.error) {
+        return logger.error(alerts.error);
       }
 
       if (!alerts || alerts.length === 0) {
@@ -108,27 +112,26 @@ export default function useAlertQueue({
         addToQueue(alert);
       });
     }
-    getExistingAlerts();
-  }, [overlayId]);
 
-  useEffect(() => {
-    if (!overlayId) {
-      return;
+    if (overlayId) {
+      getExistingAlerts();
+
+      alertsSubscription = supabase
+        .from(`alerts:overlay_id=eq.${overlayId}`)
+        .on("INSERT", (payload) => {
+          const newAlert = payload?.new;
+
+          if (newAlert && !newAlert.is_shown) {
+            addToQueue(newAlert);
+          }
+        })
+        .subscribe();
     }
 
-    const alertsSubscription = supabase
-      .from(`alerts:overlay_id=eq.${overlayId}`)
-      .on("INSERT", (payload) => {
-        const newAlert = payload?.new;
-
-        if (newAlert && !newAlert.is_shown) {
-          addToQueue(newAlert);
-        }
-      })
-      .subscribe();
-
     return () => {
-      supabase.removeSubscription(alertsSubscription);
+      if (alertsSubscription) {
+        supabase.removeSubscription(alertsSubscription);
+      }
     };
   }, [overlayId]);
 
@@ -151,7 +154,12 @@ export default function useAlertQueue({
           type: "PROCESSED",
         });
 
-        await removeAlert(queue[0].id);
+        try {
+          await removeAlert(queue[0].id);
+        } catch (e) {
+          logger.error("Couldnt remove alert");
+          logger.error(e.message);
+        }
 
         setTimeout(() => {
           dispatch({
