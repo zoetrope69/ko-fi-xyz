@@ -7,15 +7,6 @@ export default function Home() {
   return (
     <main>
       <Head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              if (document.cookie && document.cookie.includes('authed')) {
-                window.location.href = "/dashboard"
-              }
-            `,
-          }}
-        />
         <title>Ko-fi Custom Alerts</title>
       </Head>
 
@@ -33,7 +24,7 @@ export default function Home() {
         <div className="Preview">
           <Alert
             currentAlert={{
-              data: {
+              kofi_data: {
                 amount: 3.0,
                 currency: "GBP",
                 from_name: "Mr Blobby",
@@ -41,7 +32,7 @@ export default function Home() {
                 type: "Donation",
               },
             }}
-            overlay={{
+            settings={{
               messageHasCurvedCorners: true,
               // disable sounds in preview
               canPlaySounds: false,
@@ -51,7 +42,7 @@ export default function Home() {
         </div>
       </div>
 
-      <Link href="/login" className="Button" passHref>
+      <Link href="/login" passHref>
         <div className="Button">Get Started</div>
       </Link>
     </main>

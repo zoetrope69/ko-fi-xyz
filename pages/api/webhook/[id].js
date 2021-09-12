@@ -1,5 +1,5 @@
 import faker from "faker";
-import { getUserByWebhookId, createAlert } from "../helpers/database";
+import { getUserByWebhookId, createAlert } from "../helpers/supabase";
 
 import logger from "../../../helpers/logger";
 
@@ -49,12 +49,14 @@ export default async function handler(request, response) {
   }
 
   try {
-    await createAlert({
-      webhookId,
-      overlayId: user.overlayId,
-      data: alertData,
-      shown: false,
+    const { error } = await createAlert({
+      overlay_id: user.overlay_id,
+      kofi_data: alertData,
+      is_shown: false,
     });
+    if (error) {
+      logger.error(error.message);
+    }
   } catch (e) {
     logger.error(e.message);
   }

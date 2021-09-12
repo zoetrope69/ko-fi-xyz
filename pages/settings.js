@@ -5,21 +5,10 @@ import Navigation from "../components/navigation";
 import ColourContrastInfo from "../components/colour-contrast-info";
 import Alert from "../components/alert";
 import useAPI from "../hooks/useAPI";
+import useGetSession from "../hooks/useGetSession";
+import { supabase } from "../helpers/supabase-clientside";
 
-async function updateOverlay(id, data) {
-  await fetch("/api/overlays", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      id,
-      data,
-    }),
-  });
-}
-
-export default function Dashboard() {
+export default function Settings() {
   const [isFormUnsaved, setIsFormUnsaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const { data: user, isLoading: isLoadingUser } =
@@ -28,7 +17,10 @@ export default function Dashboard() {
     data: overlay,
     isLoading: isLoadingOverlay,
     mutate: mutateOverlay,
-  } = useAPI(() => "/api/overlays/" + user?.overlayId);
+  } = useAPI(
+    user?.overlay_id ? "/api/overlays/" + user?.overlay_id : null
+  );
+  const session = useGetSession();
 
   const [formData, setFormData] = useState({});
   const {
@@ -47,6 +39,20 @@ export default function Dashboard() {
   } = formData;
 
   const isLoading = isLoadingUser || isLoadingOverlay;
+
+  async function updateOverlaySettings(id, settings) {
+    await fetch("/api/overlays", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+      body: JSON.stringify({
+        id,
+        settings,
+      }),
+    });
+  }
 
   function haveChangesBeenMade(overlay, formData) {
     let haveChangesBeenMade = false;
@@ -70,25 +76,25 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (!isLoadingOverlay && overlay) {
-      setFormData(overlay);
+      setFormData(overlay.settings);
     }
   }, [isLoadingOverlay, overlay]);
 
   useEffect(() => {
     if (!isLoadingOverlay && overlay) {
-      haveChangesBeenMade(overlay, formData);
+      haveChangesBeenMade(overlay.settings, formData);
     }
   }, [isLoadingOverlay, overlay, formData]);
 
   const handleSave = async (event) => {
     event.preventDefault();
 
-    if (user?.overlayId) {
+    if (user?.overlay_id) {
       setIsSaving(true);
-      await updateOverlay(user?.overlayId, formData);
+      await updateOverlaySettings(user?.overlay_id, formData);
       setIsSaving(false);
       setIsFormUnsaved(false);
-      mutateOverlay({ ...overlay, ...formData });
+      mutateOverlay({ ...overlay, settings: formData });
     }
   };
 
@@ -171,12 +177,12 @@ export default function Dashboard() {
   const handleTestDonationButtonClick = async (event) => {
     event.preventDefault();
 
-    if (!user?.webhookId) {
+    if (!user?.webhook_id) {
       return;
     }
 
     // https://ko-fi.com/manage/webhooks
-    await fetch("/api/webhook/" + user.webhookId, {
+    await fetch("/api/webhook/" + user.webhook_id, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -529,7 +535,7 @@ export default function Dashboard() {
             <div className="Preview">
               <Alert
                 currentAlert={{
-                  data: {
+                  kofi_data: {
                     amount: 3.0,
                     currency: "GBP",
                     from_name: "Mr Blobby",
@@ -537,7 +543,7 @@ export default function Dashboard() {
                     type: "Donation",
                   },
                 }}
-                overlay={{
+                settings={{
                   ...formData,
                   // disable sounds in preview
                   canPlaySounds: false,
@@ -573,4 +579,20 @@ export default function Dashboard() {
       )}
     </div>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { user: authorisedUser } =
+    await supabase.auth.api.getUserByCookie(req);
+
+  if (!authorisedUser) {
+    // If no user, redirect to index.
+    return {
+      props: {},
+      redirect: { destination: "/login", permanent: false },
+    };
+  }
+
+  // If there is a user, return it.
+  return { props: { authorisedUser } };
 }

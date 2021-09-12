@@ -1,22 +1,33 @@
-import { getUserByEmail } from "./helpers/database";
-import { getAuthorisedUser } from "./helpers/auth";
+import {
+  getUserById,
+  getAuthorizedUserByToken,
+} from "./helpers/supabase";
+
+function getToken(request) {
+  if (!request.headers?.authorization) {
+    return null;
+  }
+
+  return request.headers.authorization.replace("Bearer", "").trim();
+}
 
 export default async function handler(request, response) {
-  let authorisedUser;
+  const token = getToken(request);
 
-  try {
-    authorisedUser = await getAuthorisedUser(request.cookies);
-  } catch (error) {
+  const { data: authorisedUser, error } =
+    await getAuthorizedUserByToken(token);
+
+  if (error) {
     return response.status(401).json({ error: error.message });
   }
 
-  if (!authorisedUser || !authorisedUser.email) {
+  if (!authorisedUser || !authorisedUser.id) {
     return response.json({});
   }
 
   let user = {};
   try {
-    user = await getUserByEmail(authorisedUser.email);
+    user = await getUserById(authorisedUser.id);
   } catch (error) {
     return response.status(400).json({ error: error.message });
   }

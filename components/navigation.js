@@ -2,11 +2,19 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 
+import { signOut } from "../helpers/supabase-clientside";
+import logger from "../helpers/logger";
+
 export default function Navigation({ user, isLoading }) {
   const router = useRouter();
 
   async function logout() {
-    await fetch("/api/logout");
+    const { error } = await signOut();
+
+    if (error) {
+      return logger.error(error);
+    }
+
     router.push("/");
   }
 
@@ -25,7 +33,7 @@ export default function Navigation({ user, isLoading }) {
 
       {!isLoading && (
         <div className="NavUserInfo">
-          <p>{user.email}</p>
+          {user && <p>{user.email}</p>}
 
           <button
             className="Button Button--small Button--secondary"

@@ -2,16 +2,18 @@ import Link from "next/link";
 import Head from "next/head";
 
 import Navigation from "../components/navigation";
+
+import { supabase } from "../helpers/supabase-clientside";
 import useAPI from "../hooks/useAPI";
 
-const DEFAILT_DOMAIN = "https://ko-fi.xyz";
+const DEFAULT_DOMAIN = "https://ko-fi.xyz";
 
 function getDomain() {
   if (!process.browser) {
-    return DEFAILT_DOMAIN;
+    return DEFAULT_DOMAIN;
   }
 
-  return window?.location?.origin || DEFAILT_DOMAIN;
+  return window?.location?.origin || DEFAULT_DOMAIN;
 }
 
 export default function Dashboard() {
@@ -69,14 +71,14 @@ export default function Dashboard() {
                   <li>
                     Copy and paste in your webhook URL:
                     <code>
-                      {domain}/api/webhook/{user.webhookId}
+                      {domain}/api/webhook/{user.webhook_id}
                     </code>
                   </li>
                   <li>
                     Go to OBS. Create a new browser source with this
                     URL:
                     <code>
-                      {domain}/overlay/{user.overlayId}
+                      {domain}/overlay/{user.overlay_id}
                     </code>
                     Set the size to 1920x1080.
                   </li>
@@ -110,4 +112,20 @@ export default function Dashboard() {
       </main>
     </div>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  const { user: authorisedUser } =
+    await supabase.auth.api.getUserByCookie(req);
+
+  if (!authorisedUser) {
+    // If no user, redirect to index.
+    return {
+      props: {},
+      redirect: { destination: "/login", permanent: false },
+    };
+  }
+
+  // If there is a user, return it.
+  return { props: { authorisedUser } };
 }
