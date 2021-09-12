@@ -34,9 +34,26 @@ export default async function handler(request, response) {
   const TEST_KO_FI_ID = "1234-1234-1234-1234";
   const isTest = json.kofi_transaction_id === TEST_KO_FI_ID;
 
+  const {
+    currency,
+    from_name,
+    is_first_subscription_payment,
+    is_public,
+    is_subscription_payment,
+    message,
+    timestamp,
+    type,
+  } = json;
+
   const alertData = {
-    ...json,
+    currency,
+    from_name,
+    is_first_subscription_payment,
+    is_public,
+    is_subscription_payment,
     isTest,
+    timestamp,
+    type,
   };
 
   if (isTest) {
@@ -44,8 +61,8 @@ export default async function handler(request, response) {
   }
 
   // if is private delete data for message
-  if (!json.is_public) {
-    alertData.message = undefined;
+  if (is_public && message && message.length > 0) {
+    alertData.message = message;
   }
 
   try {
