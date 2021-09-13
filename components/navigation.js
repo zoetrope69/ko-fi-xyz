@@ -46,6 +46,9 @@ export default function Navigation({ user, isLoading }) {
 
       <ul>
         <li>
+          <Link href="/getting-started">Getting Started</Link>
+        </li>
+        <li>
           <Link href="/dashboard">Dashboard</Link>
         </li>
         <li>

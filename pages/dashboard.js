@@ -49,66 +49,7 @@ export default function Dashboard() {
       <main>
         <h2>Dashboard</h2>
 
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <>
-            {user && (
-              <>
-                <h3>Getting Started</h3>
-
-                <ol>
-                  <li>
-                    Go to the{" "}
-                    <a
-                      href="https://ko-fi.com/manage/webhooks"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      API/Webhooks page in your Ko-fi settings
-                    </a>
-                  </li>
-                  <li>
-                    Copy and paste in your webhook URL:
-                    <code>
-                      {domain}/api/webhook/{user.webhook_id}
-                    </code>
-                  </li>
-                  <li>
-                    Go to OBS. Create a new browser source with this
-                    URL:
-                    <code>
-                      {domain}/overlay/{user.overlay_id}
-                    </code>
-                    Set the size to 1920x1080.
-                  </li>
-                  <li>
-                    Go back to the{" "}
-                    <a
-                      href="https://ko-fi.com/manage/webhooks"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Ko-fi API/Webhooks page
-                    </a>{" "}
-                    and press <q>Send Test</q>
-                  </li>
-                  <li>You should see an alert in OBS...</li>
-                  <li>
-                    Head over to the{" "}
-                    <Link href="/settings">Settings</Link> and tweak
-                    your alert
-                  </li>
-                </ol>
-              </>
-            )}
-            {!user && (
-              <Link href="/" passHref>
-                <div className="Button">Home</div>
-              </Link>
-            )}
-          </>
-        )}
+        {isLoading ? <p>Loading...</p> : <></>}
       </main>
     </div>
   );

@@ -25,7 +25,7 @@ export default function Auth() {
         });
 
         if (response.ok) {
-          router.push("/dashboard");
+          router.push("/getting-started");
         }
       }
     );
