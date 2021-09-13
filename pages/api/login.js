@@ -2,7 +2,6 @@ import {
   createUser,
   getUserById,
   getAuthorizedUserByToken,
-  supabase,
 } from "./helpers/supabase";
 
 import logger from "../../helpers/logger";
@@ -33,8 +32,6 @@ export default async function handler(request, response) {
   if (!authorisedUser.id) {
     return response.end();
   }
-
-  await supabase.auth.api.setAuthCookie(request, response);
 
   // check if user already exists
   const existingUser = await getUserById(authorisedUser.id);

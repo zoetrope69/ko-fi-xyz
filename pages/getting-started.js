@@ -1,7 +1,8 @@
 import Link from "next/link";
 import Head from "next/head";
 
-import Navigation from "../components/navigation";
+import Button from "../components/Button/Button";
+import Navigation from "../components/Navigation/Navigation";
 
 import { supabase } from "../helpers/supabase-clientside";
 import useAPI from "../hooks/useAPI";
@@ -24,13 +25,13 @@ export default function GettingStarted() {
     return (
       <div className="wrapper">
         <Head>
-          <title>Ko-fi Custom Alerts - GettingStarted</title>
+          <title>Ko-fi Custom Alerts - Getting Started</title>
         </Head>
 
         <Navigation user={user} isLoading={isLoading} />
 
         <main>
-          <h1>Ko-fi Custom Alerts - GettingStarted</h1>
+          <h1>Ko-fi Custom Alerts - Getting Started</h1>
 
           <p>Something went wrong. Try logging out...</p>
         </main>
@@ -41,13 +42,13 @@ export default function GettingStarted() {
   return (
     <div className="wrapper">
       <Head>
-        <title>Ko-fi Custom Alerts - GettingStarted</title>
+        <title>Ko-fi Custom Alerts - Getting Started</title>
       </Head>
 
       <Navigation user={user} isLoading={isLoading} />
 
       <main>
-        <h2>GettingStarted</h2>
+        <h2>Getting Started</h2>
 
         {isLoading ? (
           <p>Loading...</p>
@@ -55,8 +56,6 @@ export default function GettingStarted() {
           <>
             {user && (
               <>
-                <h3>Getting Started</h3>
-
                 <ol>
                   <li>
                     Go to the{" "}
@@ -104,7 +103,7 @@ export default function GettingStarted() {
             )}
             {!user && (
               <Link href="/" passHref>
-                <div className="Button">Home</div>
+                <Button>Home</Button>
               </Link>
             )}
           </>

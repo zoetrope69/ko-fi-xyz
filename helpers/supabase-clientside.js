@@ -5,13 +5,20 @@ export const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_PUBLIC_KEY
 );
 
-export async function signIn(options) {
+export async function signIn(options, { redirectTo } = {}) {
   if (!supabase) {
     return { error: "No client" };
   }
 
+  let optionalRedirectString;
+  if (redirectTo) {
+    optionalRedirectString = `?redirectTo=${encodeURIComponent(
+      redirectTo
+    )}`;
+  }
+
   return supabase.auth.signIn(options, {
-    redirectTo: window.location.origin + "/auth",
+    redirectTo: `${window.location.origin}/auth${optionalRedirectString}`,
   });
 }
 

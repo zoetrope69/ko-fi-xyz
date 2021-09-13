@@ -1,0 +1,32 @@
+.PreviewContainer {
+  position: relative;
+  width: 100%;
+  margin: 1em 0;
+  height: 15vh;
+  background: linear-gradient(
+    to top right,
+    var(--color-black),
+    var(--color-pink)
+  );
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.PreviewContainer--big {
+  height: 50vh;
+}
+
+.Preview {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100vh;
+  transform-origin: top left;
+  transform: scale(0.5);
+}
+@media (min-width: 800px) {
+  .PreviewContainer {
+    width: 30vw;
+  }
+}

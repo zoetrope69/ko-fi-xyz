@@ -30,6 +30,29 @@ async function updateRow(column, data, options) {
   return supabase.from(column).update(data).match(options);
 }
 
+async function getSortedRows(
+  column,
+  options,
+  [sortColumn, sortOptions]
+) {
+  const { data: rows, error } = await supabase
+    .from(column)
+    .select()
+    .match(options)
+    .order(sortColumn, sortOptions);
+
+  if (error) {
+    logger.error(error.message);
+    return [];
+  }
+
+  if (!rows || rows.length === 0) {
+    return [];
+  }
+
+  return rows;
+}
+
 async function getRows(column, options) {
   const { data: rows, error } = await supabase
     .from(column)
@@ -112,8 +135,18 @@ export async function updateOverlaySettings(id, settings) {
 
 // alerts
 
+export async function getAlertsByOverlayId(overlay_id) {
+  return getSortedRows("alerts", { overlay_id }, [
+    "created_at",
+    { ascending: false },
+  ]);
+}
+
 export async function getNonShownAlertsByOverlayId(overlay_id) {
-  return getRows("alerts", { overlay_id, is_shown: false });
+  return getSortedRows("alerts", { overlay_id, is_shown: false }, [
+    "created_at",
+    { ascending: false },
+  ]);
 }
 
 export async function createAlert(data) {

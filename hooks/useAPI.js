@@ -29,8 +29,8 @@ async function fetcher(route, token) {
   return json || null;
 }
 
-function getSWRFirstParam(endpoint, session) {
-  if (!endpoint) {
+function getSWRFirstParam(endpoint, session, isGettingSession) {
+  if (!endpoint || isGettingSession) {
     return null;
   }
 
@@ -46,9 +46,13 @@ function getSWRFirstParam(endpoint, session) {
 }
 
 export default function useAPI(endpoint, options = {}) {
-  const session = useGetSession();
+  const { session, isGettingSession } = useGetSession();
 
-  const firstParam = getSWRFirstParam(endpoint, session);
+  const firstParam = getSWRFirstParam(
+    endpoint,
+    session,
+    isGettingSession
+  );
   const { data, error, mutate, isValidating } = useSWR(
     firstParam,
     fetcher,

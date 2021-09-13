@@ -1,22 +1,41 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { signIn } from "../helpers/supabase-clientside";
 
 import logger from "../helpers/logger";
+import Button from "../components/Button/Button";
 
 export default function Login() {
+  const router = useRouter();
+  const [queryString, setQueryString] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (router?.asPath) {
+      const newQueryString = router.asPath.replace(
+        router.pathname,
+        ""
+      );
+      setQueryString(newQueryString);
+    }
+  }, [router]);
 
   const handleTwitchLoginClick = async (event) => {
     event.preventDefault();
 
     setIsLoading(true);
 
-    const { error } = await signIn({
-      provider: "twitch",
-    });
+    const { error } = await signIn(
+      {
+        provider: "twitch",
+      },
+      {
+        redirectTo: router.query.redirectTo || null,
+      }
+    );
 
     if (error) {
       logger.error({ error });
@@ -33,24 +52,20 @@ export default function Login() {
 
       <h2>Login/Signup</h2>
 
-      <button
-        className="Button Button--Twitch"
+      <Button
         onClick={handleTwitchLoginClick}
         disabled={isLoading}
+        isTwitch
       >
         Login/signup with Twitch
-      </button>
+      </Button>
 
       <p>Or</p>
 
-      <Link href="/login-email" passHref>
-        <div
-          className={`Button Button--secondary ${
-            isLoading ? "Button--disabled" : ""
-          }`}
-        >
+      <Link href={`/login-email${queryString}`} passHref>
+        <Button isSecondary disabled={isLoading}>
           Login/signup with Email
-        </div>
+        </Button>
       </Link>
     </main>
   );

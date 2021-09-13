@@ -1,5 +1,7 @@
 import getContrastRatio from "get-contrast-ratio";
 
+import styles from "./ColourContrastInfo.module.css";
+
 export default function ColourContrastInfo({
   firstColor,
   secondColor,
@@ -18,7 +20,7 @@ export default function ColourContrastInfo({
   const passesWCAGAAA = colorContrastRatio >= 7;
 
   return (
-    <div className="ColourContrastInfo">
+    <div>
       {!passesWCAGAA && (
         <>
           <p>
@@ -32,7 +34,7 @@ export default function ColourContrastInfo({
         </>
       )}
       {passesWCAGAAA && <p>Lovely colours that. ✨</p>}
-      <small className="ColourContrastInfoRatio">
+      <small className={styles.ColourContrastInfoRatio}>
         <a href="https://webaim.org/articles/contrast/">
           WCAG Colour Contrast Ratio
         </a>

@@ -1,0 +1,8 @@
+/* .ColourContrastInfo {} */
+
+.ColourContrastInfoRatio {
+  display: block;
+  margin-bottom: 1em;
+  border-left: 3px solid grey;
+  padding-left: 0.5em;
+}

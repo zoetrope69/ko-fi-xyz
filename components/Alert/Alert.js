@@ -2,6 +2,10 @@ import { useEffect } from "react";
 import Image from "next/image";
 import classNames from "classnames";
 
+import { getMoney } from "../../helpers/get-money";
+
+import styles from "./Alert.module.css";
+
 const ANIMATION_IN_DURATION_MS = 1000;
 
 export default function Alert({
@@ -20,18 +24,6 @@ export default function Alert({
     }
   }, [currentAlert, settings]);
 
-  function getMoney() {
-    if (!amount || !currency) {
-      return "money";
-    }
-
-    const moneyFormatter = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency,
-    });
-    return moneyFormatter.format(amount);
-  }
-
   function getMessageText() {
     if (settings?.messageText) {
       return settings.messageText;
@@ -41,7 +33,7 @@ export default function Alert({
   }
 
   const MESSAGE_FUNCTION_MAP = {
-    "{amount}": () => getMoney(),
+    "{amount}": () => getMoney({ amount, currency }) || "money",
     "{from_name}": () => from_name || "Someone",
     "{message}": () => message || "",
     "{type}": () => type || "Donation",
@@ -99,26 +91,26 @@ export default function Alert({
     return stringParts.join("").trim();
   }
 
-  const styles = {
+  const inlineStyles = {
     animationDuration: `${ANIMATION_IN_DURATION_MS}ms`,
   };
 
   if (settings?.messageBackgroundColor) {
-    styles.backgroundColor = settings?.messageBackgroundColor;
+    inlineStyles.backgroundColor = settings?.messageBackgroundColor;
   }
 
   if (settings?.messageTextColor) {
-    styles.color = settings?.messageTextColor;
+    inlineStyles.color = settings?.messageTextColor;
   }
 
   if (settings?.messageSpacingHorizontal) {
-    styles.marginLeft = `${settings?.messageSpacingHorizontal}px`;
-    styles.marginRight = `${settings?.messageSpacingHorizontal}px`;
+    inlineStyles.marginLeft = `${settings?.messageSpacingHorizontal}px`;
+    inlineStyles.marginRight = `${settings?.messageSpacingHorizontal}px`;
   }
 
   if (settings?.messageSpacingVertical) {
-    styles.marginTop = `${settings?.messageSpacingVertical}px`;
-    styles.marginBottom = `${settings?.messageSpacingVertical}px`;
+    inlineStyles.marginTop = `${settings?.messageSpacingVertical}px`;
+    inlineStyles.marginBottom = `${settings?.messageSpacingVertical}px`;
   }
 
   if (
@@ -127,43 +119,43 @@ export default function Alert({
   ) {
     if (settings.messageAnimationType === "fade") {
       if (isRemoving) {
-        styles.animationName = "fade-out";
+        inlineStyles.animationName = "fade-out";
       } else {
-        styles.animationName = "fade";
+        inlineStyles.animationName = "fade";
       }
     } else {
       if (isRemoving) {
-        styles.animationName = `${settings.messageAnimationType}-${settings.messageAnimationDirection}-out`;
+        inlineStyles.animationName = `${settings.messageAnimationType}-${settings.messageAnimationDirection}-out`;
       } else {
-        styles.animationName = `${settings.messageAnimationType}-${settings.messageAnimationDirection}-in`;
+        inlineStyles.animationName = `${settings.messageAnimationType}-${settings.messageAnimationDirection}-in`;
       }
     }
   }
 
   if (settings?.messageShowIcon) {
-    styles.paddingLeft = "0.85em";
+    inlineStyles.paddingLeft = "0.85em";
   }
 
   if (!settings?.messageHasCurvedCorners) {
-    styles.borderRadius = "0";
+    inlineStyles.borderRadius = "0";
   }
 
-  const className = classNames("Alert", {
-    "Alert--isRemoving": isRemoving,
-    "Alert--position-top-left":
+  const className = classNames(styles.Alert, {
+    [styles["Alert--isRemoving"]]: isRemoving,
+    [styles["Alert--position-top-left"]]:
       settings?.messagePosition === "top-left",
-    "Alert--position-top-right":
+    [styles["Alert--position-top-right"]]:
       settings?.messagePosition === "top-right",
-    "Alert--position-bottom-left":
+    [styles["Alert--position-bottom-left"]]:
       settings?.messagePosition === "bottom-left",
-    "Alert--position-bottom-right":
+    [styles["Alert--position-bottom-right"]]:
       settings?.messagePosition === "bottom-right",
   });
 
   return (
-    <div className={className} style={styles}>
+    <div className={className} style={inlineStyles}>
       {settings?.messageShowIcon && (
-        <div className="AlertIcon">
+        <div className={styles.AlertIcon}>
           <Image
             src="/ko-fi-logo-cup.png"
             alt=""

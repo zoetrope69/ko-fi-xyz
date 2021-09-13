@@ -1,40 +1,44 @@
-import Link from "next/link";
 import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
-import Navigation from "../components/navigation";
+import Button from "../components/Button/Button";
+import Navigation from "../components/Navigation/Navigation";
+import AlertsList from "../components/AlertsList/AlertsList";
 
 import { supabase } from "../helpers/supabase-clientside";
 import useAPI from "../hooks/useAPI";
-
-const DEFAULT_DOMAIN = "https://ko-fi.xyz";
-
-function getDomain() {
-  if (!process.browser) {
-    return DEFAULT_DOMAIN;
-  }
-
-  return window?.location?.origin || DEFAULT_DOMAIN;
-}
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+  const [isPoppedOut, setIsPoppedOut] = useState(false);
+  const { query } = useRouter();
   const { data: user, isLoading } = useAPI("/api/user");
-  const domain = getDomain();
 
-  if (!isLoading && !user?.email) {
+  useEffect(() => {
+    if (query?.popOut) {
+      setIsPoppedOut(true);
+      document.body.classList.add("darkMode");
+    } else {
+      document.body.classList.remove("darkMode");
+    }
+  }, [query]);
+
+  if (isPoppedOut) {
     return (
-      <div className="wrapper">
+      <>
         <Head>
-          <title>Ko-fi Custom Alerts - Dashboard</title>
+          <title>Ko-fi Custom Alerts - Dashboard (Popped Out)</title>
         </Head>
 
-        <Navigation user={user} isLoading={isLoading} />
-
-        <main>
-          <h1>Ko-fi Custom Alerts - Dashboard</h1>
-
-          <p>Something went wrong. Try logging out...</p>
-        </main>
-      </div>
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <div style={{ width: "100%", height: "100%" }}>
+            <AlertsList overlayId={user?.overlay_id} isPoppedOut />
+          </div>
+        )}
+      </>
     );
   }
 
@@ -49,7 +53,17 @@ export default function Dashboard() {
       <main>
         <h2>Dashboard</h2>
 
-        {isLoading ? <p>Loading...</p> : <></>}
+        <Link href="/dashboard?popOut=true" passHref>
+          <Button isSmall isSecondary>
+            Popout for OBS
+          </Button>
+        </Link>
+
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          <AlertsList overlayId={user?.overlay_id} />
+        )}
       </main>
     </div>
   );
@@ -63,7 +77,12 @@ export async function getServerSideProps({ req }) {
     // If no user, redirect to index.
     return {
       props: {},
-      redirect: { destination: "/login", permanent: false },
+      redirect: {
+        destination: `/login?redirectTo=${encodeURIComponent(
+          req.url
+        )}`,
+        permanent: false,
+      },
     };
   }
 
