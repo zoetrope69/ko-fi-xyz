@@ -1,5 +1,7 @@
 import {
+  getAuthorizedUserByToken,
   getNonShownAlertsByOverlayId,
+  getAlertsByOverlayId,
   updateAlert,
 } from "./helpers/supabase";
 
@@ -15,19 +17,44 @@ async function putHandler(request, response) {
   response.end();
 }
 
+function getToken(request) {
+  if (!request.headers?.authorization) {
+    return null;
+  }
+
+  return request.headers.authorization.replace("Bearer", "").trim();
+}
+
 async function getHandler(request, response) {
   const { overlayId } = request.query;
+  const token = getToken(request);
 
   if (!overlayId) {
     return response.status(400).json({ error: "No overlayId" });
   }
 
-  const alerts = await getNonShownAlertsByOverlayId(overlayId);
+  const { data: authorisedUser, error } =
+    await getAuthorizedUserByToken(token);
+
+  if (error) {
+    return response.status(401).json({ error: error.message });
+  }
+
+  if (!authorisedUser || !authorisedUser.id) {
+    const alerts = await getNonShownAlertsByOverlayId(overlayId);
+    if (!alerts) {
+      return response.status(400).json({ error: "No alerts" });
+    }
+
+    return response.json(alerts);
+  }
+
+  const alerts = await getAlertsByOverlayId(overlayId);
   if (!alerts) {
     return response.status(400).json({ error: "No alerts" });
   }
 
-  response.json(alerts);
+  return response.json(alerts);
 }
 
 export default async function handler(request, response) {

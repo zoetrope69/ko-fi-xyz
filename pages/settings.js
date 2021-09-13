@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 
-import Navigation from "../components/navigation";
-import ColourContrastInfo from "../components/colour-contrast-info";
-import Alert from "../components/alert";
+import Navigation from "../components/Navigation/Navigation";
+import ColourContrastInfo from "../components/ColourContrastInfo/ColourContrastInfo";
+import Alert from "../components/Alert/Alert";
+import Preview from "../components/Preview/Preview";
+import Button from "../components/Button/Button";
 import useAPI from "../hooks/useAPI";
 import useGetSession from "../hooks/useGetSession";
 import { supabase } from "../helpers/supabase-clientside";
@@ -20,7 +22,7 @@ export default function Settings() {
   } = useAPI(
     user?.overlay_id ? "/api/overlays/" + user?.overlay_id : null
   );
-  const session = useGetSession();
+  const { session } = useGetSession();
 
   const [formData, setFormData] = useState({});
   const {
@@ -513,14 +515,13 @@ export default function Settings() {
                     </div>
                   </fieldset>
 
-                  <button
-                    className="Button"
+                  <Button
                     type="submit"
                     disabled={isSaving}
                     onClick={handleSave}
                   >
                     {isSaving ? "Saving..." : "Save"}
-                  </button>
+                  </Button>
                 </form>
               </>
             )}
@@ -531,49 +532,49 @@ export default function Settings() {
       {!isLoading && (
         <aside>
           <h3>Preview</h3>
-          <div className="PreviewContainer PreviewContainer--big">
-            <div className="Preview">
-              <Alert
-                currentAlert={{
-                  kofi_data: {
-                    amount: 3.0,
-                    currency: "GBP",
-                    from_name: "Mr Blobby",
-                    message: "Hello there",
-                    type: "Donation",
-                  },
-                }}
-                settings={{
-                  ...formData,
-                  // disable sounds in preview
-                  canPlaySounds: false,
-                }}
-                isRemoving={false}
-              />
-            </div>
-          </div>
 
-          <button
-            className="Button Button--small"
+          <Preview isBig>
+            <Alert
+              currentAlert={{
+                kofi_data: {
+                  amount: 3.0,
+                  currency: "GBP",
+                  from_name: "Mr Blobby",
+                  message: "Hello there",
+                  type: "Donation",
+                },
+              }}
+              settings={{
+                ...formData,
+                // disable sounds in preview
+                canPlaySounds: false,
+              }}
+              isRemoving={false}
+            />
+          </Preview>
+
+          <Button
+            isSmall
             type="button"
             disabled={isSaving}
             onClick={handleSave}
           >
             {isSaving ? "Saving..." : "Save"}
-          </button>
+          </Button>
 
           {isFormUnsaved && (
             <small> * New changes not saved...</small>
           )}
 
           <div>
-            <button
+            <Button
+              isSmall
+              isSecondary
               type="button"
-              className="Button Button--secondary Button--small"
               onClick={handleTestDonationButtonClick}
             >
               Send test donation notification
-            </button>
+            </Button>
           </div>
         </aside>
       )}

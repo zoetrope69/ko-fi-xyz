@@ -1,11 +1,13 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
+import Button from "../components/Button/Button";
 import { signIn } from "../helpers/supabase-clientside";
-
 import logger from "../helpers/logger";
 
 export default function Login() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [hasEmailBeenSent, setHasEmailBeenSent] = useState(false);
 
@@ -16,9 +18,14 @@ export default function Login() {
 
     const { elements } = event.target;
 
-    const { error } = await signIn({
-      email: elements.email.value,
-    });
+    const { error } = await signIn(
+      {
+        email: elements.email.value,
+      },
+      {
+        redirectTo: router.query.redirectTo || null,
+      }
+    );
 
     if (error) {
       logger.error({ error });
@@ -48,9 +55,9 @@ export default function Login() {
             type="email"
             disabled={isLoading}
           />
-          <button className="Button" disabled={isLoading}>
+          <Button disabled={isLoading}>
             {isLoading ? "Submitting..." : "Submit"}
-          </button>
+          </Button>
         </form>
       )}
     </main>

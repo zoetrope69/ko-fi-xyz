@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-import Alert from "../../components/alert";
+import Alert from "../../components/Alert/Alert";
 import useAlertQueue from "../../hooks/useAlertQueue";
 import useAPI from "../../hooks/useAPI";
 

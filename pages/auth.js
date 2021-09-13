@@ -14,7 +14,7 @@ export default function Auth() {
           return;
         }
 
-        const response = await fetch("/api/login", {
+        await fetch("/api/auth", {
           method: "POST",
           headers: new Headers({
             "Content-Type": "application/json",
@@ -24,8 +24,22 @@ export default function Auth() {
           body: JSON.stringify({ event, session }),
         });
 
+        const response = await fetch("/api/login", {
+          method: "POST",
+          headers: new Headers({
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.access_token}`,
+          }),
+          credentials: "same-origin",
+        });
+
         if (response.ok) {
-          router.push("/dashboard");
+          if (router?.query?.redirectTo) {
+            router.push(router?.query?.redirectTo);
+            return;
+          }
+
+          router.push("/getting-started");
         }
       }
     );
