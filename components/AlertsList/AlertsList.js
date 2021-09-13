@@ -31,8 +31,8 @@ export default function AlertsList({
     <p>Loading...</p>;
   }
 
-  if (!allAlerts) {
-    return null;
+  if (!allAlerts || allAlerts.length === 0) {
+    return <p>No alerts yet...</p>;
   }
 
   const alerts = allAlerts.filter((alert) => {
@@ -42,6 +42,10 @@ export default function AlertsList({
 
     return true;
   });
+
+  if (!alerts || alerts.length === 0) {
+    return <p>No alerts yet...</p>;
+  }
 
   function getRowHeight(index) {
     return rowHeights.current[index] + ROW_SPACING || MIN_ROW_HEIGHT;

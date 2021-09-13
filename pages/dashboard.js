@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const [areTestAlertsHidden, setAreTestAlertsHidden] =
-    useState(true);
+    useState(false);
   const [isPoppedOut, setIsPoppedOut] = useState(false);
   const { query } = useRouter();
   const { data: user, isLoading } = useAPI("/api/user");

@@ -13,6 +13,7 @@ const Button = React.forwardRef((props, ref) => {
     disabled,
     ...rest
   } = props;
+
   const className = classNames(styles.Button, {
     [styles["Button--small"]]: isSmall,
     [styles["Button--secondary"]]: isSecondary,
