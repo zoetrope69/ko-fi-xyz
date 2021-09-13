@@ -10,7 +10,7 @@ export async function signIn(options, { redirectTo } = {}) {
     return { error: "No client" };
   }
 
-  let optionalRedirectString;
+  let optionalRedirectString = "";
   if (redirectTo) {
     optionalRedirectString = `?redirectTo=${encodeURIComponent(
       redirectTo
