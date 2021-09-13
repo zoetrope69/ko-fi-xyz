@@ -131,7 +131,9 @@ export default function AlertsList({
     <AutoSizer>
       {({ height, width }) => (
         <List
-          className={styles.AlertsList}
+          className={classNames(styles.AlertsList, {
+            [styles["AlertsList--popped-out"]]: isPoppedOut,
+          })}
           ref={listRef}
           height={height - (isPoppedOut ? 0 : 150)}
           itemCount={alerts.length}

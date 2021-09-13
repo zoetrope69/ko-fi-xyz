@@ -3,6 +3,10 @@
   height: 100%;
 }
 
+.AlertsList--popped-out {
+  font-size: 0.85em;
+}
+
 .AlertsListItem {
   padding: 0.75em 1em;
   font-size: 0.75em;
