@@ -35,6 +35,7 @@ export default async function handler(request, response) {
   const isTest = json.kofi_transaction_id === TEST_KO_FI_ID;
 
   const {
+    amount,
     currency,
     from_name,
     is_first_subscription_payment,
@@ -46,6 +47,7 @@ export default async function handler(request, response) {
   } = json;
 
   const alertData = {
+    amount,
     currency,
     from_name,
     is_first_subscription_payment,
