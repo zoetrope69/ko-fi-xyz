@@ -11,6 +11,8 @@ import useAPI from "../hooks/useAPI";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+  const [areTestAlertsHidden, setAreTestAlertsHidden] =
+    useState(true);
   const [isPoppedOut, setIsPoppedOut] = useState(false);
   const { query } = useRouter();
   const { data: user, isLoading } = useAPI("/api/user");
@@ -20,9 +22,16 @@ export default function Dashboard() {
       setIsPoppedOut(true);
       document.body.classList.add("darkMode");
     } else {
+      setIsPoppedOut(false);
       document.body.classList.remove("darkMode");
     }
   }, [query]);
+
+  const handleHideTestAlertsClick = (event) => {
+    event.preventDefault();
+
+    setAreTestAlertsHidden((previous) => !previous);
+  };
 
   if (isPoppedOut) {
     return (
@@ -53,16 +62,32 @@ export default function Dashboard() {
       <main>
         <h2>Dashboard</h2>
 
-        <Link href="/dashboard?popOut=true" passHref>
-          <Button isSmall isSecondary>
-            Popout for OBS
-          </Button>
-        </Link>
-
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <AlertsList overlayId={user?.overlay_id} />
+          <>
+            <h2>Alerts</h2>
+
+            <Link href="/dashboard?popOut=true" passHref>
+              <Button isSmall isSecondary>
+                Popout for OBS
+              </Button>
+            </Link>
+
+            <Button
+              isSmall
+              isSecondary
+              style={{ marginLeft: "1em", marginBottom: "2em" }}
+              onClick={handleHideTestAlertsClick}
+            >
+              {areTestAlertsHidden ? "Show" : "Hide"} test alerts
+            </Button>
+
+            <AlertsList
+              overlayId={user?.overlay_id}
+              areTestAlertsHidden={areTestAlertsHidden}
+            />
+          </>
         )}
       </main>
     </div>
