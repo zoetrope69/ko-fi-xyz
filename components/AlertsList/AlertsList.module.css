@@ -4,22 +4,26 @@
 }
 
 .AlertsListItem {
-  padding: 0.25em 0.5em;
+  padding: 0.75em 1em;
   font-size: 0.75em;
-  border-bottom: 2px solid var(--color-pink-dark);
+  border-bottom: 2px solid var(--color-alert-list-item-border);
 }
 
 .AlertsListItemDetails {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: -0.5em;
   margin-bottom: 0.25em;
 }
 
 .AlertsListItemDetailsType {
   margin-right: 0.5em;
   border: 5px;
-  background: var(--color-pink);
-  color: var(--color-pink-darker);
-  padding: 0.115em 0.5em;
-  border-radius: 4px;
+  background: var(--color-blue);
+  color: var(--color-black);
+  padding: 0em 0.75em;
+  border-radius: 1em;
   font-weight: 600;
   font-size: 0.75em;
 }
@@ -32,14 +36,15 @@
   background: var(--color-grey);
 }
 
+.AlertsListItemDetailsDate {
+  font-weight: 600;
+  font-size: 0.75em;
+  color: var(--color-grey-dark);
+}
+
 .AlertsListItemMessage {
   font-weight: 500;
   margin-bottom: 0.25em;
   font-size: 0.85em;
-}
-
-.AlertsListItemDate {
-  font-weight: 600;
-  font-size: 0.75em;
-  color: var(--color-grey-dark);
+  opacity: 0.8;
 }

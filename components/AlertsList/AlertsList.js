@@ -12,21 +12,36 @@ import styles from "./AlertsList.module.css";
 const MIN_ROW_HEIGHT = 50;
 const ROW_SPACING = 5;
 
-export default function AlertsList({ overlayId, isPoppedOut }) {
+export default function AlertsList({
+  overlayId,
+  isPoppedOut,
+  areTestAlertsHidden,
+}) {
   const listRef = useRef({});
   const rowHeights = useRef({});
 
-  const { data: alerts, isLoading } = useAPI(
-    overlayId ? "/api/alerts?overlayId=" + overlayId : null
+  const { data: allAlerts, isLoading } = useAPI(
+    overlayId ? "/api/alerts?overlayId=" + overlayId : null,
+    {
+      refreshInterval: 5000,
+    }
   );
 
   if (isLoading) {
     <p>Loading...</p>;
   }
 
-  if (!alerts) {
+  if (!allAlerts) {
     return null;
   }
+
+  const alerts = allAlerts.filter((alert) => {
+    if (areTestAlertsHidden) {
+      return !alert?.kofi_data?.isTest;
+    }
+
+    return true;
+  });
 
   function getRowHeight(index) {
     return rowHeights.current[index] + ROW_SPACING || MIN_ROW_HEIGHT;
@@ -83,6 +98,19 @@ export default function AlertsList({ overlayId, isPoppedOut }) {
                 Test
               </small>
             )}
+
+            <span className={styles.AlertsListItemDetailsDate}>
+              {formatDistance(
+                new Date(alert.created_at),
+                new Date(),
+                {
+                  addSuffix: true,
+                }
+              )}
+            </span>
+          </div>
+
+          <div>
             <strong>
               {getMoney({ amount, currency }) || "Money"}
             </strong>{" "}
@@ -94,12 +122,6 @@ export default function AlertsList({ overlayId, isPoppedOut }) {
               {message}
             </div>
           )}
-
-          <div className={styles.AlertsListItemDate}>
-            {formatDistance(new Date(alert.created_at), new Date(), {
-              addSuffix: true,
-            })}
-          </div>
         </div>
       </div>
     );
