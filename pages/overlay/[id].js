@@ -47,21 +47,27 @@ export default function Overlay() {
   }, [overlay]);
 
   useEffect(() => {
-    const overlaySubscription = supabase
-      .from("overlays")
-      .on("UPDATE", (payload) => {
-        const overlay = payload?.new;
+    let overlaySubscription;
 
-        if (overlay?.settings) {
-          setSettings(overlay.settings);
-        }
-      })
-      .subscribe();
+    if (overlayId) {
+      overlaySubscription = supabase
+        .from(`overlays:id=eq.${overlayId}`)
+        .on("UPDATE", (payload) => {
+          const overlay = payload?.new;
+
+          if (overlay?.settings) {
+            setSettings(overlay.settings);
+          }
+        })
+        .subscribe();
+    }
 
     return () => {
-      supabase.removeSubscription(overlaySubscription);
+      if (overlaySubscription) {
+        supabase.removeSubscription(overlaySubscription);
+      }
     };
-  }, []);
+  }, [overlayId]);
 
   if (isOldOverlay) {
     return (
