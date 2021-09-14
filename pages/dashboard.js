@@ -41,7 +41,9 @@ export default function Dashboard() {
         </Head>
 
         {isLoading ? (
-          <p>Loading...</p>
+          <div style={{ padding: "1em" }}>
+            <p>Loading...</p>
+          </div>
         ) : (
           <div style={{ width: "100%", height: "100%" }}>
             <AlertsList overlayId={user?.overlay_id} isPoppedOut />
@@ -63,7 +65,9 @@ export default function Dashboard() {
         <h2>Dashboard</h2>
 
         {isLoading ? (
-          <p>Loading...</p>
+          <div style={{ padding: "1em" }}>
+            <p>Loading...</p>
+          </div>
         ) : (
           <>
             <h2>Alerts</h2>
