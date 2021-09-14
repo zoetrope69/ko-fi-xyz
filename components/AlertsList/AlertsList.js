@@ -20,7 +20,7 @@ export default function AlertsList({
   const listRef = useRef({});
   const rowHeights = useRef({});
 
-  const { data: allAlerts, isLoading } = useAPI(
+  const { data: allAlerts = [], isLoading } = useAPI(
     overlayId ? "/api/alerts?overlayId=" + overlayId : null,
     {
       refreshInterval: 5000,
@@ -28,11 +28,11 @@ export default function AlertsList({
   );
 
   if (isLoading) {
-    <p>Loading...</p>;
-  }
-
-  if (!allAlerts || allAlerts.length === 0) {
-    return <p>No alerts yet...</p>;
+    return (
+      <div style={{ padding: "1em" }}>
+        <p>Loading...</p>
+      </div>
+    );
   }
 
   const alerts = allAlerts.filter((alert) => {
@@ -44,7 +44,11 @@ export default function AlertsList({
   });
 
   if (!alerts || alerts.length === 0) {
-    return <p>No alerts yet...</p>;
+    return (
+      <div style={{ padding: "1em" }}>
+        <p>No alerts yet...</p>
+      </div>
+    );
   }
 
   function getRowHeight(index) {
