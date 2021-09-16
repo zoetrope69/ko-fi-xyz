@@ -13,9 +13,9 @@ export const ThemeContext = createContext({
 
 const LOCALSTORAGE_KEY = "ko-fi-xyz.theme";
 
-function getIsDarkMode({ theme, isCSSDarkMode }) {
+function getIsDarkMode({ theme, isCSSLightMode }) {
   if (theme === "system") {
-    return isCSSDarkMode;
+    return !isCSSLightMode;
   }
 
   return theme === "dark";
@@ -23,9 +23,9 @@ function getIsDarkMode({ theme, isCSSDarkMode }) {
 
 export function ThemeProvider(props) {
   const [theme, setStateTheme] = useState("system");
-  const [isCSSDarkMode, setIsCSSDarkMode] = useState(true);
+  const [isCSSLightMode, setIsCSSLightMode] = useState(true);
 
-  const isDarkMode = getIsDarkMode({ theme, isCSSDarkMode });
+  const isDarkMode = getIsDarkMode({ theme, isCSSLightMode });
 
   function setTheme(theme) {
     setStateTheme(theme);
@@ -46,21 +46,21 @@ export function ThemeProvider(props) {
   }, [isDarkMode]);
 
   useEffect(() => {
-    const isDarkModeMediaQuery = window.matchMedia(
-      "(prefers-color-scheme: dark)"
+    const isLightModeMediaQuery = window.matchMedia(
+      "(prefers-color-scheme: light)"
     );
-    setIsCSSDarkMode(!!isDarkModeMediaQuery.matches);
+    setIsCSSLightMode(!!isLightModeMediaQuery.matches);
 
     const mediaQueryChangeHandler = (event) => {
-      setIsCSSDarkMode(!!event.matches);
+      setIsCSSLightMode(!!event.matches);
     };
-    isDarkModeMediaQuery.addEventListener(
+    isLightModeMediaQuery.addEventListener(
       "change",
       mediaQueryChangeHandler
     );
 
     return () => {
-      isDarkModeMediaQuery.removeEventListener(
+      isLightModeMediaQuery.removeEventListener(
         "change",
         mediaQueryChangeHandler
       );
