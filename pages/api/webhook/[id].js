@@ -58,13 +58,13 @@ export default async function handler(request, response) {
     type,
   };
 
-  if (isTest) {
-    alertData.message = faker.random.words();
-  }
-
   // if is private delete data for message
   if (is_public && message && message.length > 0) {
     alertData.message = message;
+  }
+
+  if (is_public && isTest) {
+    alertData.message = `Test message: ${faker.random.words()}`;
   }
 
   try {
