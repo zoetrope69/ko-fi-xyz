@@ -14,12 +14,14 @@
   --color-blue: rgb(215, 221, 253);
   --color-red: #b00;
 
-  --color-background-nav: var(--color-pink-light);
-  --color-background: var(--color-white);
-  --color-base-text: var(--color-pink-dark);
-  --color-button-text: var(--color-white);
-  --color-primary: rgb(51, 51, 240);
-  --color-alert-list-item-border: var(--color-pink);
+  /* default to dark theme */
+  --color-background-nav: var(--color-pink-darker);
+  --color-background: var(--color-pink-darker);
+  --color-base-text: var(--color-pink);
+  --color-button-text: var(--color-pink-dark);
+  --color-primary: var(--color-green);
+
+  --color-alert-list-item-border: var(--color-pink-dark);
 }
 
 * {
@@ -49,16 +51,14 @@ body {
   color: var(--color-base-text);
 }
 
-body.darkMode {
-  /* WIP dark mode colours */
+body.theme--light {
+  --color-background-nav: var(--color-pink-light);
+  --color-background: var(--color-white);
+  --color-base-text: var(--color-pink-dark);
+  --color-button-text: var(--color-white);
+  --color-primary: rgb(51, 51, 240);
 
-  --color-background-nav: var(--color-pink-darker);
-  --color-background: var(--color-pink-darker);
-  --color-base-text: var(--color-pink);
-  --color-button-text: var(--color-pink-dark);
-  --color-primary: var(--color-green);
-
-  --color-alert-list-item-border: var(--color-pink-dark);
+  --color-alert-list-item-border: var(--color-pink);
 }
 
 a {

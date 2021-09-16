@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 
-import { useUser } from "../components/UserContext/UserContext";
+import { useUser } from "../components/UserProvider";
 import Navigation from "../components/Navigation/Navigation";
 import ColourContrastInfo from "../components/ColourContrastInfo/ColourContrastInfo";
 import Alert from "../components/Alert/Alert";

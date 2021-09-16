@@ -1,12 +1,15 @@
-import { UserContextProvider } from "../components/UserContext/UserContext";
+import { UserProvider } from "../components/UserProvider";
+import { ThemeProvider } from "../components/ThemeProvider";
 
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <UserContextProvider>
-      <Component {...pageProps} />
-    </UserContextProvider>
+    <UserProvider>
+      <ThemeProvider>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </UserProvider>
   );
 }
 

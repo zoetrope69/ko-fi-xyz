@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Head from "next/head";
 
-import { useUser } from "../components/UserContext/UserContext";
+import { useUser } from "../components/UserProvider";
 import Button from "../components/Button/Button";
 import Navigation from "../components/Navigation/Navigation";
 

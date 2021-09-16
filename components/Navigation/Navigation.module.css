@@ -57,6 +57,10 @@
   display: none;
 }
 
+.Nav label {
+  font-size: 0.75em;
+}
+
 @media (min-width: 800px) {
   .Nav {
     position: sticky;
@@ -67,10 +71,11 @@
     border-right: 6px solid var(--color-pink);
   }
 
-  .NavSupportContainer {
+  .NavBottom {
     position: absolute;
     bottom: 0;
     left: 0;
+    padding: 1em;
   }
 
   .NavSupport {
@@ -79,13 +84,17 @@
     justify-content: space-between;
     padding: 0.5em 1em;
     padding-left: 0.5em;
-    margin: 1em;
+    margin-bottom: 1em;
     font-size: 0.75em;
     color: var(--color-pink-darker);
     text-decoration: none;
     background: var(--color-pink);
     border-radius: 10px;
     transition: opacity 0.15s ease-in;
+  }
+
+  .NavSupport:last-child {
+    margin-bottom: 0;
   }
 
   .NavSupport--discord {

@@ -30,7 +30,7 @@ async function updateServersideAuth({ event, session }) {
   });
 }
 
-export const UserContextProvider = (props) => {
+export const UserProvider = (props) => {
   const [user, setUser] = useState(null);
   const [session, setSession] = useState(null);
   const { data: userData, error } = useSWR(
@@ -62,26 +62,35 @@ export const UserContextProvider = (props) => {
       }
     );
 
-    window.onstorage = async (e) => {
-      if (e?.key === "supabase.auth.token") {
-        try {
-          const newSession = JSON.parse(e.newValue);
+    const localStorageChangeHandler = async (event) => {
+      if (event?.key !== "supabase.auth.token") {
+        return;
+      }
 
-          setSession(newSession?.currentSession);
+      try {
+        const newSession = JSON.parse(event.newValue);
 
-          if (!newSession?.currentSession) {
-            await updateServersideAuth({
-              event: "SIGNED_OUT",
-              session: newSession?.currentSession,
-            });
-          }
-        } catch (e) {
-          logger.error("Couldnt get auth from localstorage");
+        setSession(newSession?.currentSession);
+
+        if (!newSession?.currentSession) {
+          await updateServersideAuth({
+            event: "SIGNED_OUT",
+            session: newSession?.currentSession,
+          });
         }
+      } catch (e) {
+        logger.error("Couldnt get auth from localstorage");
       }
     };
 
+    window.addEventListener("storage", localStorageChangeHandler);
+
     return () => {
+      window.removeEventListener(
+        "storage",
+        localStorageChangeHandler
+      );
+
       if (authListener) {
         authListener.unsubscribe();
       }
@@ -100,9 +109,7 @@ export const UserContextProvider = (props) => {
 export const useUser = () => {
   const context = useContext(UserContext);
   if (context === undefined) {
-    throw new Error(
-      `useUser must be used within a UserContextProvider.`
-    );
+    throw new Error(`useUser must be used within a UserProvider.`);
   }
   return context;
 };

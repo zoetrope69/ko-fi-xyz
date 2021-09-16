@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useUser } from "../components/UserContext/UserContext";
+import { useUser } from "../components/UserProvider";
 import { supabase, signOut } from "../helpers/supabase-clientside";
 import logger from "../helpers/logger";
 
