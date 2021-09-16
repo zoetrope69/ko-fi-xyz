@@ -2,13 +2,24 @@ import Link from "next/link";
 import Image from "next/image";
 import classNames from "classnames";
 
-import { useUser } from "../UserContext/UserContext";
+import { useTheme } from "../ThemeProvider";
+import { useUser } from "../UserProvider";
 import Button from "../Button/Button";
 
 import styles from "./Navigation.module.css";
 
 export default function Navigation() {
+  const { theme, setTheme, isDarkMode } = useTheme();
   const { user, isLoading } = useUser();
+
+  const handleThemeChange = (event) => {
+    event.preventDefault();
+
+    const newTheme = event.target.value;
+    if (newTheme) {
+      setTheme(newTheme);
+    }
+  };
 
   return (
     <nav className={styles.Nav}>
@@ -47,7 +58,24 @@ export default function Navigation() {
         </li>
       </ul>
 
-      <div className={styles.NavSupportContainer}>
+      <div className={styles.NavBottom}>
+        <div>
+          <label htmlFor="can-play-sounds">Theme</label>
+          <select
+            id="can-play-sounds"
+            name="can-play-sounds"
+            onChange={handleThemeChange}
+            value={theme}
+          >
+            <option value="system">
+              System ({isDarkMode ? "Dark" : "Light"})
+            </option>
+            <option value="dark">Dark</option>
+            <option value="light">Light</option>
+            );
+          </select>
+        </div>
+
         <a
           className={classNames(
             styles.NavSupport,

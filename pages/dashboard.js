@@ -6,7 +6,7 @@ import Button from "../components/Button/Button";
 import Navigation from "../components/Navigation/Navigation";
 import AlertsList from "../components/AlertsList/AlertsList";
 
-import { useUser } from "../components/UserContext/UserContext";
+import { useUser } from "../components/UserProvider";
 
 import {
   getRedirectURL,
@@ -25,10 +25,8 @@ export default function Dashboard() {
   useEffect(() => {
     if (query?.popOut) {
       setIsPoppedOut(true);
-      document.body.classList.add("darkMode");
     } else {
       setIsPoppedOut(false);
-      document.body.classList.remove("darkMode");
     }
   }, [query]);
 

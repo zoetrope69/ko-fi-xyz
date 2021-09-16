@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-import { useUser } from "../components/UserContext/UserContext";
+import { useUser } from "../components/UserProvider";
 
 export async function fetcher(route, token) {
   const response = await fetch(route, {
