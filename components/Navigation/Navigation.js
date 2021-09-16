@@ -49,15 +49,22 @@ export default function Navigation() {
       )}
 
       <ul className={styles.NavList}>
-        <li className={styles.NavListItem}>
-          <Link href="/getting-started">Getting Started</Link>
-        </li>
-        <li className={styles.NavListItem}>
-          <Link href="/dashboard">Dashboard</Link>
-        </li>
-        <li className={styles.NavListItem}>
-          <Link href="/settings">Settings</Link>
-        </li>
+        {[
+          { url: "/getting-started", text: "Getting Started" },
+          { url: "/dashboard", text: "Dashboard" },
+          { url: "/settings", text: "Settings" },
+        ].map(({ url, text }, index) => {
+          return (
+            <li
+              className={classNames(styles.NavListItem, {
+                [styles.NavListItemActive]: router.pathname === url,
+              })}
+              key={index}
+            >
+              <Link href={url}>{text}</Link>
+            </li>
+          );
+        })}
       </ul>
 
       <div className={styles.NavBottom}>
