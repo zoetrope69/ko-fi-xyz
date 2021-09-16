@@ -14,16 +14,6 @@ export default function Auth() {
           return;
         }
 
-        await fetch("/api/auth", {
-          method: "POST",
-          headers: new Headers({
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.access_token}`,
-          }),
-          credentials: "same-origin",
-          body: JSON.stringify({ event, session }),
-        });
-
         const response = await fetch("/api/login", {
           method: "POST",
           headers: new Headers({

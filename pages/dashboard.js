@@ -6,16 +6,21 @@ import Button from "../components/Button/Button";
 import Navigation from "../components/Navigation/Navigation";
 import AlertsList from "../components/AlertsList/AlertsList";
 
-import { supabase } from "../helpers/supabase-clientside";
-import useAPI from "../hooks/useAPI";
+import { useUser } from "../components/UserContext/UserContext";
+
+import {
+  getRedirectURL,
+  redirectAuthedPages,
+} from "../helpers/redirect-auth-pages";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+  const router = useRouter();
   const [areTestAlertsHidden, setAreTestAlertsHidden] =
     useState(false);
   const [isPoppedOut, setIsPoppedOut] = useState(false);
   const { query } = useRouter();
-  const { data: user, isLoading } = useAPI("/api/user");
+  const { user, isLoading } = useUser();
 
   useEffect(() => {
     if (query?.popOut) {
@@ -40,11 +45,22 @@ export default function Dashboard() {
           <title>Ko-fi Custom Alerts - Dashboard (Popped Out)</title>
         </Head>
 
-        {isLoading ? (
+        {isLoading && (
           <div style={{ padding: "1em" }}>
             <p>Loading...</p>
           </div>
-        ) : (
+        )}
+
+        {!isLoading && !user && (
+          <div style={{ padding: "1em" }}>
+            <p>Logged out...</p>
+            <Link href={getRedirectURL(router.asPath)} passHref>
+              <Button>Log in</Button>
+            </Link>
+          </div>
+        )}
+
+        {!isLoading && user && (
           <div style={{ width: "100%", height: "100%" }}>
             <AlertsList overlayId={user?.overlay_id} isPoppedOut />
           </div>
@@ -121,22 +137,5 @@ export default function Dashboard() {
 }
 
 export async function getServerSideProps({ req }) {
-  const { user: authorisedUser } =
-    await supabase.auth.api.getUserByCookie(req);
-
-  if (!authorisedUser) {
-    // If no user, redirect to index.
-    return {
-      props: {},
-      redirect: {
-        destination: `/login?redirectTo=${encodeURIComponent(
-          req.url
-        )}`,
-        permanent: false,
-      },
-    };
-  }
-
-  // If there is a user, return it.
-  return { props: { authorisedUser } };
+  return redirectAuthedPages(req);
 }

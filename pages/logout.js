@@ -2,13 +2,13 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { useUser } from "../components/UserContext/UserContext";
 import { supabase, signOut } from "../helpers/supabase-clientside";
 import logger from "../helpers/logger";
-import useGetSession from "../hooks/useGetSession";
 
 export default function Logout() {
   const router = useRouter();
-  const { session, isGettingSession } = useGetSession();
+  const { user, isLoading } = useUser();
 
   async function logout() {
     const { error } = await signOut();
@@ -23,31 +23,19 @@ export default function Logout() {
   useEffect(() => {
     let authListener;
 
-    if (!isGettingSession) {
-      if (!session) {
+    if (!isLoading) {
+      if (!user) {
         router.push("/login");
         return;
       }
 
-      const { data } = supabase.auth.onAuthStateChange(
-        async (event, session) => {
-          if (event !== "SIGNED_OUT") {
-            return;
-          }
-
-          await fetch("/api/auth", {
-            method: "POST",
-            headers: new Headers({
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${session?.access_token}`,
-            }),
-            credentials: "same-origin",
-            body: JSON.stringify({ event, session }),
-          });
-
-          router.push("/login");
+      const { data } = supabase.auth.onAuthStateChange((event) => {
+        if (event !== "SIGNED_OUT") {
+          return;
         }
-      );
+
+        router.push("/login");
+      });
       authListener = data;
 
       logout();
@@ -58,7 +46,7 @@ export default function Logout() {
         authListener.unsubscribe();
       }
     };
-  }, [router, isGettingSession, session]);
+  }, [router, isLoading, user]);
 
   return (
     <main>
