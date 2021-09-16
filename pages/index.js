@@ -18,7 +18,10 @@ export default function Home() {
         Ko-fi XYZ
       </h1>
 
-      <p>Unofficial tools to help streamers use Ko-fi.</p>
+      <p>
+        Unofficial tools to help streamers use{" "}
+        <a href="https://ko-fi.com/">Ko-fi</a>.
+      </p>
       <p>
         Made by <a href="https://twitch.tv/zactopus">zactopus</a> to
         help people move away from sending Twitch/Amazon/The Bezos
