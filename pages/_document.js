@@ -33,8 +33,7 @@ class MyDocument extends Document {
 
           <meta
             name="description"
-            content="An unofficial work-in-progress way to get custom Ko-fi alerts
-        in your OBS set-up"
+            content="Unofficial tools to help streamers use Ko-fi"
           />
         </Head>
         <body>
