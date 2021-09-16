@@ -2,11 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import classNames from "classnames";
 
+import { useUser } from "../UserContext/UserContext";
 import Button from "../Button/Button";
 
 import styles from "./Navigation.module.css";
 
-export default function Navigation({ user, isLoading }) {
+export default function Navigation() {
+  const { user, isLoading } = useUser();
+
   return (
     <nav className={styles.Nav}>
       <div className={styles.NavTitle}>

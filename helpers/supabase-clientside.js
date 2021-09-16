@@ -22,14 +22,6 @@ export async function signIn(options, { redirectTo } = {}) {
   });
 }
 
-export async function getUser() {
-  if (!supabase) {
-    return { error: "No client" };
-  }
-
-  return supabase.auth.user();
-}
-
 export async function signOut() {
   return supabase.auth.signOut();
 }

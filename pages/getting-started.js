@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Head from "next/head";
 
+import { useUser } from "../components/UserContext/UserContext";
 import Button from "../components/Button/Button";
 import Navigation from "../components/Navigation/Navigation";
 
-import { supabase } from "../helpers/supabase-clientside";
-import useAPI from "../hooks/useAPI";
+import { redirectAuthedPages } from "../helpers/redirect-auth-pages";
 
 const DEFAULT_DOMAIN = "https://ko-fi.xyz";
 
@@ -18,8 +18,8 @@ function getDomain() {
 }
 
 export default function GettingStarted() {
-  const { data: user, isLoading } = useAPI("/api/user");
   const domain = getDomain();
+  const { user, isLoading } = useUser();
 
   if (!isLoading && !user?.email) {
     return (
@@ -28,7 +28,7 @@ export default function GettingStarted() {
           <title>Ko-fi Custom Alerts - Getting Started</title>
         </Head>
 
-        <Navigation user={user} isLoading={isLoading} />
+        <Navigation />
 
         <main>
           <h1>Ko-fi Custom Alerts - Getting Started</h1>
@@ -45,7 +45,7 @@ export default function GettingStarted() {
         <title>Ko-fi Custom Alerts - Getting Started</title>
       </Head>
 
-      <Navigation user={user} isLoading={isLoading} />
+      <Navigation />
 
       <main>
         <h2>Getting Started</h2>
@@ -114,17 +114,5 @@ export default function GettingStarted() {
 }
 
 export async function getServerSideProps({ req }) {
-  const { user: authorisedUser } =
-    await supabase.auth.api.getUserByCookie(req);
-
-  if (!authorisedUser) {
-    // If no user, redirect to index.
-    return {
-      props: {},
-      redirect: { destination: "/login", permanent: false },
-    };
-  }
-
-  // If there is a user, return it.
-  return { props: { authorisedUser } };
+  return redirectAuthedPages(req);
 }

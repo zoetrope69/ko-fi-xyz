@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 
+import { useUser } from "../components/UserContext/UserContext";
 import Navigation from "../components/Navigation/Navigation";
 import ColourContrastInfo from "../components/ColourContrastInfo/ColourContrastInfo";
 import Alert from "../components/Alert/Alert";
 import Preview from "../components/Preview/Preview";
 import Button from "../components/Button/Button";
 import useAPI from "../hooks/useAPI";
-import useGetSession from "../hooks/useGetSession";
-import { supabase } from "../helpers/supabase-clientside";
+
+import { redirectAuthedPages } from "../helpers/redirect-auth-pages";
 
 export default function Settings() {
   const [isFormUnsaved, setIsFormUnsaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const { data: user, isLoading: isLoadingUser } =
-    useAPI("/api/user");
+  const { session, user, isLoading: isLoadingUser } = useUser();
   const {
     data: overlay,
     isLoading: isLoadingOverlay,
@@ -22,7 +22,6 @@ export default function Settings() {
   } = useAPI(
     user?.overlay_id ? "/api/overlays/" + user?.overlay_id : null
   );
-  const { session } = useGetSession();
 
   const [formData, setFormData] = useState({});
   const {
@@ -218,7 +217,7 @@ export default function Settings() {
           <title>Ko-fi Custom Alerts - Settings</title>
         </Head>
 
-        <Navigation user={user} isLoading={isLoading} />
+        <Navigation />
 
         <main>
           <h1>Ko-fi Custom Alerts - Settings</h1>
@@ -237,7 +236,7 @@ export default function Settings() {
         </title>
       </Head>
 
-      <Navigation user={user} isLoading={isLoading} />
+      <Navigation />
 
       <main>
         <h2>Settings</h2>
@@ -583,17 +582,5 @@ export default function Settings() {
 }
 
 export async function getServerSideProps({ req }) {
-  const { user: authorisedUser } =
-    await supabase.auth.api.getUserByCookie(req);
-
-  if (!authorisedUser) {
-    // If no user, redirect to index.
-    return {
-      props: {},
-      redirect: { destination: "/login", permanent: false },
-    };
-  }
-
-  // If there is a user, return it.
-  return { props: { authorisedUser } };
+  return redirectAuthedPages(req);
 }

@@ -1,8 +1,8 @@
 import useSWR from "swr";
 
-import useGetSession from "./useGetSession";
+import { useUser } from "../components/UserContext/UserContext";
 
-async function fetcher(route, token) {
+export async function fetcher(route, token) {
   const response = await fetch(route, {
     method: "GET",
     headers: new Headers({
@@ -29,8 +29,8 @@ async function fetcher(route, token) {
   return json || null;
 }
 
-function getSWRFirstParam(endpoint, session, isGettingSession) {
-  if (!endpoint || isGettingSession) {
+function getSWRFirstParam(endpoint, session, isLoading) {
+  if (!endpoint || isLoading) {
     return null;
   }
 
@@ -46,13 +46,9 @@ function getSWRFirstParam(endpoint, session, isGettingSession) {
 }
 
 export default function useAPI(endpoint, options = {}) {
-  const { session, isGettingSession } = useGetSession();
+  const { session, isLoading } = useUser();
 
-  const firstParam = getSWRFirstParam(
-    endpoint,
-    session,
-    isGettingSession
-  );
+  const firstParam = getSWRFirstParam(endpoint, session, isLoading);
   const { data, error, mutate, isValidating } = useSWR(
     firstParam,
     fetcher,
@@ -62,7 +58,7 @@ export default function useAPI(endpoint, options = {}) {
   return {
     data,
     error,
-    isLoading: !data && !error,
+    isLoading: typeof data === "undefined" && !error,
     isValidating,
     mutate,
   };
