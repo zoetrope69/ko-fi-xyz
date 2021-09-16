@@ -25,13 +25,13 @@ export default function GettingStarted() {
     return (
       <div className="wrapper">
         <Head>
-          <title>Ko-fi Custom Alerts - Getting Started</title>
+          <title>Ko-fi XYZ - Getting Started</title>
         </Head>
 
         <Navigation />
 
         <main>
-          <h1>Ko-fi Custom Alerts - Getting Started</h1>
+          <h1>Ko-fi XYZ - Getting Started</h1>
 
           <p>Something went wrong. Try logging out...</p>
         </main>
@@ -42,7 +42,7 @@ export default function GettingStarted() {
   return (
     <div className="wrapper">
       <Head>
-        <title>Ko-fi Custom Alerts - Getting Started</title>
+        <title>Ko-fi XYZ - Getting Started</title>
       </Head>
 
       <Navigation />

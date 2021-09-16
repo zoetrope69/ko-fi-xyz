@@ -40,7 +40,7 @@ export default function Dashboard() {
     return (
       <>
         <Head>
-          <title>Ko-fi Custom Alerts - Dashboard (Popped Out)</title>
+          <title>Ko-fi XYZ - Dashboard (Popped Out)</title>
         </Head>
 
         {isLoading && (
@@ -70,7 +70,7 @@ export default function Dashboard() {
   return (
     <div className="wrapper">
       <Head>
-        <title>Ko-fi Custom Alerts - Dashboard</title>
+        <title>Ko-fi XYZ - Dashboard</title>
       </Head>
 
       <Navigation user={user} isLoading={isLoading} />

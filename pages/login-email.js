@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -37,10 +38,13 @@ export default function Login() {
   return (
     <main>
       <Head>
-        <title>Ko-fi Custom Alerts - Login/Signup with Email</title>
+        <title>Ko-fi XYZ - Login/Signup with Email</title>
       </Head>
 
-      <h1>Ko-fi Custom Alerts</h1>
+      <h1>
+        <Image src="/ko-fi-logo.png" alt="" width="30" height="30" />{" "}
+        Ko-fi XYZ
+      </h1>
 
       <h2>Login/Signup with Email</h2>
 

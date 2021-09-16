@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -42,11 +43,13 @@ export default function Auth() {
   return (
     <main>
       <Head>
-        <title>Ko-fi Custom Alerts - Logging in...</title>
+        <title>Ko-fi XYZ - Logging in...</title>
       </Head>
 
-      <h1>Ko-fi Custom Alerts</h1>
-
+      <h1>
+        <Image src="/ko-fi-logo.png" alt="" width="30" height="30" />{" "}
+        Ko-fi XYZ
+      </h1>
       <p>Logging in...</p>
     </main>
   );

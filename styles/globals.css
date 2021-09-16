@@ -61,6 +61,12 @@ body.theme--light {
   --color-alert-list-item-border: var(--color-pink);
 }
 
+hr {
+  margin: 1em 0;
+  border: 0;
+  border-bottom: 2px solid var(--color-pink);
+}
+
 a {
   color: var(--color-primary);
 }

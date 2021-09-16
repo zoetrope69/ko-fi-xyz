@@ -214,13 +214,13 @@ export default function Settings() {
     return (
       <div className="wrapper">
         <Head>
-          <title>Ko-fi Custom Alerts - Settings</title>
+          <title>Ko-fi XYZ - Settings</title>
         </Head>
 
         <Navigation />
 
         <main>
-          <h1>Ko-fi Custom Alerts - Settings</h1>
+          <h1>Ko-fi XYZ - Settings</h1>
 
           <p>Something went wrong. Try logging out...</p>
         </main>
@@ -231,9 +231,7 @@ export default function Settings() {
   return (
     <div className="wrapper">
       <Head>
-        <title>
-          {isFormUnsaved ? "* " : ""}Ko-fi Custom Alerts - Settings
-        </title>
+        <title>{isFormUnsaved ? "* " : ""}Ko-fi XYZ - Settings</title>
       </Head>
 
       <Navigation />

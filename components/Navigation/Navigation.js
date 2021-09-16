@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import classNames from "classnames";
 
 import { useTheme } from "../ThemeProvider";
@@ -9,6 +10,7 @@ import Button from "../Button/Button";
 import styles from "./Navigation.module.css";
 
 export default function Navigation() {
+  const router = useRouter();
   const { theme, setTheme, isDarkMode } = useTheme();
   const { user, isLoading } = useUser();
 
@@ -31,7 +33,7 @@ export default function Navigation() {
           width="30"
           height="30"
         />{" "}
-        <h1 className={styles.NavTitleText}>Ko-fi Custom Alerts</h1>
+        <h1 className={styles.NavTitleText}>Ko-fi XYZ</h1>
       </div>
 
       {!isLoading && (

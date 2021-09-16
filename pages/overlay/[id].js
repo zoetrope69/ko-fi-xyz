@@ -102,7 +102,7 @@ export default function Overlay() {
   return (
     <>
       <Head>
-        <title>Ko-fi Custom Alerts - Overlay</title>
+        <title>Ko-fi XYZ - Overlay</title>
       </Head>
 
       <Alert

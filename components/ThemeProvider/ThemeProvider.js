@@ -11,7 +11,7 @@ export const ThemeContext = createContext({
   isDarkMode: true,
 });
 
-const LOCALSTORAGE_KEY = "ko-fi-alerts.theme";
+const LOCALSTORAGE_KEY = "ko-fi-xyz.theme";
 
 function getIsDarkMode({ theme, isCSSDarkMode }) {
   if (theme === "system") {

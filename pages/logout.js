@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -51,10 +52,13 @@ export default function Logout() {
   return (
     <main>
       <Head>
-        <title>Ko-fi Custom Alerts - Logging out...</title>
+        <title>Ko-fi XYZ - Logging out...</title>
       </Head>
 
-      <h1>Ko-fi Custom Alerts</h1>
+      <h1>
+        <Image src="/ko-fi-logo.png" alt="" width="30" height="30" />{" "}
+        Ko-fi XYZ
+      </h1>
 
       <p>Logging out...</p>
     </main>
