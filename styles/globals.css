@@ -61,6 +61,11 @@ body.theme--light {
   --color-alert-list-item-border: var(--color-pink);
 }
 
+audio {
+  margin-top: 0.5em;
+  width: 75%;
+}
+
 hr {
   margin: 1em 0;
   border: 0;
