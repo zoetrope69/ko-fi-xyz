@@ -1,8 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import classNames from "classnames";
 
 import { getMoney } from "../../helpers/get-money";
+import { supabase } from "../../helpers/supabase-clientside";
+import logger from "../../helpers/logger";
 
 import styles from "./Alert.module.css";
 
@@ -13,16 +15,35 @@ export default function Alert({
   currentAlert,
   isRemoving,
 }) {
+  const [alertAudio, setAlertAudio] = useState();
   const { type, from_name, amount, currency, message } =
     currentAlert.kofi_data;
 
   useEffect(() => {
-    if (settings?.canPlaySounds && currentAlert) {
-      setTimeout(() => {
-        new Audio("/jingle.wav").play();
-      }, ANIMATION_IN_DURATION_MS * 0.5); // a little before it arrives in
+    let audioUrl = "/jingle.wav";
+
+    if (settings?.customSoundUrl) {
+      const { publicURL, error } = supabase.storage
+        .from("sounds")
+        .getPublicUrl(settings?.customSoundUrl);
+
+      if (error) {
+        logger.error(error.message);
+      } else {
+        audioUrl = publicURL;
+      }
     }
-  }, [currentAlert, settings]);
+
+    const newAudio = new Audio(audioUrl);
+    newAudio.preload = "auto";
+    setAlertAudio(newAudio);
+  }, [settings?.customSoundUrl]);
+
+  useEffect(() => {
+    if (settings?.canPlaySounds && currentAlert?.id && alertAudio) {
+      alertAudio.play();
+    }
+  }, [alertAudio, currentAlert?.id, settings]);
 
   function getMessageText() {
     if (settings?.messageText) {

@@ -9,7 +9,12 @@ import Preview from "../components/Preview/Preview";
 import Button from "../components/Button/Button";
 import useAPI from "../hooks/useAPI";
 
+import {
+  updateCustomSounds,
+  SettingsCustomSound,
+} from "../components/SettingsCustomSound";
 import { redirectAuthedPages } from "../helpers/redirect-auth-pages";
+import logger from "../helpers/logger";
 
 export default function Settings() {
   const [isFormUnsaved, setIsFormUnsaved] = useState(false);
@@ -23,9 +28,14 @@ export default function Settings() {
     user?.overlay_id ? "/api/overlays/" + user?.overlay_id : null
   );
 
+  const [customSoundFileToUpload, setCustomSoundFileToUpload] =
+    useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const [formData, setFormData] = useState({});
   const {
     canPlaySounds,
+    customSoundUrl,
     messageText,
     messageDuration,
     messageBackgroundColor,
@@ -93,6 +103,19 @@ export default function Settings() {
 
     if (user?.overlay_id) {
       setIsSaving(true);
+      try {
+        await updateCustomSounds({
+          customSoundUrl,
+          customSoundFileToUpload,
+          setCustomSoundFileToUpload,
+          user,
+        });
+      } catch (e) {
+        logger.error(e.message);
+
+        setIsSaving(false);
+        return;
+      }
       await updateOverlaySettings(user?.overlay_id, formData);
       setIsSaving(false);
       setIsFormUnsaved(false);
@@ -115,6 +138,16 @@ export default function Settings() {
       };
     });
   }
+
+  const handleCustomSoundChange = (newCustomSoundUrl, file) => {
+    setCustomSoundFileToUpload(file);
+    setFormData((previousFormData) => {
+      return {
+        ...previousFormData,
+        customSoundUrl: newCustomSoundUrl,
+      };
+    });
+  };
 
   const handleMessageTextChange = (event) => {
     event.preventDefault();
@@ -245,26 +278,44 @@ export default function Settings() {
           <>
             {user && (
               <>
+                {errorMessage && (
+                  <p className="ErrorMessage">{errorMessage}</p>
+                )}
+
                 <form>
-                  <div>
-                    <label htmlFor="can-play-sounds">
-                      Play Sound
-                    </label>
-                    <span className="Hint">
-                      Play a sound when there is a notification
-                    </span>
-                    <select
-                      id="can-play-sounds"
-                      name="can-play-sounds"
-                      onChange={handleCanPlaySoundsChange}
-                      value={canPlaySounds ? "play" : "no-play"}
-                      disabled={isSaving}
-                    >
-                      <option value="no-play">No sounds</option>
-                      <option value="play">Will play sounds</option>
-                      );
-                    </select>
-                  </div>
+                  <fieldset>
+                    <legend>Sounds</legend>
+                    <div>
+                      <label htmlFor="can-play-sounds">
+                        Play Sound
+                      </label>
+                      <span className="Hint">
+                        Play a sound when there is a notification
+                      </span>
+                      <select
+                        id="can-play-sounds"
+                        name="can-play-sounds"
+                        onChange={handleCanPlaySoundsChange}
+                        value={canPlaySounds ? "play" : "no-play"}
+                        disabled={isSaving}
+                      >
+                        <option value="no-play">No sounds</option>
+                        <option value="play">Will play sounds</option>
+                      </select>
+                    </div>
+
+                    <SettingsCustomSound
+                      userId={user?.id}
+                      customSoundUrl={customSoundUrl}
+                      handleCustomSoundChange={
+                        handleCustomSoundChange
+                      }
+                      customSoundFileToUpload={
+                        customSoundFileToUpload
+                      }
+                      setErrorMessage={setErrorMessage}
+                    />
+                  </fieldset>
 
                   <fieldset>
                     <legend>Message</legend>
@@ -286,6 +337,7 @@ export default function Settings() {
                         value={messageText}
                         onChange={handleMessageTextChange}
                         disabled={isSaving}
+                        required={true}
                       />
                     </div>
 
@@ -303,6 +355,7 @@ export default function Settings() {
                         onChange={handleMessageDurationChange}
                         value={messageDuration || "5"}
                         disabled={isSaving}
+                        required={true}
                       >
                         {["5", "10", "15", "20"].map((value) => {
                           return (
@@ -420,6 +473,7 @@ export default function Settings() {
                         value={messageSpacingVertical || "50"}
                         onChange={handleMessageSpacingVertical}
                         disabled={isSaving}
+                        required={true}
                       />
                     </div>
                   </fieldset>
@@ -440,6 +494,7 @@ export default function Settings() {
                         onChange={handleMessageAnimationType}
                         value={messageAnimationType || "slide"}
                         disabled={isSaving}
+                        required={true}
                       >
                         <option value="slide">Slide in/out</option>
                         <option value="fade">Fade in/out</option>
