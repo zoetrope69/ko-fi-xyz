@@ -30,7 +30,7 @@ export default function Settings() {
 
   const [customSoundFileToUpload, setCustomSoundFileToUpload] =
     useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({});
   const {
@@ -279,7 +279,7 @@ export default function Settings() {
             {user && (
               <>
                 {errorMessage && (
-                  <p style={{ color: "red" }}>{errorMessage}</p>
+                  <p className="ErrorMessage">{errorMessage}</p>
                 )}
 
                 <form>
@@ -313,7 +313,6 @@ export default function Settings() {
                       customSoundFileToUpload={
                         customSoundFileToUpload
                       }
-                      errorMessage={errorMessage}
                       setErrorMessage={setErrorMessage}
                     />
                   </fieldset>

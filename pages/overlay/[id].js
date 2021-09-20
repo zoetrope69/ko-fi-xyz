@@ -71,7 +71,7 @@ export default function Overlay() {
 
   if (isOldOverlay) {
     return (
-      <p className="OverlayErrorMessage">
+      <p className="ErrorMessage">
         Old overlay version. Go back to https://ko-fi.xyz and sign-up
         again. Sorry!
       </p>
@@ -85,14 +85,12 @@ export default function Overlay() {
   if (error) {
     logger.error(error);
     return (
-      <p className="OverlayErrorMessage">
-        Error: Something went wrong
-      </p>
+      <p className="ErrorMessage">Error: Something went wrong</p>
     );
   }
 
   if (!overlay.id) {
-    return <p className="OverlayErrorMessage">Error: No overlay</p>;
+    return <p className="ErrorMessage">Error: No overlay</p>;
   }
 
   if (!currentAlert?.kofi_data) {

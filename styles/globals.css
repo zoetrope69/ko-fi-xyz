@@ -62,7 +62,8 @@ body.theme--light {
 }
 
 audio {
-  margin-top: 0.5em;
+  display: block;
+  margin: 0.5em 0;
   width: 75%;
 }
 
@@ -132,6 +133,14 @@ label {
   font-size: 0.85em;
   color: var(--color-disabled);
   line-height: 1em;
+}
+
+input[type="file"] {
+  max-width: 100%;
+  padding: 0.5em;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  font-size: 0.85em;
 }
 
 select,
@@ -229,9 +238,8 @@ aside {
   padding: 1em;
 }
 
-.OverlayErrorMessage {
-  background: var(--color-white);
-  margin: 1em;
+.ErrorMessage {
+  background: var(--color-background);
   padding: 1em;
   border-radius: 5px;
   border: 5px solid var(--color-red);
