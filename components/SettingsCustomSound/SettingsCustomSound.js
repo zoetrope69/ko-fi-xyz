@@ -15,9 +15,11 @@ const INITIAL_TEMPORARY_SOUND_FILE = {
 
 const VALID_MIME_TYPES = {
   "audio/mpeg": "mp3",
+  "audio/wav": "wav",
   "audio/vnd.wav": "wav",
   "audio/x-ms-wma": "wma",
   "audio/ogg": "ogg",
+  "video/ogg": "ogg",
 };
 
 async function uploadCustomSounds({
