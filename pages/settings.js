@@ -498,6 +498,9 @@ export default function Settings() {
                       >
                         <option value="slide">Slide in/out</option>
                         <option value="fade">Fade in/out</option>
+                        <option value="swipe">
+                          Swipe in/out (Slide with no fade)
+                        </option>
                       </select>
                     </div>
 

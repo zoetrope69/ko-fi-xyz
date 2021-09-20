@@ -364,3 +364,75 @@ aside {
     transform: translateY(100%);
   }
 }
+
+@keyframes swipe-left-in {
+  from {
+    transform: translateX(-150%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes swipe-left-out {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-150%);
+  }
+}
+
+@keyframes swipe-top-in {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+@keyframes swipe-top-out {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes swipe-right-in {
+  from {
+    transform: translateX(100vw);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes swipe-right-out {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes swipe-bottom-in {
+  from {
+    transform: translateY(100vh);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes swipe-bottom-out {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
