@@ -6,11 +6,6 @@ import logger from "../helpers/logger";
 const ALERT_DURATION_MS = 5000;
 const ALERT_DELAY_LENGTH_MS = 1000;
 
-async function getAlerts(overlayId) {
-  const response = await fetch("/api/alerts?overlayId=" + overlayId);
-  return response.json();
-}
-
 async function removeAlert(id) {
   return fetch("/api/alerts", {
     method: "PUT",
@@ -92,30 +87,7 @@ export default function useAlertQueue({
   useEffect(() => {
     let alertsSubscription;
 
-    async function getExistingAlerts() {
-      let alerts;
-      try {
-        alerts = await getAlerts(overlayId);
-      } catch (error) {
-        return logger.error(error.message || error);
-      }
-
-      if (alerts.error) {
-        return logger.error(alerts.error);
-      }
-
-      if (!alerts || alerts.length === 0) {
-        return;
-      }
-
-      alerts.forEach((alert) => {
-        addToQueue(alert);
-      });
-    }
-
     if (overlayId) {
-      getExistingAlerts();
-
       alertsSubscription = supabase
         .from(`alerts:overlay_id=eq.${overlayId}`)
         .on("INSERT", (payload) => {
