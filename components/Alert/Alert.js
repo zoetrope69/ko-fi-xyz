@@ -8,6 +8,14 @@ import logger from "../../helpers/logger";
 
 import styles from "./Alert.module.css";
 
+async function getTextToSpeechAudioURL(message) {
+  const response = await fetch(
+    `/api/text-to-speech?message=${message}`
+  );
+  const { url } = await response.json();
+  return url || null;
+}
+
 const ANIMATION_IN_DURATION_MS = 1000;
 
 export default function Alert({
@@ -36,14 +44,39 @@ export default function Alert({
 
     const newAudio = new Audio(audioUrl);
     newAudio.preload = "auto";
-    setAlertAudio(newAudio);
+
+    const audioListenerHandler = () => {
+      setAlertAudio(newAudio);
+    };
+
+    newAudio.addEventListener("loadeddata", audioListenerHandler);
+
+    return () => {
+      newAudio.removeEventListener(
+        "loadeddata",
+        audioListenerHandler
+      );
+    };
   }, [settings?.customSoundUrl]);
 
   useEffect(() => {
     if (settings?.canPlaySounds && currentAlert?.id && alertAudio) {
       alertAudio.play();
+
+      if (
+        settings?.usesTextToSpeech &&
+        currentAlert?.kofi_data?.message
+      ) {
+        setTimeout(async () => {
+          const audioUrl = await getTextToSpeechAudioURL(
+            currentAlert?.kofi_data?.message
+          );
+          const newAudio = new Audio(audioUrl);
+          newAudio.play();
+        }, alertAudio.duration * 1000); // wait for first alert to play
+      }
     }
-  }, [alertAudio, currentAlert?.id, settings]);
+  }, [alertAudio, currentAlert, settings]);
 
   function getMessageText() {
     if (settings?.messageText) {

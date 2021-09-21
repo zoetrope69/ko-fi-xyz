@@ -138,6 +138,7 @@ label {
 input[type="file"] {
   max-width: 100%;
   padding: 0.5em;
+  margin-bottom: 0.5em;
   background: rgba(0, 0, 0, 0.25);
   border-radius: 5px;
   font-size: 0.85em;
