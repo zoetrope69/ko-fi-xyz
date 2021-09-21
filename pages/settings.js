@@ -36,6 +36,7 @@ export default function Settings() {
   const {
     canPlaySounds,
     customSoundUrl,
+    usesTextToSpeech,
     messageText,
     messageDuration,
     messageBackgroundColor,
@@ -139,6 +140,11 @@ export default function Settings() {
     });
   }
 
+  const handleCanPlaySoundsChange = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("canPlaySounds", event, "play");
+  };
+
   const handleCustomSoundChange = (newCustomSoundUrl, file) => {
     setCustomSoundFileToUpload(file);
     setFormData((previousFormData) => {
@@ -149,6 +155,11 @@ export default function Settings() {
     });
   };
 
+  const handleUsesTextToSpeechChange = (event) => {
+    event.preventDefault();
+    updateFormDataProperty("usesTextToSpeech", event, "play");
+  };
+
   const handleMessageTextChange = (event) => {
     event.preventDefault();
     updateFormDataProperty("messageText", event);
@@ -157,11 +168,6 @@ export default function Settings() {
   const handleMessageDurationChange = (event) => {
     event.preventDefault();
     updateFormDataProperty("messageDuration", event);
-  };
-
-  const handleCanPlaySoundsChange = (event) => {
-    event.preventDefault();
-    updateFormDataProperty("canPlaySounds", event, "play");
   };
 
   const handleMessageBackgroundColorChange = (event) => {
@@ -285,6 +291,7 @@ export default function Settings() {
                 <form>
                   <fieldset>
                     <legend>Sounds</legend>
+
                     <div>
                       <label htmlFor="can-play-sounds">
                         Play Sound
@@ -315,6 +322,28 @@ export default function Settings() {
                       }
                       setErrorMessage={setErrorMessage}
                     />
+
+                    <div>
+                      <label htmlFor="uses-text-to-speech">
+                        Text-to-speech
+                      </label>
+                      <span className="Hint">
+                        Have lovely Brian read message out with
+                        text-to-speech
+                      </span>
+                      <select
+                        id="uses-text-to-speech"
+                        name="uses-text-to-speech"
+                        onChange={handleUsesTextToSpeechChange}
+                        value={usesTextToSpeech ? "play" : "no-play"}
+                        disabled={isSaving}
+                      >
+                        <option value="no-play">
+                          No text-to-speech
+                        </option>
+                        <option value="play">Text-to-speech</option>
+                      </select>
+                    </div>
                   </fieldset>
 
                   <fieldset>
