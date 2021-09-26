@@ -21,7 +21,7 @@ export default function GettingStarted() {
   const domain = getDomain();
   const { user, isLoading } = useUser();
 
-  if (!isLoading && !user?.email) {
+  if (!isLoading && !user?.id) {
     return (
       <div className="wrapper">
         <Head>

@@ -61,14 +61,14 @@ export default function Login() {
         disabled={isLoading}
         isTwitch
       >
-        Login/signup with Twitch
+        Continue with Twitch
       </Button>
 
       <p>Or</p>
 
       <Link href={`/login-email${queryString}`} passHref>
         <Button isSecondary disabled={isLoading}>
-          Login/signup with Email
+          Continue with Email
         </Button>
       </Link>
     </main>

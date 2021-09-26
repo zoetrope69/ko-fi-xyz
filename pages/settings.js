@@ -249,7 +249,7 @@ export default function Settings() {
     });
   };
 
-  if (!isLoading && !user?.email) {
+  if (!isLoading && !user?.id) {
     return (
       <div className="wrapper">
         <Head>

@@ -1,4 +1,5 @@
 .Nav {
+  min-width: 25%;
   padding: 1em;
   background: var(--color-background-nav);
   border-bottom: 6px solid var(--color-pink);
@@ -33,7 +34,6 @@
 .NavTitle {
   display: flex;
   align-items: center;
-  margin-bottom: 1em;
 }
 
 .NavTitleText {
@@ -43,18 +43,13 @@
 }
 
 .NavUserInfo {
-  display: flex;
-  align-items: center;
   font-size: 0.85em;
-}
-
-.NavUserInfo p {
-  margin: 0;
+  margin-top: 1em;
+  margin-bottom: 3em;
 }
 
 .NavUserInfo button {
   margin: 0;
-  margin-left: 1em;
 }
 
 .NavSupport {
@@ -65,7 +60,7 @@
   font-size: 0.75em;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 900px) {
   .Nav {
     position: sticky;
     top: 0;
