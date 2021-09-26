@@ -38,7 +38,7 @@ export default function Login() {
   return (
     <main>
       <Head>
-        <title>Ko-fi XYZ - Login/Signup with Email</title>
+        <title>Ko-fi XYZ - Continue with Email</title>
       </Head>
 
       <h1>
@@ -46,7 +46,7 @@ export default function Login() {
         Ko-fi XYZ
       </h1>
 
-      <h2>Login/Signup with Email</h2>
+      <h2>Continue with Email</h2>
 
       {hasEmailBeenSent ? (
         <p>Check your email!</p>

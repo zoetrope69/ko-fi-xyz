@@ -12,7 +12,7 @@ import styles from "./Navigation.module.css";
 export default function Navigation() {
   const router = useRouter();
   const { theme, setTheme, isDarkMode } = useTheme();
-  const { user, isLoading } = useUser();
+  const { isLoading } = useUser();
 
   const handleThemeChange = (event) => {
     event.preventDefault();
@@ -36,18 +36,6 @@ export default function Navigation() {
         <h1 className={styles.NavTitleText}>Ko-fi XYZ</h1>
       </div>
 
-      {!isLoading && (
-        <div className={styles.NavUserInfo}>
-          {user && <p>{user.email}</p>}
-
-          <Link href="/logout" passHref>
-            <Button isSmall isSecondary>
-              Logout
-            </Button>
-          </Link>
-        </div>
-      )}
-
       <ul className={styles.NavList}>
         {[
           { url: "/getting-started", text: "Getting Started" },
@@ -66,6 +54,16 @@ export default function Navigation() {
           );
         })}
       </ul>
+
+      {!isLoading && (
+        <div className={styles.NavUserInfo}>
+          <Link href="/logout" passHref>
+            <Button isSmall isSecondary>
+              Logout
+            </Button>
+          </Link>
+        </div>
+      )}
 
       <div className={styles.NavBottom}>
         <div>

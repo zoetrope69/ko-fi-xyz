@@ -32,5 +32,10 @@ export default async function handler(request, response) {
     return response.status(400).json({ error: error.message });
   }
 
-  response.json(user || {});
+  if (!user) {
+    return response.json({});
+  }
+
+  // strip out email for safety
+  response.json({ ...user, email: undefined });
 }

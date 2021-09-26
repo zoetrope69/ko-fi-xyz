@@ -246,7 +246,7 @@ aside {
   border: 5px solid var(--color-red);
 }
 
-@media (min-width: 800px) {
+@media (min-width: 900px) {
   .wrapper {
     flex-direction: row;
   }

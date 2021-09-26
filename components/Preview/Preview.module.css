@@ -25,7 +25,8 @@
   transform-origin: top left;
   transform: scale(0.5);
 }
-@media (min-width: 800px) {
+
+@media (min-width: 900px) {
   .PreviewContainer {
     width: 30vw;
   }
