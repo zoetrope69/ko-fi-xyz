@@ -6,10 +6,10 @@ import React, {
 } from "react";
 import useSWR from "swr";
 
-import { supabase } from "../../helpers/supabase-clientside";
+import { supabase } from "../../helpers/supabase-clientside.js";
 
-import { fetcher } from "../../hooks/useAPI";
-import logger from "../../helpers/logger";
+import { fetcher } from "../../hooks/useAPI.js";
+import logger from "../../helpers/logger.js";
 
 export const UserContext = createContext({
   user: null,

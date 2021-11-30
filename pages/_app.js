@@ -1,5 +1,5 @@
-import { UserProvider } from "../components/UserProvider";
-import { ThemeProvider } from "../components/ThemeProvider";
+import { UserProvider } from "../components/UserProvider/UserProvider.js";
+import { ThemeProvider } from "../components/ThemeProvider/ThemeProvider.js";
 
 import "../styles/globals.css";
 

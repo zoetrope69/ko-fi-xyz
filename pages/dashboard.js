@@ -2,17 +2,19 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import Button from "../components/Button/Button";
-import Navigation from "../components/Navigation/Navigation";
-import AlertsList from "../components/AlertsList/AlertsList";
+import Button from "../components/Button/Button.js";
+import Navigation from "../components/Navigation/Navigation.js";
+import AlertsList from "../components/AlertsList/AlertsList.js";
 
-import { useUser } from "../components/UserProvider";
+import { useUser } from "../components/UserProvider/UserProvider.js";
 
 import {
   getRedirectURL,
   redirectAuthedPages,
-} from "../helpers/redirect-auth-pages";
+} from "../helpers/redirect-auth-pages.js";
 import { useEffect, useState } from "react";
+
+import styles from "./dashboard.module.css";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -86,49 +88,51 @@ export default function Dashboard() {
           <>
             <h2>Alerts</h2>
 
-            <AlertsList
-              overlayId={user?.overlay_id}
-              areTestAlertsHidden={areTestAlertsHidden}
-            />
+            <p>
+              This is only a list of alerts while using the webhook
+              integration.{" "}
+              <Link href="https://ko-fi.com/manage/supportreceived">
+                Go to Ko-fi to see everything.
+              </Link>
+            </p>
+
+            <p>
+              You can use the{" "}
+              <Link href="/dashboard?popOut=true">
+                &lsquo;popout &rsquo; version
+              </Link>{" "}
+              of this dashboard in OBS. Check out Andilippi &apos;s
+              video on{" "}
+              <Link href="https://www.youtube.com/watch?v=J4YJCXBshuw">
+                how to add custom browser docks
+              </Link>
+              .
+            </p>
+
+            <Link href="/dashboard?popOut=true" passHref>
+              <Button isSmall isSecondary>
+                Popout for OBS
+              </Button>
+            </Link>
+
+            <Button
+              isSmall
+              isSecondary
+              style={{ marginLeft: "1em", marginBottom: "2em" }}
+              onClick={handleHideTestAlertsClick}
+            >
+              {areTestAlertsHidden ? "Show" : "Hide"} test alerts
+            </Button>
           </>
         )}
       </main>
       <aside>
-        <p>
-          This is only a list of alerts while using the webhook
-          integration.{" "}
-          <Link href="https://ko-fi.com/manage/supportreceived">
-            Go to Ko-fi to see everything.
-          </Link>
-        </p>
-
-        <p>
-          You can use the{" "}
-          <Link href="/dashboard?popOut=true">
-            &lsquo;popout &rsquo; version
-          </Link>{" "}
-          of this dashboard in OBS. Check out Andilippi &apos;s video
-          on{" "}
-          <Link href="https://www.youtube.com/watch?v=J4YJCXBshuw">
-            how to add custom browser docks
-          </Link>
-          .
-        </p>
-
-        <Link href="/dashboard?popOut=true" passHref>
-          <Button isSmall isSecondary>
-            Popout for OBS
-          </Button>
-        </Link>
-
-        <Button
-          isSmall
-          isSecondary
-          style={{ marginLeft: "1em", marginBottom: "2em" }}
-          onClick={handleHideTestAlertsClick}
-        >
-          {areTestAlertsHidden ? "Show" : "Hide"} test alerts
-        </Button>
+        <div className={styles.AlertsListWrapper}>
+          <AlertsList
+            overlayId={user?.overlay_id}
+            areTestAlertsHidden={areTestAlertsHidden}
+          />
+        </div>
       </aside>
     </div>
   );

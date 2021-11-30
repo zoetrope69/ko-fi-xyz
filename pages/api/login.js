@@ -2,9 +2,9 @@ import {
   createUser,
   getUserById,
   getAuthorizedUserByToken,
-} from "./helpers/supabase";
+} from "./helpers/supabase.js";
 
-import logger from "../../helpers/logger";
+import logger from "../../helpers/logger.js";
 
 function getToken(request) {
   if (!request.headers?.authorization) {

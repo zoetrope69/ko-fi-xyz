@@ -1,15 +1,14 @@
 import { useRouter } from "next/router";
 import Head from "next/head";
-
-import Alert from "../../components/Alert/Alert";
-import useAlertQueue from "../../hooks/useAlertQueue";
-import useAPI from "../../hooks/useAPI";
-
-import { supabase } from "../../helpers/supabase-clientside";
-
 import { useEffect, useState } from "react";
 
-import logger from "../../helpers/logger";
+import Alert from "../../components/Alert/Alert.js";
+import useAlertQueue from "../../hooks/useAlertQueue.js";
+import useAPI from "../../hooks/useAPI.js";
+
+import { supabase } from "../../helpers/supabase-clientside.js";
+
+import logger from "../../helpers/logger.js";
 
 const TEMPORARY_OVERLAY_IDS_TO_BE_MOVED = [
   "308659011934224969",

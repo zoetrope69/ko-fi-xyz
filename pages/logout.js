@@ -3,9 +3,9 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { useUser } from "../components/UserProvider";
-import { supabase, signOut } from "../helpers/supabase-clientside";
-import logger from "../helpers/logger";
+import { useUser } from "../components/UserProvider/UserProvider.js";
+import { supabase, signOut } from "../helpers/supabase-clientside.js";
+import logger from "../helpers/logger.js";
 
 export default function Logout() {
   const router = useRouter();

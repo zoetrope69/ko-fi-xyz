@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Head from "next/head";
 
-import { useUser } from "../components/UserProvider";
-import Button from "../components/Button/Button";
-import Navigation from "../components/Navigation/Navigation";
+import { useUser } from "../components/UserProvider/UserProvider.js";
+import Button from "../components/Button/Button.js";
+import Navigation from "../components/Navigation/Navigation.js";
 
-import { redirectAuthedPages } from "../helpers/redirect-auth-pages";
+import { redirectAuthedPages } from "../helpers/redirect-auth-pages.js";
 
 const DEFAULT_DOMAIN = "https://ko-fi.xyz";
 
@@ -96,7 +96,11 @@ export default function GettingStarted() {
                   <li>
                     Head over to the{" "}
                     <Link href="/settings">Settings</Link> and tweak
-                    your alert
+                    things
+                  </li>
+                  <li>
+                    There is a <Link href="/settings">Dashboard</Link>{" "}
+                    with instructions to add a list of alerts into OBS
                   </li>
                 </ol>
               </>

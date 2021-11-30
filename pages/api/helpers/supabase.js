@@ -3,9 +3,8 @@ import { v4 as uuid } from "uuid";
 const { SUPABASE_SERVICE_KEY, NEXT_PUBLIC_SUPABASE_URL } =
   process.env;
 
-const { createClient } = require("@supabase/supabase-js");
-
-import logger from "../../../helpers/logger";
+import { createClient } from "@supabase/supabase-js";
+import logger from "../../../helpers/logger.js";
 
 export const supabase = createClient(
   NEXT_PUBLIC_SUPABASE_URL,
@@ -91,6 +90,8 @@ export async function createUser(id, email) {
 }
 
 export async function getAuthorizedUserByToken(token) {
+  // not in supabase's docs directly because
+  // they use https://github.com/netlify/gotrue
   return supabase.auth.api.getUser(token);
 }
 
@@ -108,7 +109,7 @@ export async function createOverlay() {
   const data = {
     settings: {
       canPlaySounds: false,
-      messageText: "{type} of {amount} from {from_name} - {message}",
+      messageText: "{type} of {amount} from {from_name} {message}",
       messageDuration: "5",
       messageBackgroundColor: "#f8befc",
       messageTextColor: "#840042",

@@ -3,9 +3,9 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import classNames from "classnames";
 
-import { useTheme } from "../ThemeProvider";
-import { useUser } from "../UserProvider";
-import Button from "../Button/Button";
+import { useTheme } from "../ThemeProvider/ThemeProvider.js";
+import { useUser } from "../UserProvider/UserProvider.js";
+import Button from "../Button/Button.js";
 
 import styles from "./Navigation.module.css";
 

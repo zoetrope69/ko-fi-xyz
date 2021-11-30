@@ -2,9 +2,9 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 
-import Alert from "../components/Alert/Alert";
-import Button from "../components/Button/Button";
-import Preview from "../components/Preview/Preview";
+import Alert from "../components/Alert/Alert.js";
+import Button from "../components/Button/Button.js";
+import Preview from "../components/Preview/Preview.js";
 
 export default function Home() {
   return (

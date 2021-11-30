@@ -1,7 +1,10 @@
 import faker from "faker";
-import { getUserByWebhookId, createAlert } from "../helpers/supabase";
+import {
+  getUserByWebhookId,
+  createAlert,
+} from "../helpers/supabase.js";
 
-import logger from "../../../helpers/logger";
+import logger from "../../../helpers/logger.js";
 
 export default async function handler(request, response) {
   const { id: webhookId } = request.query;

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 
-import logger from "../../helpers/logger";
-import { supabase } from "../../helpers/supabase-clientside";
+import logger from "../../helpers/logger.js";
+import { supabase } from "../../helpers/supabase-clientside.js";
 
-import Button from "../Button/Button";
+import Button from "../Button/Button.js";
 
 const BYTES_500_K = 500 * 1000;
 
