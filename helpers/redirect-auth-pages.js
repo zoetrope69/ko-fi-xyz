@@ -1,4 +1,4 @@
-import { supabase } from "./supabase-clientside";
+import { supabase } from "./supabase-clientside.js";
 
 export function getRedirectURL(pathName) {
   return `/login?redirectTo=${encodeURIComponent(pathName)}`;

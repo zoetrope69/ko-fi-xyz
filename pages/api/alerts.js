@@ -3,7 +3,7 @@ import {
   getNonShownAlertsByOverlayId,
   getAlertsByOverlayId,
   updateAlert,
-} from "./helpers/supabase";
+} from "./helpers/supabase.js";
 
 async function putHandler(request, response) {
   const { id, data } = request.body;

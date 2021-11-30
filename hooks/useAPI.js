@@ -1,6 +1,6 @@
 import useSWR from "swr";
 
-import { useUser } from "../components/UserProvider";
+import { useUser } from "../components/UserProvider/UserProvider.js";
 
 export async function fetcher(route, token) {
   const response = await fetch(route, {

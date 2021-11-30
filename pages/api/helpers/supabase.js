@@ -3,9 +3,8 @@ import { v4 as uuid } from "uuid";
 const { SUPABASE_SERVICE_KEY, NEXT_PUBLIC_SUPABASE_URL } =
   process.env;
 
-const { createClient } = require("@supabase/supabase-js");
-
-import logger from "../../../helpers/logger";
+import { createClient } from "@supabase/supabase-js";
+import logger from "../../../helpers/logger.js";
 
 export const supabase = createClient(
   NEXT_PUBLIC_SUPABASE_URL,

@@ -1,4 +1,4 @@
-import { getOverlayById } from "../helpers/supabase";
+import { getOverlayById } from "../helpers/supabase.js";
 
 export default async function handler(request, response) {
   const { id: overlayId } = request.query;

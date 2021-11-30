@@ -1,6 +1,6 @@
 {
   "name": "nextjs",
-  "version": "1.1.0",
+  "version": "2.1.0",
   "private": true,
   "engines": {
     "node": "16.13.0"
@@ -17,7 +17,8 @@
     "date-fns": "2.27.0",
     "faker": "5.5.3",
     "get-contrast-ratio": "0.2.1",
-    "next": "11.1.2",
+    "next": "^12.0.4",
+    "node-fetch": "^3.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-virtualized-auto-sizer": "1.0.6",
@@ -27,7 +28,7 @@
   },
   "devDependencies": {
     "eslint": "7.32.0",
-    "eslint-config-next": "11.1.2",
+    "eslint-config-next": "12.0.4",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "4.0.0",
     "prettier": "2.5.0"

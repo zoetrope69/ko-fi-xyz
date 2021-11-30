@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-import { supabase } from "../helpers/supabase-clientside";
+import { supabase } from "../helpers/supabase-clientside.js";
 
 export default function Auth() {
   const router = useRouter();

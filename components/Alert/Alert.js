@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import classNames from "classnames";
 
-import { getMoney } from "../../helpers/get-money";
-import { supabase } from "../../helpers/supabase-clientside";
-import logger from "../../helpers/logger";
+import { getMoney } from "../../helpers/get-money.js";
+import { supabase } from "../../helpers/supabase-clientside.js";
+import logger from "../../helpers/logger.js";
 
 import styles from "./Alert.module.css";
 

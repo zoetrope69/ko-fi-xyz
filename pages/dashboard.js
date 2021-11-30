@@ -2,16 +2,16 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import Button from "../components/Button/Button";
-import Navigation from "../components/Navigation/Navigation";
-import AlertsList from "../components/AlertsList/AlertsList";
+import Button from "../components/Button/Button.js";
+import Navigation from "../components/Navigation/Navigation.js";
+import AlertsList from "../components/AlertsList/AlertsList.js";
 
-import { useUser } from "../components/UserProvider";
+import { useUser } from "../components/UserProvider/UserProvider.js";
 
 import {
   getRedirectURL,
   redirectAuthedPages,
-} from "../helpers/redirect-auth-pages";
+} from "../helpers/redirect-auth-pages.js";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {

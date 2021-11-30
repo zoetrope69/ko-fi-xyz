@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import Head from "next/head";
 
-import { useUser } from "../components/UserProvider";
-import Navigation from "../components/Navigation/Navigation";
-import ColourContrastInfo from "../components/ColourContrastInfo/ColourContrastInfo";
-import Alert from "../components/Alert/Alert";
-import Preview from "../components/Preview/Preview";
-import Button from "../components/Button/Button";
-import useAPI from "../hooks/useAPI";
+import { useUser } from "../components/UserProvider/UserProvider.js";
+import Navigation from "../components/Navigation/Navigation.js";
+import ColourContrastInfo from "../components/ColourContrastInfo/ColourContrastInfo.js";
+import Alert from "../components/Alert/Alert.js";
+import Preview from "../components/Preview/Preview.js";
+import Button from "../components/Button/Button.js";
+import useAPI from "../hooks/useAPI.js";
 
 import {
   updateCustomSounds,
   SettingsCustomSound,
-} from "../components/SettingsCustomSound";
-import { redirectAuthedPages } from "../helpers/redirect-auth-pages";
-import logger from "../helpers/logger";
+} from "../components/SettingsCustomSound/SettingsCustomSound.js";
+import { redirectAuthedPages } from "../helpers/redirect-auth-pages.js";
+import logger from "../helpers/logger.js";
 
 export default function Settings() {
   const [isFormUnsaved, setIsFormUnsaved] = useState(false);

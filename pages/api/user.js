@@ -1,7 +1,7 @@
 import {
   getUserById,
   getAuthorizedUserByToken,
-} from "./helpers/supabase";
+} from "./helpers/supabase.js";
 
 function getToken(request) {
   if (!request.headers?.authorization) {

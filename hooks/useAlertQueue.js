@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from "react";
 
-import { supabase } from "../helpers/supabase-clientside";
-import logger from "../helpers/logger";
+import { supabase } from "../helpers/supabase-clientside.js";
+import logger from "../helpers/logger.js";
 
 const ALERT_DURATION_MS = 5000;
 const ALERT_DELAY_LENGTH_MS = 1000;

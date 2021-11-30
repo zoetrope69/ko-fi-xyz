@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Head from "next/head";
 
-import { useUser } from "../components/UserProvider";
-import Button from "../components/Button/Button";
-import Navigation from "../components/Navigation/Navigation";
+import { useUser } from "../components/UserProvider/UserProvider.js";
+import Button from "../components/Button/Button.js";
+import Navigation from "../components/Navigation/Navigation.js";
 
-import { redirectAuthedPages } from "../helpers/redirect-auth-pages";
+import { redirectAuthedPages } from "../helpers/redirect-auth-pages.js";
 
 const DEFAULT_DOMAIN = "https://ko-fi.xyz";
 

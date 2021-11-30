@@ -4,8 +4,8 @@ import AutoSizer from "react-virtualized-auto-sizer";
 import { formatDistance } from "date-fns";
 import classNames from "classnames";
 
-import useAPI from "../../hooks/useAPI";
-import { getMoney } from "../../helpers/get-money";
+import useAPI from "../../hooks/useAPI.js";
+import { getMoney } from "../../helpers/get-money.js";
 
 import styles from "./AlertsList.module.css";
 
