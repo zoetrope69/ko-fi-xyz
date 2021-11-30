@@ -11,7 +11,7 @@
   "dependencies": {
     "@supabase/supabase-js": "1.28.2",
     "classnames": "2.3.1",
-    "date-fns": "2.26.0",
+    "date-fns": "2.27.0",
     "faker": "5.5.3",
     "get-contrast-ratio": "0.2.1",
     "next": "11.1.2",
