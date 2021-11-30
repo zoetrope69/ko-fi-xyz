@@ -96,7 +96,11 @@ export default function GettingStarted() {
                   <li>
                     Head over to the{" "}
                     <Link href="/settings">Settings</Link> and tweak
-                    your alert
+                    things
+                  </li>
+                  <li>
+                    There is a <Link href="/settings">Dashboard</Link>{" "}
+                    with instructions to add a list of alerts into OBS
                   </li>
                 </ol>
               </>
