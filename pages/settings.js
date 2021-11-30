@@ -362,7 +362,7 @@ export default function Settings() {
                       <textarea
                         id="message-text"
                         name="message-text"
-                        placeholder="{type} of {amount} from {from_name} - {message}"
+                        placeholder="{type} of {amount} from {from_name} {message}"
                         value={messageText}
                         onChange={handleMessageTextChange}
                         disabled={isSaving}

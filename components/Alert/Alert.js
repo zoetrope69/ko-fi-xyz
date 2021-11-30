@@ -83,7 +83,7 @@ export default function Alert({
       return settings.messageText;
     }
 
-    return "{type} of {amount} from {from_name} - {message}";
+    return "{type} of {amount} from {from_name} {message}";
   }
 
   const MESSAGE_FUNCTION_MAP = {
