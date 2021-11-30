@@ -22,3 +22,22 @@ export async function redirectAuthedPages(req) {
   // If there is a user, return it.
   return { props: { authorisedUser } };
 }
+
+export async function redirectToDashboardPageIfLoggedIn(req) {
+  const { user: authorisedUser } =
+    await supabase.auth.api.getUserByCookie(req);
+
+  if (authorisedUser) {
+    // If user, redirect to dashboard.
+    return {
+      props: {},
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+
+  // if not logged in continue as normal
+  return { props: {} };
+}

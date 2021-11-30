@@ -90,6 +90,8 @@ export async function createUser(id, email) {
 }
 
 export async function getAuthorizedUserByToken(token) {
+  // not in supabase's docs directly because
+  // they use https://github.com/netlify/gotrue
   return supabase.auth.api.getUser(token);
 }
 

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import { redirectToDashboardPageIfLoggedIn } from "../helpers/redirect-auth-pages.js";
 import { signIn } from "../helpers/supabase-clientside.js";
 
 import logger from "../helpers/logger.js";
@@ -73,4 +74,8 @@ export default function Login() {
       </Link>
     </main>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  return redirectToDashboardPageIfLoggedIn(req);
 }

@@ -3,6 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
+import { redirectToDashboardPageIfLoggedIn } from "../helpers/redirect-auth-pages.js";
 import { supabase } from "../helpers/supabase-clientside.js";
 
 export default function Auth() {
@@ -53,4 +54,8 @@ export default function Auth() {
       <p>Logging in...</p>
     </main>
   );
+}
+
+export async function getServerSideProps({ req }) {
+  return redirectToDashboardPageIfLoggedIn(req);
 }
