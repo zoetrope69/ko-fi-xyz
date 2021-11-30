@@ -256,7 +256,10 @@ aside {
     top: 0;
     right: 0;
     height: 50vh;
-    padding-top: 5em;
+  }
+
+  aside > h3 {
+    padding-top: 1em;
   }
 }
 

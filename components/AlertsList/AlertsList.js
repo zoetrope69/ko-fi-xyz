@@ -143,7 +143,7 @@ export default function AlertsList({
             [styles["AlertsList--popped-out"]]: isPoppedOut,
           })}
           ref={listRef}
-          height={height - (isPoppedOut ? 0 : 200)}
+          height={height}
           itemCount={alerts.length}
           itemSize={getRowHeight}
           estimatedItemSize={MIN_ROW_HEIGHT}
