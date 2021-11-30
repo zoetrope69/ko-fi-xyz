@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
@@ -52,6 +53,13 @@ export default function Auth() {
         Ko-fi XYZ
       </h1>
       <p>Logging in...</p>
+
+      <p>
+        <small>
+          Not redirected automatically? Go to{" "}
+          <Link href="/getting-started">the dashboard.</Link>
+        </small>
+      </p>
     </main>
   );
 }
