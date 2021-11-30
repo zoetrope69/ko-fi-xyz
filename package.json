@@ -23,7 +23,7 @@
     "uuid": "8.3.2"
   },
   "devDependencies": {
-    "eslint": "7.32.0",
+    "eslint": "8.3.0",
     "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-prettier": "4.0.0",
