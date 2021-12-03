@@ -12,7 +12,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/supabase-js": "1.28.2",
+    "@supabase/supabase-js": "1.28.5",
     "classnames": "2.3.1",
     "date-fns": "2.27.0",
     "faker": "5.5.3",
