@@ -26,7 +26,7 @@ function getToken(request) {
 }
 
 async function getHandler(request, response) {
-  const { overlayId } = request.query;
+  const { overlayId, sinceDate, ascending } = request.query;
   const token = getToken(request);
 
   if (!overlayId) {
@@ -41,7 +41,11 @@ async function getHandler(request, response) {
   }
 
   if (!authorisedUser || !authorisedUser.id) {
-    const alerts = await getNonShownAlertsByOverlayId(overlayId);
+    const alerts = await getNonShownAlertsByOverlayId(
+      overlayId,
+      sinceDate,
+      ascending === "true"
+    );
     if (!alerts) {
       return response.status(400).json({ error: "No alerts" });
     }
@@ -49,7 +53,11 @@ async function getHandler(request, response) {
     return response.json(alerts);
   }
 
-  const alerts = await getAlertsByOverlayId(overlayId);
+  const alerts = await getAlertsByOverlayId(
+    overlayId,
+    sinceDate,
+    ascending === "true"
+  );
   if (!alerts) {
     return response.status(400).json({ error: "No alerts" });
   }

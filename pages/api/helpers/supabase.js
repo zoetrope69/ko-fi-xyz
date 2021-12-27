@@ -32,13 +32,21 @@ async function updateRow(column, data, options) {
 async function getSortedRows(
   column,
   options,
+  sinceDate,
   [sortColumn, sortOptions]
 ) {
-  const { data: rows, error } = await supabase
+  const supabaseConnection = supabase
     .from(column)
     .select()
-    .match(options)
-    .order(sortColumn, sortOptions);
+    .match(options);
+
+  if (sinceDate) {
+    supabaseConnection.gte("created_at", sinceDate);
+  }
+
+  supabaseConnection.order(sortColumn, sortOptions);
+
+  const { data: rows, error } = await supabaseConnection;
 
   if (error) {
     logger.error(error.message);
@@ -136,18 +144,28 @@ export async function updateOverlaySettings(id, settings) {
 
 // alerts
 
-export async function getAlertsByOverlayId(overlay_id) {
-  return getSortedRows("alerts", { overlay_id }, [
+export async function getAlertsByOverlayId(
+  overlay_id,
+  sinceDate,
+  ascending = false
+) {
+  return getSortedRows("alerts", { overlay_id }, sinceDate, [
     "created_at",
-    { ascending: false },
+    { ascending },
   ]);
 }
 
-export async function getNonShownAlertsByOverlayId(overlay_id) {
-  return getSortedRows("alerts", { overlay_id, is_shown: false }, [
-    "created_at",
-    { ascending: false },
-  ]);
+export async function getNonShownAlertsByOverlayId(
+  overlay_id,
+  sinceDate,
+  ascending = false
+) {
+  return getSortedRows(
+    "alerts",
+    { overlay_id, is_shown: false },
+    sinceDate,
+    ["created_at", { ascending }]
+  );
 }
 
 export async function createAlert(data) {

@@ -21,7 +21,7 @@ export default function AlertsList({
   const rowHeights = useRef({});
 
   const { data: allAlerts = [], isLoading } = useAPI(
-    overlayId ? "/api/alerts?overlayId=" + overlayId : null,
+    overlayId ? `/api/alerts?overlayId=${overlayId}` : null,
     {
       refreshInterval: 5000,
     }
