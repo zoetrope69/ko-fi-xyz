@@ -1,6 +1,7 @@
-import { useEffect, useReducer } from "react";
+import { useEffect, useReducer, useState } from "react";
 
-import { supabase } from "../helpers/supabase-clientside.js";
+import useAPI from "../hooks/useAPI.js";
+
 import logger from "../helpers/logger.js";
 
 const ALERT_DURATION_MS = 5000;
@@ -77,6 +78,12 @@ export default function useAlertQueue({
   const [state, dispatch] = useReducer(reducer, initialState);
   const { isProcessing, isRemoving, queue } = state;
 
+  const [sinceDate, setSinceDate] = useState("");
+  const url = `/api/alerts?overlayId=${overlayId}&sinceDate=${sinceDate}&ascending=true`;
+  const { data: allAlerts = [] } = useAPI(overlayId ? url : null, {
+    refreshInterval: 1000,
+  });
+
   function addToQueue(alert) {
     dispatch({
       type: "ADD",
@@ -85,27 +92,14 @@ export default function useAlertQueue({
   }
 
   useEffect(() => {
-    let alertsSubscription;
+    setSinceDate(new Date().toISOString());
+  }, [setSinceDate]);
 
-    if (overlayId) {
-      alertsSubscription = supabase
-        .from(`alerts:overlay_id=eq.${overlayId}`)
-        .on("INSERT", (payload) => {
-          const newAlert = payload?.new;
-
-          if (newAlert && !newAlert.is_shown) {
-            addToQueue(newAlert);
-          }
-        })
-        .subscribe();
-    }
-
-    return () => {
-      if (alertsSubscription) {
-        supabase.removeSubscription(alertsSubscription);
-      }
-    };
-  }, [overlayId]);
+  useEffect(() => {
+    allAlerts.forEach((alert) => {
+      addToQueue(alert);
+    });
+  }, [allAlerts]);
 
   useEffect(() => {
     function getAlertDuration() {
