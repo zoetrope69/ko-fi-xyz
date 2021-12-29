@@ -1,0 +1,13 @@
+.Logo {
+  display: flex;
+  align-items: center;
+}
+
+.LogoText {
+  padding-left: 0.25em;
+  font-size: 0.75em;
+}
+
+.LogoTextSmall {
+  font-size: 0.5em;
+}

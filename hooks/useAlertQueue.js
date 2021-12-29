@@ -79,9 +79,9 @@ export default function useAlertQueue({
   const { isProcessing, isRemoving, queue } = state;
 
   const [sinceDate, setSinceDate] = useState("");
-  const url = `/api/alerts?overlayId=${overlayId}&sinceDate=${sinceDate}&ascending=true`;
+  const url = `/api/alerts?overlayId=${overlayId}&sinceDate=${sinceDate}&isAscending=true&isShown=false`;
   const { data: allAlerts = [] } = useAPI(overlayId ? url : null, {
-    refreshInterval: 1000,
+    refreshInterval: 5000,
   });
 
   function addToQueue(alert) {

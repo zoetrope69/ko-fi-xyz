@@ -232,7 +232,7 @@ h1,
 h2,
 h3,
 h4 {
-  margin-bottom: 1em;
+  margin-bottom: 0.45em;
 }
 
 aside {
@@ -247,6 +247,13 @@ aside {
 }
 
 @media (min-width: 900px) {
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 0.85em;
+  }
+
   .wrapper {
     flex-direction: row;
   }

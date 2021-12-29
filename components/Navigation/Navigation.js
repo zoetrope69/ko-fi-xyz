@@ -6,6 +6,7 @@ import classNames from "classnames";
 import { useTheme } from "../ThemeProvider/ThemeProvider.js";
 import { useUser } from "../UserProvider/UserProvider.js";
 import Button from "../Button/Button.js";
+import Logo from "../Logo/Logo.js";
 
 import styles from "./Navigation.module.css";
 
@@ -25,16 +26,9 @@ export default function Navigation() {
 
   return (
     <nav className={styles.Nav}>
-      <div className={styles.NavTitle}>
-        <Image
-          className={styles.NavTitleLogo}
-          src="/ko-fi-logo.png"
-          alt="Ko-fi Logo"
-          width="30"
-          height="30"
-        />{" "}
-        <h1 className={styles.NavTitleText}>Ko-fi XYZ</h1>
-      </div>
+      <h1 className={styles.NavTitle}>
+        <Logo isSmall />
+      </h1>
 
       <ul className={styles.NavList}>
         {[

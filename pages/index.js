@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
 
+import Logo from "../components/Logo/Logo.js";
 import Alert from "../components/Alert/Alert.js";
 import Button from "../components/Button/Button.js";
 import Preview from "../components/Preview/Preview.js";
@@ -14,8 +15,7 @@ export default function Home() {
       </Head>
 
       <h1>
-        <Image src="/ko-fi-logo.png" alt="" width="30" height="30" />{" "}
-        Ko-fi XYZ
+        <Logo />
       </h1>
 
       <p>

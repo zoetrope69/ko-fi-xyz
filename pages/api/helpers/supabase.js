@@ -29,12 +29,12 @@ async function updateRow(column, data, options) {
   return supabase.from(column).update(data).match(options);
 }
 
-async function getSortedRows(
+async function getSortedRows({
   column,
   options,
   sinceDate,
-  [sortColumn, sortOptions]
-) {
+  sorting,
+}) {
   const supabaseConnection = supabase
     .from(column)
     .select()
@@ -44,7 +44,7 @@ async function getSortedRows(
     supabaseConnection.gte("created_at", sinceDate);
   }
 
-  supabaseConnection.order(sortColumn, sortOptions);
+  supabaseConnection.order(sorting.column, sorting.options);
 
   const { data: rows, error } = await supabaseConnection;
 
@@ -144,28 +144,29 @@ export async function updateOverlaySettings(id, settings) {
 
 // alerts
 
-export async function getAlertsByOverlayId(
-  overlay_id,
+export async function getAlerts({
+  overlayId,
   sinceDate,
-  ascending = false
-) {
-  return getSortedRows("alerts", { overlay_id }, sinceDate, [
-    "created_at",
-    { ascending },
-  ]);
-}
+  isAscending,
+  isShown,
+}) {
+  const options = {
+    overlay_id: overlayId,
+  };
 
-export async function getNonShownAlertsByOverlayId(
-  overlay_id,
-  sinceDate,
-  ascending = false
-) {
-  return getSortedRows(
-    "alerts",
-    { overlay_id, is_shown: false },
+  if (typeof isShown !== "undefined") {
+    options.is_shown = isShown;
+  }
+
+  return getSortedRows({
+    column: "alerts",
+    options,
     sinceDate,
-    ["created_at", { ascending }]
-  );
+    sorting: {
+      column: "created_at",
+      options: { ascending: isAscending },
+    },
+  });
 }
 
 export async function createAlert(data) {

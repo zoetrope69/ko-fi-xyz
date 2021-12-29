@@ -1,7 +1,6 @@
 import {
   getAuthorizedUserByToken,
-  getNonShownAlertsByOverlayId,
-  getAlertsByOverlayId,
+  getAlerts,
   updateAlert,
 } from "./helpers/supabase.js";
 
@@ -25,39 +24,39 @@ function getToken(request) {
   return request.headers.authorization.replace("Bearer", "").trim();
 }
 
+function getIsShown({ isAuthorised, isShown }) {
+  if (!isAuthorised) {
+    return false;
+  }
+
+  // not set in request
+  if (typeof isShown === "undefined") {
+    return undefined;
+  }
+
+  return isShown === "true";
+}
+
 async function getHandler(request, response) {
-  const { overlayId, sinceDate, ascending } = request.query;
+  const { overlayId, sinceDate, isAscending, isShown } =
+    request.query;
   const token = getToken(request);
 
   if (!overlayId) {
     return response.status(400).json({ error: "No overlayId" });
   }
 
-  const { data: authorisedUser, error } =
-    await getAuthorizedUserByToken(token);
+  const { data: authorisedUser } = await getAuthorizedUserByToken(
+    token
+  );
+  const isAuthorised = !!authorisedUser?.id;
 
-  if (error) {
-    return response.status(401).json({ error: error.message });
-  }
-
-  if (!authorisedUser || !authorisedUser.id) {
-    const alerts = await getNonShownAlertsByOverlayId(
-      overlayId,
-      sinceDate,
-      ascending === "true"
-    );
-    if (!alerts) {
-      return response.status(400).json({ error: "No alerts" });
-    }
-
-    return response.json(alerts);
-  }
-
-  const alerts = await getAlertsByOverlayId(
+  const alerts = await getAlerts({
     overlayId,
     sinceDate,
-    ascending === "true"
-  );
+    isAscending: isAscending === "true",
+    isShown: getIsShown({ isAuthorised, isShown }),
+  });
   if (!alerts) {
     return response.status(400).json({ error: "No alerts" });
   }
