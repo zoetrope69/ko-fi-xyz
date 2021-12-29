@@ -1,8 +1,9 @@
-import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+
+import Logo from "../components/Logo/Logo.js";
 
 import { redirectToDashboardPageIfLoggedIn } from "../helpers/redirect-auth-pages.js";
 import { supabase } from "../helpers/supabase-clientside.js";
@@ -49,9 +50,9 @@ export default function Auth() {
       </Head>
 
       <h1>
-        <Image src="/ko-fi-logo.png" alt="" width="30" height="30" />{" "}
-        Ko-fi XYZ
+        <Logo isSmall />
       </h1>
+
       <p>Logging in...</p>
 
       <p>

@@ -1,8 +1,8 @@
-import Image from "next/image";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
+import Logo from "../components/Logo/Logo.js";
 import Button from "../components/Button/Button.js";
 import { redirectToDashboardPageIfLoggedIn } from "../helpers/redirect-auth-pages.js";
 import { signIn } from "../helpers/supabase-clientside.js";
@@ -43,8 +43,7 @@ export default function Login() {
       </Head>
 
       <h1>
-        <Image src="/ko-fi-logo.png" alt="" width="30" height="30" />{" "}
-        Ko-fi XYZ
+        <Logo isSmall />
       </h1>
 
       <h2>Continue with Email</h2>

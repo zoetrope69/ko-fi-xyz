@@ -1,11 +1,11 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 import { useUser } from "../components/UserProvider/UserProvider.js";
 import { supabase, signOut } from "../helpers/supabase-clientside.js";
 import logger from "../helpers/logger.js";
+import Logo from "../components/Logo/Logo.js";
 
 export default function Logout() {
   const router = useRouter();
@@ -56,8 +56,7 @@ export default function Logout() {
       </Head>
 
       <h1>
-        <Image src="/ko-fi-logo.png" alt="" width="30" height="30" />{" "}
-        Ko-fi XYZ
+        <Logo isSmall />
       </h1>
 
       <p>Logging out...</p>
