@@ -20,11 +20,10 @@ export default function AlertsList({
   const listRef = useRef({});
   const rowHeights = useRef({});
 
+  const url = `/api/alerts?overlayId=${overlayId}`;
   const { data: allAlerts = [], isLoading } = useAPI(
-    overlayId ? `/api/alerts?overlayId=${overlayId}` : null,
-    {
-      refreshInterval: 5000,
-    }
+    overlayId ? url : null,
+    { refreshInterval: 5000 }
   );
 
   if (isLoading) {
