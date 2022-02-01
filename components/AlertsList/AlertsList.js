@@ -23,7 +23,7 @@ export default function AlertsList({
   const url = `/api/alerts?overlayId=${overlayId}`;
   const { data: allAlerts = [], isLoading } = useAPI(
     overlayId ? url : null,
-    { refreshInterval: 5000 }
+    { refreshInterval: 15000 }
   );
 
   if (isLoading) {
