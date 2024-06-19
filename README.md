@@ -1,10 +1,10 @@
 # Ko-fi XYZ
 
+> ⚠️ Archived: Ko-fi has all of these tools in built to their websitwe now
+
 Unofficial tools to help streamers use Ko-fi.
 
 Made by zactopus to help people move away from sending Twitch/Amazon/The Bezos their money.
-
-[Get started over on ko-fi.xyz](https://ko-fi.xyz/)
 
 ## Development
 
